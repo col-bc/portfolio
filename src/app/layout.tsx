@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/theme";
 import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { JetBrains_Mono, Roboto_Flex, Roboto_Slab } from "next/font/google";
+import Script from "next/script";
 
 const headingFont = Roboto_Slab({
     subsets: ["latin"],
@@ -39,7 +40,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             lang="en"
             className={`${headingFont.className} ${bodyFont.className} ${monoFont.className}`}>
             <head>
-                <script src="https://t.contentsquare.net/uxa/33a640938ca72.js"></script>
                 <style>
                     {`
                 :root {
@@ -51,6 +51,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
                 </style>
             </head>
             <body>
+                <Script
+                    src="https://t.contentsquare.net/uxa/33a640938ca72.js"
+                    strategy="afterInteractive"
+                />
                 <ColorModeProvider>
                     <ThemeProvider>
                         <Flex
