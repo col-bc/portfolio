@@ -39,6 +39,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             lang="en"
             className={`${headingFont.className} ${bodyFont.className} ${monoFont.className}`}>
             <head>
+                <script src="https://t.contentsquare.net/uxa/33a640938ca72.js"></script>
                 <style>
                     {`
                 :root {
