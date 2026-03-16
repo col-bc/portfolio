@@ -94,6 +94,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         </Flex>
                     </ThemeProvider>
                 </ColorModeProvider>
+                {/* <!-- Google tag (gtag.js) --> */}
+                <Script
+                    async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-CBL0YRB69Y"></Script>
+                <Script id="gtag-script">
+                    {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+
+                    gtag('config', 'G-CBL0YRB69Y');
+                    `}
+                </Script>
                 {/* <!-- Google Tag Manager (noscript) --> */}
                 <noscript>
                     <iframe
