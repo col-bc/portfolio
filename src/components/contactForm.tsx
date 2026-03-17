@@ -73,7 +73,7 @@ export default function Contact() {
                 phone: phone ? parseInt(phone) : null,
                 preferredContactMethod: contactMethod as "email" | "phone",
                 organization: orgName,
-                subject: subject[0],
+                subject: subject,
                 message: message,
                 turnstileToken: turnstileToken,
             });
