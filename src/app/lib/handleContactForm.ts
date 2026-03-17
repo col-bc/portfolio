@@ -56,7 +56,5 @@ export async function handleContactForm(data: ContactFormData) {
     } catch (error) {
         console.error("Error saving contact form data:", error);
         throw new Error("Failed to save contact form data");
-    } finally {
-        await prisma.$disconnect();
     }
 }
