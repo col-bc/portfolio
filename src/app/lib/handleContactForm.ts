@@ -1,6 +1,6 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./prisma";
 export interface ContactFormData {
     name: string;
     email: string | null;
@@ -41,7 +41,6 @@ export async function handleContactForm(data: ContactFormData) {
         throw new Error("CAPTCHA verification failed.");
     }
 
-    const prisma = new PrismaClient();
     try {
         await prisma.lead.create({
             data: {
