@@ -67,6 +67,14 @@ export default function AuthForm({ ...rest }: FlexProps) {
         try {
             await handleVerifyOtp(otp);
         } catch (err) {
+            // Do not treat Next.js redirect errors as OTP failures.
+            if (
+                err instanceof Error &&
+                "digest" in err &&
+                err.digest === "NEXT_REDIRECT"
+            ) {
+                throw err;
+            }
             console.error("OTP verification failed:", err);
             setError("Invalid OTP.");
         } finally {

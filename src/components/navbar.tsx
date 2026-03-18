@@ -90,7 +90,6 @@ function Actions() {
                 if (isMountedComponent) {
                     setIsAuth(status);
                 }
-                console.log("Session status:", status);
             } catch (error) {
                 console.error("Failed to fetch session status", error);
             }

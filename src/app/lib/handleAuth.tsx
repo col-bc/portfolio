@@ -45,9 +45,7 @@ export async function handleAuthAttempt(data: AuthAttempt) {
     }
 
     // authenticate
-    if (await authenticateAdmin(data)) {
-        return { success: true };
-    }
+    if (await authenticateAdmin(data)) return { success: true };
 }
 
 /**
@@ -70,9 +68,7 @@ export async function handleVerifyOtp(otp: string) {
     // Calculate the delta and allow a 1-period grace window
     const delta = totp.validate({ token: otp, window: 1 });
 
-    // Check that it is not null
     if (delta !== null) {
-        // You'll want to issue and set your JWT cookie here next!
         const jwt = await issueJWT({ username: "admin" });
         // Save the jwt in a cookie or local storage as needed
         (await cookies()).set("admin_session", jwt, {
@@ -82,6 +78,7 @@ export async function handleVerifyOtp(otp: string) {
             path: "/",
             maxAge: 60 * 60 * 2, // 2 hours
         });
+        console.error("OTP validation failed:", otp);
         return redirect("/leads");
     } else {
         console.error("OTP validation failed:", otp);
@@ -94,18 +91,18 @@ export async function handleVerifyOtp(otp: string) {
  * The hashed password should be stored in the environment variables.
 
  */
-async function initAdminAccount() {
-    // Initialize the admin account
-    const saltRounds = 12;
-    const myPassword = "your-master-password";
+// async function initAdminAccount() {
+//     // Initialize the admin account
+//     const saltRounds = 12;
+//     const myPassword = "your-master-password";
 
-    const hash = await bcrypt.hash(myPassword, saltRounds);
-    console.log("Hashed Master Password. Store this in .env:", hash);
+//     const hash = await bcrypt.hash(myPassword, saltRounds);
+//     console.log("Hashed Master Password. Store this in .env:", hash);
 
-    const myAdminEmail = "admin@colbyc.com";
-    const hashedAdminEmail = await bcrypt.hash(myAdminEmail, saltRounds);
-    console.log("Hashed Admin Email. Store this in .env:", hashedAdminEmail);
-}
+//     const myAdminEmail = "admin@colbyc.com";
+//     const hashedAdminEmail = await bcrypt.hash(myAdminEmail, saltRounds);
+//     console.log("Hashed Admin Email. Store this in .env:", hashedAdminEmail);
+// }
 
 /**
  * Authenticates the admin user with the provided credentials
@@ -171,9 +168,15 @@ export async function verifyJWT(token: string) {
     }
 }
 
-/** Checks if the session cookie exists */
+/** Checks if the session cookie exists and contains a valid, unexpired JWT */
 export async function getSessionStatus() {
-    return (await cookies()).has("admin_session");
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("admin_session");
+    if (!sessionCookie || !sessionCookie.value) {
+        return false;
+    }
+    const payload = await verifyJWT(sessionCookie.value);
+    return payload !== null;
 }
 
 /** Destroys the session cookie and forces a redirect to the home page */
