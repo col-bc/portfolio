@@ -97,7 +97,7 @@ export async function handleVerifyOtp(otp: string) {
 async function initAdminAccount() {
     // Initialize the admin account
     const saltRounds = 12;
-    const myPassword = "earthly-yanked3cor-DOYOU8vikings7morbid";
+    const myPassword = "your-master-password";
 
     const hash = await bcrypt.hash(myPassword, saltRounds);
     console.log("Hashed Master Password. Store this in .env:", hash);
