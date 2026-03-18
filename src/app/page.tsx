@@ -1,5 +1,5 @@
 "use client";
-import { sample1, sample2, sample3, sample4 } from "@/codeSamples";
+import { sample1, sample2, sample3, sample4 } from "@/app/lib/codeSamples";
 import {
     Avatar,
     Box,

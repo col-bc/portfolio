@@ -247,11 +247,14 @@ export default function Contact() {
                                     onChange={(e) => setMessage(e.target.value)}
                                 />
                             </Field.Root>
-                            <Box display="flex" justifyContent="center" my={2}>
+                            <Box w="full">
                                 <Turnstile
                                     siteKey="0x4AAAAAACrt5VbunM62aYIZ"
                                     onSuccess={(token) => {
                                         setTurnstileToken(token);
+                                    }}
+                                    options={{
+                                        size: "flexible",
                                     }}
                                 />
                             </Box>
