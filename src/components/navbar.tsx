@@ -1,4 +1,5 @@
 "use client";
+import { getSessionStatus, logoutAdmin } from "@/app/lib/handleAuth";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { Tooltip } from "@/components/ui/tooltip";
 import {
@@ -8,6 +9,8 @@ import {
     Container,
     Flex,
     Link,
+    Menu,
+    Portal,
     Spinner,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
@@ -17,9 +20,10 @@ import {
     LuBriefcaseBusiness,
     LuGraduationCap,
     LuHouse,
-    LuMail,
     LuMenu,
     LuMessageSquare,
+    LuSend,
+    LuSettings,
     LuX,
 } from "react-icons/lu";
 
@@ -74,16 +78,44 @@ function NavLinks() {
 function Actions() {
     // Avoid hydration mismatch by only rendering the color mode button on the client
     const [mounted, setMounted] = useState(false);
+    const [isAuth, setIsAuth] = useState<boolean>(false);
+    const pathname = usePathname();
+
     useEffect(() => {
+        let isMountedComponent = true;
+
+        async function checkAuth() {
+            try {
+                const status = await getSessionStatus();
+                if (isMountedComponent) {
+                    setIsAuth(status);
+                }
+                console.log("Session status:", status);
+            } catch (error) {
+                console.error("Failed to fetch session status", error);
+            }
+        }
+
+        checkAuth();
         setMounted(true);
-    }, []);
+
+        return () => {
+            isMountedComponent = false;
+        };
+    }, [pathname]);
+
+    async function handleSignOut(e: React.MouseEvent) {
+        e.preventDefault();
+        setIsAuth(false);
+        await logoutAdmin();
+    }
 
     return (
         <>
             <Tooltip content="Get in touch">
                 <Link href="/contact">
                     <Button variant="ghost" colorPalette="bg">
-                        <LuMail />
+                        <LuSend size={16} />
                     </Button>
                 </Link>
             </Tooltip>
@@ -97,6 +129,33 @@ function Actions() {
                     opacity={0.5}>
                     <Spinner size="xs" />
                 </Button>
+            )}
+            {isAuth && (
+                <Tooltip content="Admin Panel">
+                    <Menu.Root>
+                        <Menu.Trigger asChild>
+                            <Button variant="ghost" colorPalette="bg">
+                                <LuSettings size={16} />
+                            </Button>
+                        </Menu.Trigger>
+                        <Portal>
+                            <Menu.Positioner>
+                                <Menu.Content>
+                                    <Menu.Item value="leads" asChild>
+                                        <Link as={NextLink} href="/leads">
+                                            Leads
+                                        </Link>
+                                    </Menu.Item>
+                                    <Menu.Item value="signout" asChild>
+                                        <Link href="#" onClick={handleSignOut}>
+                                            Sign Out
+                                        </Link>
+                                    </Menu.Item>
+                                </Menu.Content>
+                            </Menu.Positioner>
+                        </Portal>
+                    </Menu.Root>
+                </Tooltip>
             )}
         </>
     );
