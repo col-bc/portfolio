@@ -1,3 +1,7 @@
+/**
+ * @module middleware
+ * @description Middleware to protect admin routes by verifying JWT tokens.
+ */
 import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

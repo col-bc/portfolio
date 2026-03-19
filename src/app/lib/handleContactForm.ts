@@ -1,7 +1,15 @@
+/**
+ * @module handleContactForm
+ * @description This module contains functions for handling the submission of the contact form, including CAPTCHA verification and saving the form data to the database.
+ */
 "use server";
-
+import "server-only";
 import { prisma } from "./prisma";
-export interface ContactFormData {
+
+/**
+ * @interface ContactFormData
+ * @description Represents the data submitted through the contact form.
+ */ export interface ContactFormData {
     name: string;
     email: string | null;
     phone: number | null;
@@ -12,7 +20,12 @@ export interface ContactFormData {
     turnstileToken: string;
 }
 
-export async function handleContactForm(data: ContactFormData) {
+/**
+ * Handles the submission of the contact form by verifying the CAPTCHA and saving the form data to the database
+ * @param data the contact form data
+ * @returns a promise that resolves when the form data is successfully saved
+ */
+export async function handleContactForm(data: ContactFormData): Promise<void> {
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
         throw new Error(

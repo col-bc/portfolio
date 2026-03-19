@@ -27,6 +27,11 @@ import {
     LuX,
 } from "react-icons/lu";
 
+/**
+ * Renders the navigation links for the navbar.
+ * Highlights the current path based on the pathname.
+ * @returns JSX.Element
+ */
 function NavLinks() {
     const pathname = usePathname();
     const isCurrentPath = (href: string) =>
@@ -75,12 +80,20 @@ function NavLinks() {
     );
 }
 
+/**
+ * Renders the action buttons for the navbar, including the color mode toggle,
+ * contact button, and admin panel menu if the user is authenticated.
+ * @returns JSX.Element
+ */
 function Actions() {
     // Avoid hydration mismatch by only rendering the color mode button on the client
     const [mounted, setMounted] = useState(false);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const pathname = usePathname();
 
+    /**
+     * Checks the authentication status of the admin user and updates the state accordingly.
+     */
     useEffect(() => {
         let isMountedComponent = true;
 
@@ -103,6 +116,10 @@ function Actions() {
         };
     }, [pathname]);
 
+    /**
+     * Handles the sign-out action for the admin user.
+     * @param e the mouse event triggered by clicking the sign-out link
+     */
     async function handleSignOut(e: React.MouseEvent) {
         e.preventDefault();
         setIsAuth(false);
@@ -163,9 +180,12 @@ function Actions() {
 export default function Navbar() {
     const pathname = usePathname();
     const navbarRef = useRef<HTMLDivElement>(null);
-
-    // Add shadow to navbar when scrolling past header
     const [elevate, setElevate] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
+
+    /**
+     * Adds a shadow to the navbar when the user scrolls past the header.
+     */
     useEffect(() => {
         function handleScroll() {
             setElevate(
@@ -178,8 +198,9 @@ export default function Navbar() {
         };
     }, []);
 
-    // Close mobile nav on route change and scroll to anchor if present
-    const [open, setOpen] = useState<boolean>(false);
+    /**
+     * Closes the mobile navigation menu on route change and scrolls to the anchor if present.
+     */
     useEffect(() => {
         setOpen(false);
 

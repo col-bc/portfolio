@@ -1,3 +1,15 @@
+/**
+ * @module handleAuth
+ * @description This module contains functions for handling authentication and TOTP verification for the admin user.
+ *
+ * Sign in is a two-step process.
+ *   1. AuthAttempt is submitted to the server with username, password, and Turnstile token.
+ *   2. If the Turnstile token is valid and the credentials are correct, a TOTP session JWT is issued.
+ *   3. The user submits a TOTP code, which is verified against the server while the TOTP session JWT is still valid.
+ *   4. If the TOTP is valid, an authenticated admin session JWT is issued and the TOTP session JWT is invalidated.
+ *
+ */
+
 "use server";
 import bcrypt from "bcrypt";
 import { jwtVerify, SignJWT } from "jose";
@@ -6,6 +18,10 @@ import { redirect } from "next/navigation";
 import * as OTPAuth from "otpauth";
 import "server-only";
 
+/**
+ * @interface AuthAttempt
+ * @description Represents an authentication attempt by the admin user, including username, password, and Turnstile token.
+ */
 export interface AuthAttempt {
     username: string;
     password: string;
@@ -18,7 +34,6 @@ export interface AuthAttempt {
  * @returns an object with a success property if authentication is successful, otherwise throws an error
  */
 export async function handleAuthAttempt(data: AuthAttempt) {
-    // verify turnstile token
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
         throw new Error(
@@ -44,16 +59,45 @@ export async function handleAuthAttempt(data: AuthAttempt) {
         throw new Error("CAPTCHA verification failed.");
     }
 
-    // authenticate
-    if (await authenticateAdmin(data)) return { success: true };
+    // authenticate and issue a JWT for the TOTP session
+    if (await authenticateAdmin(data)) {
+        const jwt = await issueJWT({ username: "admin" }, "3m");
+        // Save the jwt in a cookie for the TOTP session
+        (await cookies()).set("totp_session", jwt, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 60 * 3, // 3 minutes
+        });
+
+        return { success: true };
+    }
+    return { success: false };
 }
 
 /**
- * Verifies a TOTP (Time-based One-Time Password) for the admin user
+ * Handles the verification of a TOTP (Time-based One-Time Password) for the admin user
  * @param otp the TOTP to verify
  * @returns a redirect to the leads page if the OTP is valid, otherwise throws an error
  */
 export async function handleVerifyOtp(otp: string) {
+    //validate the totp session
+    const totpSession = (await cookies()).get("totp_session");
+    if (!totpSession) {
+        throw new Error("TOTP session not found");
+    }
+
+    try {
+        await jwtVerify(
+            totpSession.value,
+            new TextEncoder().encode(process.env.SESSION_SECRET as string),
+        );
+    } catch (err) {
+        console.error("Invalid TOTP session:", err);
+        throw new Error("Invalid TOTP session. ");
+    }
+
     const totp = new OTPAuth.TOTP({
         issuer: "Colby Portfolio",
         label: "Admin",
@@ -65,12 +109,13 @@ export async function handleVerifyOtp(otp: string) {
         ),
     });
 
-    // Calculate the delta and allow a 1-period grace window
+    // Calculate the delta
     const delta = totp.validate({ token: otp, window: 1 });
 
+    // Issue a jwt in a cookie for the authenticated admin session
     if (delta !== null) {
-        const jwt = await issueJWT({ username: "admin" });
-        // Save the jwt in a cookie or local storage as needed
+        (await cookies()).delete("totp_session");
+        const jwt = await issueJWT({ username: "admin" }, "2h");
         (await cookies()).set("admin_session", jwt, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -78,7 +123,6 @@ export async function handleVerifyOtp(otp: string) {
             path: "/",
             maxAge: 60 * 60 * 2, // 2 hours
         });
-        console.error("OTP validation failed:", otp);
         return redirect("/leads");
     } else {
         console.error("OTP validation failed:", otp);
@@ -89,7 +133,6 @@ export async function handleVerifyOtp(otp: string) {
 /**
  * Initializes the admin account by hashing the master password.
  * The hashed password should be stored in the environment variables.
-
  */
 // async function initAdminAccount() {
 //     // Initialize the admin account
@@ -128,9 +171,13 @@ async function authenticateAdmin(data: AuthAttempt) {
 /**
  * Issues a JWT token with the given payload
  * @param payload the payload to include in the JWT
+ * @param duration the duration for which the JWT is valid (e.g., "2h" for 2 hours)
  * @returns the signed JWT token
  */
-export async function issueJWT(payload: Record<string, unknown>) {
+export async function issueJWT(
+    payload: Record<string, unknown>,
+    duration: string,
+) {
     const secret = process.env.SESSION_SECRET;
     if (!secret) {
         throw new Error("JWT secret is not defined");
@@ -141,7 +188,7 @@ export async function issueJWT(payload: Record<string, unknown>) {
     })
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("2h") // Session expires in 2 hours
+        .setExpirationTime(duration)
         .sign(new TextEncoder().encode(secret));
     return jwt;
 }
@@ -183,4 +230,18 @@ export async function getSessionStatus() {
 export async function logoutAdmin() {
     (await cookies()).delete("admin_session");
     redirect("/");
+}
+
+/**
+ * Verifies if the current session is valid by checking the admin_session cookie and its JWT.
+ * @returns true if the session is valid, otherwise false
+ */
+export async function verifySession() {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("admin_session");
+    if (!sessionCookie || !sessionCookie.value) {
+        return false;
+    }
+    const payload = await verifyJWT(sessionCookie.value);
+    return payload !== null;
 }

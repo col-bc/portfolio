@@ -9,14 +9,14 @@ export default function LeadTable() {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        async function fetchLeads() {
+            setLoading(true);
+            setLeads(await getLeads());
+            setLoading(false);
+        }
+
         fetchLeads();
     }, []);
-
-    async function fetchLeads() {
-        setLoading(true);
-        setLeads(await getLeads());
-        setLoading(false);
-    }
 
     return (
         <Table.ScrollArea borderWidth="1px" rounded="md">
