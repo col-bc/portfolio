@@ -8,7 +8,6 @@ import {
     Flex,
     FlexProps,
     Input,
-    PinInput,
     Text,
 } from "@chakra-ui/react";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
@@ -25,11 +24,20 @@ export default function AuthForm({ ...rest }: FlexProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const turnstileRef = useRef<TurnstileInstance | null>(null);
 
+    /**
+     * Updates the OTP state with a sanitized 6-digit numeric string.
+     * @param next the next value of the OTP input
+     */
     function updateOtp(next: string) {
         const sanitized = next.replace(/\D/g, "").slice(0, 6);
         setOtp((prev) => (prev === sanitized ? prev : sanitized));
     }
 
+    /**
+     * Handles the submission of the authentication form.
+     * @param e the form submit event
+     * @returns a promise that resolves when the authentication attempt is complete
+     */
     async function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
         if (isSubmitting) return;
@@ -55,6 +63,11 @@ export default function AuthForm({ ...rest }: FlexProps) {
         }
     }
 
+    /**
+     * Handles the verification of the OTP (One-Time Password) entered by the user.
+     * @param e the form submit event
+     * @returns a promise that resolves when the OTP verification is complete
+     */
     async function handleVerify(e: React.SubmitEvent) {
         e.preventDefault();
         if (isSubmitting) return;
@@ -67,6 +80,14 @@ export default function AuthForm({ ...rest }: FlexProps) {
         try {
             await handleVerifyOtp(otp);
         } catch (err) {
+            // Do not treat Next.js redirect errors as OTP failures.
+            if (
+                err instanceof Error &&
+                "digest" in err &&
+                err.digest === "NEXT_REDIRECT"
+            ) {
+                throw err;
+            }
             console.error("OTP verification failed:", err);
             setError("Invalid OTP.");
         } finally {
@@ -90,7 +111,9 @@ export default function AuthForm({ ...rest }: FlexProps) {
             )}
 
             <Text color="fg.muted">
-                Enter your username and password to sign in
+                {step === "auth"
+                    ? "Enter your username and password to sign in"
+                    : "Enter the 6-digit code from your authenticator app"}
             </Text>
             {step === "auth" ? (
                 <>
@@ -131,52 +154,16 @@ export default function AuthForm({ ...rest }: FlexProps) {
                         <Field.RequiredIndicator />
                     </Field.Label>
 
-                    <Box>
-                        <Input
-                            type="text"
-                            name="one-time-code"
-                            autoComplete="one-time-code"
-                            inputMode="numeric"
-                            maxLength={6}
-                            placeholder="Autofill or paste 6-digit code"
-                            value={otp}
-                            onChange={(e) => updateOtp(e.target.value)}
-                            mb={2}
-                        />
-                        <PinInput.Root
-                            key={step}
-                            otp
-                            value={otp.split("")}
-                            onValueChange={(e) => updateOtp(e.valueAsString)}>
-                            <PinInput.HiddenInput data-1p-ignore="true" />
-                            <PinInput.Control>
-                                <PinInput.Input
-                                    index={0}
-                                    data-1p-ignore="true"
-                                />
-                                <PinInput.Input
-                                    index={1}
-                                    data-1p-ignore="true"
-                                />
-                                <PinInput.Input
-                                    index={2}
-                                    data-1p-ignore="true"
-                                />
-                                <PinInput.Input
-                                    index={3}
-                                    data-1p-ignore="true"
-                                />
-                                <PinInput.Input
-                                    index={4}
-                                    data-1p-ignore="true"
-                                />
-                                <PinInput.Input
-                                    index={5}
-                                    data-1p-ignore="true"
-                                />
-                            </PinInput.Control>
-                        </PinInput.Root>
-                    </Box>
+                    <Input
+                        type="text"
+                        name="one-time-code"
+                        autoComplete="one-time-code"
+                        inputMode="numeric"
+                        maxLength={6}
+                        value={otp}
+                        onChange={(e) => updateOtp(e.target.value)}
+                        mb={2}
+                    />
                 </Field.Root>
             )}
             {step === "auth" && (

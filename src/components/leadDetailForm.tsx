@@ -21,6 +21,9 @@ export function LeadDetailForm({ slug }: { slug: string }) {
     const [detail, setDetail] = useState<LeadModel | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    /**
+     * Fetches the lead details from the server and updates the state.
+     */
     useEffect(() => {
         async function fetchLeadDetail() {
             try {
@@ -32,6 +35,11 @@ export function LeadDetailForm({ slug }: { slug: string }) {
         fetchLeadDetail();
     }, [slug]);
 
+    /**
+     * Handles the change event for the "viewed" checkbox.
+     * Updates the lead's viewed status both locally and on the server.
+     * @param e the checkbox change event details
+     */
     async function handleCheckboxChange(e: CheckboxCheckedChangeDetails) {
         const checked = e.checked.valueOf();
 

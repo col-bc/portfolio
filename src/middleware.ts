@@ -1,12 +1,13 @@
+/**
+ * @module middleware
+ * @description Middleware to protect admin routes by verifying JWT tokens.
+ */
 import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-    if (
-        request.nextUrl.pathname === "/leads" ||
-        request.nextUrl.pathname.startsWith("/admin")
-    ) {
+    if (request.nextUrl.pathname.startsWith("/leads")) {
         const session = request.cookies.get("admin_session")?.value;
 
         if (!session) {
@@ -27,6 +28,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    // Make sure the middleware runs on the exact /leads path
-    matcher: ["/admin/:path*", "/leads"],
+    matcher: ["/admin/:path*", "/leads/:path*"],
 };

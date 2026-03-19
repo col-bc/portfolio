@@ -57,15 +57,13 @@ export default function Contact() {
         setError(null);
     }
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(e: React.ChangeEvent) {
         e.preventDefault();
         setError(null);
         if (!turnstileToken) {
             setError("Please complete the CAPTCHA challenge.");
             return;
         }
-
-        console.log("Submitting with token:", turnstileToken);
         try {
             await handleContactForm({
                 name,

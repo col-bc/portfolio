@@ -4,23 +4,23 @@ import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ThemeProvider } from "@/theme";
 import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import { JetBrains_Mono, Roboto_Flex, Roboto_Slab } from "next/font/google";
+import { Inter, Lexend, Source_Code_Pro } from "next/font/google";
 import Script from "next/script";
 
-const headingFont = Roboto_Slab({
+const headingFont = Lexend({
     subsets: ["latin"],
     weight: ["400", "700"],
     variable: "--font-heading",
     display: "swap",
 });
 
-const bodyFont = Roboto_Flex({
+const bodyFont = Inter({
     subsets: ["latin"],
     variable: "--font-body",
     display: "swap",
 });
 
-const monoFont = JetBrains_Mono({
+const monoFont = Source_Code_Pro({
     subsets: ["latin"],
     weight: ["400"],
     variable: "--font-mono",
