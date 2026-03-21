@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Colby Cooper | Technical Problem-Solver & Developer
 
-## Getting Started
+A full-stack, responsive personal portfolio built with Next.js and TypeScript. This application serves a dual purpose: it acts as a public-facing interactive resume and a secure, private administrative portal for managing inbound contact leads via a custom SQLite database.
 
-First, run the development server:
+I treat every operational bottleneck, data discrepancy, and software bug like an investigation. This repository demonstrates my ability to translate corporate compliance, risk mitigation, and analytical problem-solving into secure, scalable IT infrastructure and software architecture.
 
+## 🚀 Key Features
+
+### Public Portfolio & UI/UX
+* **Component-Driven Architecture:** Built with React and Chakra UI, utilizing modular, reusable components (like a global `<ResumeCTA />`) to maintain a DRY codebase and seamless UX.
+* **Dynamic Content:** Server-rendered pages for Employment, Education, and Code Samples (featuring custom Java Hash Table implementations and advanced data structures).
+* **Responsive Design:** Fully responsive layout optimized for mobile and desktop, including integrated dark/light mode functionality.
+* **Contact Gateway:** Inbound contact form protected by Cloudflare Turnstile to eliminate automated bot submissions prior to server execution.
+
+### Secure Admin Portal (`/admin/leads`)
+* **Zero-Trust MFA Gateway:** A custom-built 2FA login flow requiring both a cryptographically hashed master password (`bcrypt`) and a 30-second rolling TOTP code (`otpauth`, SHA-1). Bypasses the need for third-party auth providers.
+* **Edge-Native Middleware:** Route protection powered by Next.js Middleware, utilizing `jose` for Edge-compatible JWT verification.
+* **XSS & CSRF Mitigation:** Complete reliance on strict, HTTP-Only `Set-Cookie` headers for session management, ensuring authentication tokens are completely invisible to client-side JavaScript.
+* **Database Integration:** SQLite database managed via Prisma ORM for reading, tracking, and updating inbound leads seamlessly.
+
+## 🛠️ Tech Stack
+
+* **Framework:** Next.js (App Router, Server Actions)
+* **Language:** TypeScript
+* **Styling:** Chakra UI
+* **Database & ORM:** SQLite, Prisma
+* **Security & Crypto:** `bcrypt`, `jose` (JWT), `otpauth` (TOTP), Cloudflare Turnstile
+
+## 💻 Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YOUR_USERNAME/portfolio.git
+cd portfolio
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a .env file in the root directory. You must configure the following keys for the database and authentication gateway to function properly.
 
-## Learn More
+*Important Note*: Next.js aggressively parses .env files. If your `HASHED_ADMIN_PASSWORD` contains dollar signs (`$`), you must escape them with backslashes (e.g., `\$2b\$12\$...`) and wrap the string in double quotes to prevent silent variable truncation.
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+# Database
+DATABASE_URL="file:./dev.db"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Cloudflare Turnstile
+NEXT_PUBLIC_TURNSTILE_SITE_KEY="your_site_key"
+TURNSTILE_SECRET_KEY="your_secret_key"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Authentication & JWT
+JWT_SECRET="your_secure_random_string"
+SESSION_SECRET="your_session_secret"
 
-## Deploy on Vercel
+# Admin Credentials
+ADMIN_EMAIL="admin@yourdomain.com"
+HASHED_ADMIN_PASSWORD="\$2b\$12\$your_escaped_bcrypt_hash"
+ADMIN_TOTP_SECRET="your_base32_totp_secret"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4. Database Setup
+Push the Prisma schema to your local SQLite database and generate the client:
+```bash
+npx prisma db push
+npx prisma generate
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Run the Development Server
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the public portfolio. Navigate to `/auth` to access the secure admin gateway.

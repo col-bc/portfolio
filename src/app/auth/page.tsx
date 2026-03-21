@@ -1,6 +1,11 @@
 import AuthForm from "@/components/authForm";
 import { Container, Flex, Heading } from "@chakra-ui/react";
-import { LuLockKeyhole } from "react-icons/lu";
+import { Metadata } from "next";
+import { LuShieldCheck } from "react-icons/lu";
+
+export const metadata: Metadata = {
+    title: "Security",
+};
 
 export default function AuthPage() {
     return (
@@ -14,7 +19,7 @@ export default function AuthPage() {
                 w="fit">
                 <Heading size="3xl" textStyle="heading">
                     <Flex align="center" gap={4}>
-                        <LuLockKeyhole size={32} />
+                        <LuShieldCheck size={32} />
                         Authentication
                     </Flex>
                 </Heading>

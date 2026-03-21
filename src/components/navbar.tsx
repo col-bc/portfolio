@@ -8,6 +8,7 @@ import {
     Collapsible,
     Container,
     Flex,
+    IconButton,
     Link,
     Menu,
     Portal,
@@ -130,35 +131,42 @@ function Actions() {
         <>
             <Tooltip content="Get in touch">
                 <Link href="/contact">
-                    <Button variant="ghost" colorPalette="bg">
+                    <IconButton
+                        aria-label="Get in touch"
+                        variant="ghost"
+                        colorPalette="bg">
                         <LuSend size={16} />
-                    </Button>
+                    </IconButton>
                 </Link>
             </Tooltip>
             {mounted ? (
                 <ColorModeButton variant="ghost" colorPalette="bg" />
             ) : (
-                <Button
+                <IconButton
+                    aria-label="Loading"
                     variant="ghost"
                     colorPalette="bg"
                     disabled
                     opacity={0.5}>
                     <Spinner size="xs" />
-                </Button>
+                </IconButton>
             )}
             {isAuth && (
                 <Tooltip content="Admin Panel">
                     <Menu.Root>
                         <Menu.Trigger asChild>
-                            <Button variant="ghost" colorPalette="bg">
+                            <IconButton
+                                aria-label="Admin Panel"
+                                variant="surface"
+                                colorPalette="red">
                                 <LuSettings size={16} />
-                            </Button>
+                            </IconButton>
                         </Menu.Trigger>
                         <Portal>
                             <Menu.Positioner>
                                 <Menu.Content>
                                     <Menu.Item value="leads" asChild>
-                                        <Link as={NextLink} href="/leads">
+                                        <Link as={NextLink} href="/auth/leads">
                                             Leads
                                         </Link>
                                     </Menu.Item>

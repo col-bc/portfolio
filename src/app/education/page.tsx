@@ -1,3 +1,4 @@
+import ResumeCTA from "@/components/resumeCta";
 import {
     Avatar,
     Box,
@@ -9,7 +10,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
-import { LuGraduationCap } from "react-icons/lu";
+import { LuGraduationCap, LuScrollText } from "react-icons/lu";
 
 export default function Education() {
     return (
@@ -49,29 +50,18 @@ export default function Education() {
                                 </Text>
                             </Box>
                         </Flex>
-                        <Text textStyle="body" mb={2}>
+                        <Text textStyle="body" mb={4}>
                             Currently pursuing a rigorous, systems-focused
                             curriculum to complement my professional background
                             in corporate risk mitigation, with an emphasis on
                             database architecture, secure data pipelines, and
                             scalable software design.
                         </Text>
-                        <Text textStyle="body" mb={4}>
-                            My education is centered around developing a deep
-                            understanding of software engineering principles,
-                            software architecture and design patterns, and best
-                            practices for building secure, scalable, and
-                            maintainable software systems. I am committed to
-                            applying these principles in real-world projects and
-                            internships to further enhance my skills and
-                            contribute to the field of software engineering.
-                        </Text>
                         <Flex direction="column" gap={2}>
                             <Heading
                                 size="lg"
                                 textStyle="heading"
-                                fontWeight={500}
-                                textDecor="underline">
+                                fontWeight={700}>
                                 Relevant Coursework
                             </Heading>
                             <List.Root
@@ -99,6 +89,62 @@ export default function Education() {
                             </List.Root>
                         </Flex>
                     </Box>
+
+                    <Flex direction="column" gap={8}>
+                        <Heading size="3xl" textStyle="heading">
+                            <Flex align="center" gap={4}>
+                                <LuScrollText size={32} />
+                                Certifications
+                            </Flex>
+                        </Heading>
+                        <Box>
+                            <Flex align="start" gap={4} mb={2}>
+                                <Avatar.Root size="xl">
+                                    <Avatar.Image
+                                        src="/wz.png"
+                                        alt="Wicklander-Zulawski & Associates Logo"
+                                    />
+                                    <Avatar.Fallback>WZ</Avatar.Fallback>
+                                </Avatar.Root>
+                                <Flex direction="column" flexGrow={1} gap={0}>
+                                    <Heading size="xl" textStyle="heading">
+                                        Non-Confrontational Interview and
+                                        Interrogation Techniques
+                                    </Heading>
+                                    <Text>
+                                        <Em>
+                                            Wicklander-Zulawski & Associates
+                                        </Em>
+                                        , 2017
+                                    </Text>
+                                </Flex>
+                            </Flex>
+                            <List.Root textStyle="body" gap={2} pl={4}>
+                                <List.Item>
+                                    Completed intensive training in advanced
+                                    interview and interrogation techniques,
+                                    focusing on non-confrontational methods to
+                                    elicit accurate and reliable information
+                                    from subjects.
+                                </List.Item>
+                                <List.Item>
+                                    Developed expertise in behavioral analysis,
+                                    rapport-building, and ethical interviewing
+                                    practices, enhancing investigative outcomes
+                                    and ensuring compliance with legal
+                                    standards.
+                                </List.Item>
+                                <List.Item>
+                                    Applied learned techniques in real-world
+                                    scenarios, contributing to successful
+                                    investigations and improved security
+                                    outcomes.
+                                </List.Item>
+                            </List.Root>
+                        </Box>
+                    </Flex>
+
+                    <ResumeCTA />
                 </Flex>
             </Flex>
         </Container>
