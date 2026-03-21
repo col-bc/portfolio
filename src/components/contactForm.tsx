@@ -135,6 +135,7 @@ export default function Contact() {
                                 <Input
                                     type="text"
                                     placeholder="John Doe"
+                                    shadow="xs"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
@@ -150,6 +151,7 @@ export default function Contact() {
                                 <Input
                                     type="email"
                                     placeholder="john.doe@acmeinc.com"
+                                    shadow="xs"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -165,6 +167,7 @@ export default function Contact() {
                                 <Input
                                     type="tel"
                                     placeholder="(123) 456-7890"
+                                    shadow="xs"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                 />
@@ -175,6 +178,7 @@ export default function Contact() {
                                 <Input
                                     type="text"
                                     placeholder="Acme Inc."
+                                    shadow="xs"
                                     value={orgName}
                                     onChange={(e) => setOrgName(e.target.value)}
                                 />
@@ -208,7 +212,7 @@ export default function Contact() {
                                         setSubject(e.value[0])
                                     }>
                                     <Select.HiddenSelect />
-                                    <Select.Control>
+                                    <Select.Control shadow="xs" rounded="sm">
                                         <Select.Trigger>
                                             <Select.ValueText placeholder="Choose a subject" />
                                             <Select.Indicator />
@@ -241,6 +245,7 @@ export default function Contact() {
                                 <Textarea
                                     rows={6}
                                     placeholder="Type your message here..."
+                                    shadow="xs"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                 />
@@ -259,6 +264,8 @@ export default function Contact() {
                             <Button
                                 colorPalette="teal"
                                 type="submit"
+                                shadow="sm"
+                                shadowColor="teal.emphasized"
                                 disabled={!turnstileToken}>
                                 <LuSendHorizontal />
                                 Send Message

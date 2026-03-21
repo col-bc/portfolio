@@ -1,16 +1,15 @@
+import ResumeCTA from "@/components/resumeCta";
 import {
     Avatar,
     Box,
-    Button,
     Container,
     Em,
     Flex,
     Heading,
-    Link,
     List,
     Text,
 } from "@chakra-ui/react";
-import { LuBriefcaseBusiness, LuFileDown, LuScrollText } from "react-icons/lu";
+import { LuBriefcaseBusiness } from "react-icons/lu";
 
 export default function Employment() {
     return (
@@ -221,79 +220,7 @@ export default function Employment() {
                     </Flex>
                 </Flex>
 
-                <Flex direction="column" gap={8}>
-                    <Heading size="3xl" textStyle="heading">
-                        <Flex align="center" gap={4}>
-                            <LuScrollText size={32} />
-                            Certifications
-                        </Flex>
-                    </Heading>
-                    <Box>
-                        <Flex align="start" gap={4} mb={2}>
-                            <Avatar.Root size="xl">
-                                <Avatar.Image
-                                    src="/wz.png"
-                                    alt="Wicklander-Zulawski & Associates Logo"
-                                />
-                                <Avatar.Fallback>WZ</Avatar.Fallback>
-                            </Avatar.Root>
-                            <Flex direction="column" flexGrow={1} gap={0}>
-                                <Heading size="xl" textStyle="heading">
-                                    Non-Confrontational Interview and
-                                    Interrogation Techniques
-                                </Heading>
-                                <Text>
-                                    <Em>Wicklander-Zulawski & Associates</Em>,
-                                    2017
-                                </Text>
-                            </Flex>
-                        </Flex>
-                        <List.Root textStyle="body" gap={2} pl={4}>
-                            <List.Item>
-                                Completed intensive training in advanced
-                                interview and interrogation techniques, focusing
-                                on non-confrontational methods to elicit
-                                accurate and reliable information from subjects.
-                            </List.Item>
-                            <List.Item>
-                                Developed expertise in behavioral analysis,
-                                rapport-building, and ethical interviewing
-                                practices, enhancing investigative outcomes and
-                                ensuring compliance with legal standards.
-                            </List.Item>
-                            <List.Item>
-                                Applied learned techniques in real-world
-                                scenarios, contributing to successful
-                                investigations and improved security outcomes.
-                            </List.Item>
-                        </List.Root>
-                    </Box>
-                </Flex>
-
-                <Flex
-                    direction="column"
-                    gap={4}
-                    bg="bg.muted"
-                    p={6}
-                    borderRadius="md">
-                    <Heading size="xl" textStyle="heading">
-                        Download My Resume
-                    </Heading>
-                    <Text>
-                        For a more detailed overview of my work history, skills,
-                        and accomplishments, please feel free to download my
-                        resume or get in touch with me directly. I am always
-                        open to discussing potential opportunities and
-                        collaborations.
-                    </Text>
-                    <Box textAlign="center">
-                        <Link href="/Colby Cooper's Resume.pdf" download>
-                            <Button size="lg" colorPalette="teal">
-                                <LuFileDown /> Download Resume
-                            </Button>
-                        </Link>
-                    </Box>
-                </Flex>
+                <ResumeCTA />
             </Flex>
         </Container>
     );

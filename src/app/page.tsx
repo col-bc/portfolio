@@ -9,6 +9,7 @@ import {
     createShikiAdapter,
     Flex,
     Heading,
+    Image,
     Link,
     Tabs,
     Tag,
@@ -138,7 +139,8 @@ export default function Home() {
                                     boxSize={60}
                                     border="6px solid"
                                     borderColor="teal.focusRing"
-                                    shadow="lg">
+                                    shadow="lg"
+                                    shadowColor="teal.emphasized">
                                     <Avatar.Image
                                         src="/headshot.jpg"
                                         alt="Colby Cooper"
@@ -147,7 +149,10 @@ export default function Home() {
                             </Flex>
                             <Flex direction="row" gap={4}>
                                 <Link href="/contact" textDecoration="none">
-                                    <Button colorPalette="teal">
+                                    <Button
+                                        colorPalette="teal"
+                                        shadow="sm"
+                                        shadowColor="teal.emphasized">
                                         <LuMessageSquare size={18} />
                                         Get in Touch
                                     </Button>
@@ -313,7 +318,9 @@ export default function Home() {
                                     <Button
                                         w="100%"
                                         colorPalette="teal"
-                                        size="lg">
+                                        size="lg"
+                                        shadow="sm"
+                                        shadowColor="teal.emphasized">
                                         <LuGithub />
                                         View More on GitHub
                                     </Button>
@@ -340,55 +347,74 @@ export default function Home() {
                     </Flex>
                 </section>
 
-                {/* Links */}
-                <Flex
-                    direction={{
-                        base: "column",
-                        md: "row",
-                    }}
-                    align={{
-                        base: "stretch",
-                        md: "center",
-                    }}
-                    justify={{
-                        base: "center",
-                        md: "space-between",
-                    }}
-                    p={4}
-                    gap={4}>
-                    <Link href="/education" w="100%">
-                        <Button
-                            w="full"
-                            colorPalette="teal"
-                            size="lg"
-                            px={{ base: 6, md: 12 }}>
-                            <LuGraduationCap />
-                            Education History
-                        </Button>
-                    </Link>
-                    <Link href="/employment" w="100%">
-                        <Button
-                            w="full"
-                            colorPalette="teal"
-                            size="lg"
-                            px={{ base: 6, md: 12 }}>
-                            <LuBriefcaseBusiness />
-                            Employment History
-                        </Button>
-                    </Link>
-                </Flex>
-
-                {/* Projects Section */}
-                {/* <section id="projects">
-                    <Flex direction="column" gap={8}>
-                        <Heading size="2xl" textStyle="heading">
-                            Personal Projects
-                        </Heading>
-                        <Text fontSize="lg" color="fg.muted">
-                            Coming Soon
-                        </Text>
+                {/* Work Authorizations */}
+                <section>
+                    <Heading size="2xl" textStyle="heading" mb={4}>
+                        Work Authorizations
+                    </Heading>
+                    <Flex direction="column" gap={4}>
+                        <Flex align="center" gap={2}>
+                            <Image
+                                src="USA.svg"
+                                alt="United States Flag"
+                                w={10}
+                            />
+                            <Text fontSize="lg" color="fg.muted">
+                                Authorized to work for any employer in the
+                                United States without sponsorship.
+                            </Text>
+                        </Flex>
+                        <Flex align="center" gap={2}>
+                            <Image src="Canada.svg" alt="Canada Flag" w={10} />
+                            <Text fontSize="lg" color="fg.muted">
+                                Authorized to work for any employer in Canada
+                                without sponsorship.
+                            </Text>
+                        </Flex>
                     </Flex>
-                </section> */}
+                </section>
+
+                {/* Links */}
+                <section>
+                    <Flex
+                        direction={{
+                            base: "column",
+                            md: "row",
+                        }}
+                        align={{
+                            base: "stretch",
+                            md: "center",
+                        }}
+                        justify={{
+                            base: "center",
+                            md: "space-between",
+                        }}
+                        p={4}
+                        gap={4}>
+                        <Link href="/education" w="100%">
+                            <Button
+                                w="full"
+                                colorPalette="teal"
+                                variant="surface"
+                                size="lg"
+                                px={{ base: 6, md: 12 }}>
+                                <LuGraduationCap />
+                                Education History
+                            </Button>
+                        </Link>
+                        <Link href="/employment" w="100%">
+                            <Button
+                                w="full"
+                                colorPalette="teal"
+                                variant="surface"
+                                size="lg"
+                                px={{ base: 6, md: 12 }}>
+                                <LuBriefcaseBusiness />
+                                Employment History
+                            </Button>
+                        </Link>
+                    </Flex>
+                </section>
             </Flex>
         </Container>
     );

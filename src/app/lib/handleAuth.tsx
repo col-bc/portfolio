@@ -123,7 +123,7 @@ export async function handleVerifyOtp(otp: string) {
             path: "/",
             maxAge: 60 * 60 * 2, // 2 hours
         });
-        return redirect("/leads");
+        return redirect("/auth/leads");
     } else {
         console.error("OTP validation failed:", otp);
         throw new Error("Invalid OTP");

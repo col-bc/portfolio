@@ -44,7 +44,7 @@ export default function LeadTable() {
                         leads.map((lead) => (
                             <Table.Row key={lead.id}>
                                 <Table.Cell>
-                                    <Link href={`/leads/${lead.id}`}>
+                                    <Link href={`/auth/leads/${lead.id}`}>
                                         {lead.id}
                                     </Link>
                                 </Table.Cell>

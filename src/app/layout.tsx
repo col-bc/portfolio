@@ -28,7 +28,10 @@ const monoFont = Source_Code_Pro({
 });
 
 export const metadata: Metadata = {
-    title: "Colby Cooper",
+    title: {
+        template: "%s | Colby Cooper",
+        default: "Colby Cooper",
+    },
     description: "Technical Problem-Solver & Developer",
     metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
 };
