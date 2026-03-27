@@ -42,7 +42,7 @@ export default function Contact() {
     const [message, setMessage] = useState("");
     const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [sent, setSent] = useState(true);
+    const [sent, setSent] = useState(false);
 
     function resetForm() {
         setName("");
