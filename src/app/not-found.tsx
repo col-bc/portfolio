@@ -1,15 +1,19 @@
+"use client";
 import {
     Box,
     Button,
+    Code,
     Container,
     Flex,
     Heading,
     Link,
     Text,
 } from "@chakra-ui/react";
-import { LuArrowRight, LuCircleAlert } from "react-icons/lu";
+import { usePathname } from "next/navigation";
+import { TbAlertTriangleFilled, TbArrowNarrowRight } from "react-icons/tb";
 
 export default function NotFound() {
+    const path = usePathname();
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
             <Flex
@@ -19,10 +23,16 @@ export default function NotFound() {
                 maxW="md">
                 <Box spaceY={4}>
                     <Flex align="center" gap={4}>
-                        <LuCircleAlert size={32} />
+                        <TbAlertTriangleFilled size={32} />
                         <Heading size="3xl">Page Not Found</Heading>
                     </Flex>
-                    <Text>The page you are looking for does not exist.</Text>
+                    <Box>
+                        <Text>
+                            The page at <Code size="md">{path}</Code> does not
+                            exist. Please check the URL for errors or return to
+                            the homepage.
+                        </Text>
+                    </Box>
 
                     <Box mt={6}>
                         <Link href="/" colorPalette="teal">
@@ -31,7 +41,7 @@ export default function NotFound() {
                                 colorPalette="teal"
                                 shadow="sm"
                                 shadowColor="teal.emphasized">
-                                Go to Homepage <LuArrowRight size={16} />
+                                Go Home <TbArrowNarrowRight />
                             </Button>
                         </Link>
                     </Box>

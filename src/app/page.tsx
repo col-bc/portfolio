@@ -1,61 +1,26 @@
 "use client";
-import { sample1, sample2, sample3, sample4 } from "@/app/lib/codeSamples";
+import CodeSamples from "@/components/codeSamples";
+
 import {
     Avatar,
-    Box,
     Button,
-    CodeBlock,
     Container,
-    createShikiAdapter,
     Flex,
     Heading,
     Image,
     Link,
-    Tabs,
     Tag,
     Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { FaDatabase, FaJava, FaPython, FaReact } from "react-icons/fa";
 import {
-    LuBriefcaseBusiness,
-    LuDownload,
-    LuGithub,
-    LuGraduationCap,
-    LuMessageSquare,
-} from "react-icons/lu";
-import type { HighlighterGeneric } from "shiki";
-
-const shikiAdapter = createShikiAdapter<HighlighterGeneric<never, never>>({
-    async load() {
-        const { createHighlighter } = await import("shiki");
-        return createHighlighter({
-            langs: [
-                "tsx",
-                "scss",
-                "html",
-                "python",
-                "json",
-                "tsx",
-                "java",
-                "sql",
-            ],
-            themes: ["ayu-dark", "github-dark"],
-        });
-    },
-    theme: "ayu-dark",
-});
+    TbBrandGithub,
+    TbBriefcase2,
+    TbCloudDownload,
+    TbMessage,
+    TbSchool,
+} from "react-icons/tb";
 
 export default function Home() {
-    const [currentSample, setCurrentSample] = useState("sample1");
-
-    const sampleDescriptions: Record<string, string> = {
-        sample1: sample1.description,
-        sample2: sample2.description,
-        sample3: sample3.description,
-        sample4: sample4.description,
-    };
-
     const skillList = [
         // Core Languages
         "TypeScript",
@@ -63,8 +28,6 @@ export default function Home() {
         "Python",
         "Java",
         "SQL",
-        "HTML",
-        "CSS",
 
         // Frameworks & Backend Logic
         "React",
@@ -72,23 +35,24 @@ export default function Home() {
         "Node.js",
         "Django",
         "Flask",
-        "Vue.js",
+        "Prisma",
 
         // Architecture, Data & Integration
+        "SQLite",
         "NoSQL",
         "GraphQL",
         "RESTful APIs",
-        "Data Mapping",
         "System Integration",
 
         // Infrastructure & DevOps
         "GCP",
+        "Cloudflare",
         "Docker",
         "Linux",
-        "Git",
         "CI/CD",
 
         // Security, Testing & Operations
+        "TCP/IP Networking",
         "Cryptography",
         "Data Integrity",
         "Root-Cause Analysis",
@@ -139,8 +103,7 @@ export default function Home() {
                                     boxSize={60}
                                     border="6px solid"
                                     borderColor="teal.focusRing"
-                                    shadow="lg"
-                                    shadowColor="teal.emphasized">
+                                    boxShadow="0 8px 16px color-mix(in srgb, var(--chakra-colors-teal-500) 20%, transparent)">
                                     <Avatar.Image
                                         src="/headshot.jpg"
                                         alt="Colby Cooper"
@@ -153,7 +116,7 @@ export default function Home() {
                                         colorPalette="teal"
                                         shadow="sm"
                                         shadowColor="teal.emphasized">
-                                        <LuMessageSquare size={18} />
+                                        <TbMessage />
                                         Get in Touch
                                     </Button>
                                 </Link>
@@ -162,7 +125,7 @@ export default function Home() {
                                     download
                                     textDecoration="none">
                                     <Button colorPalette="teal" variant="ghost">
-                                        <LuDownload size={18} />
+                                        <TbCloudDownload />
                                         Download Resume
                                     </Button>
                                 </Link>
@@ -174,141 +137,7 @@ export default function Home() {
                             <Heading size="2xl" textStyle="heading">
                                 Code Samples
                             </Heading>
-                            <CodeBlock.AdapterProvider value={shikiAdapter}>
-                                <Tabs.Root
-                                    defaultValue="sample1"
-                                    variant="line"
-                                    colorScheme="teal"
-                                    orientation="horizontal"
-                                    value={currentSample}
-                                    onValueChange={(e) =>
-                                        setCurrentSample(e.value)
-                                    }>
-                                    <Tabs.List>
-                                        <Tabs.Trigger value="sample1">
-                                            Hash Table
-                                        </Tabs.Trigger>
-                                        <Tabs.Trigger value="sample2">
-                                            SQL Queries
-                                        </Tabs.Trigger>
-                                        <Tabs.Trigger value="sample3">
-                                            ZKA Login
-                                        </Tabs.Trigger>
-                                        <Tabs.Trigger value="sample4">
-                                            Django Views
-                                        </Tabs.Trigger>
-                                    </Tabs.List>
-                                    <Box pt={4}>
-                                        <Text fontSize="sm" color="fg.muted">
-                                            {sampleDescriptions[currentSample]}
-                                        </Text>
-                                    </Box>
-                                    <Tabs.Content value="sample1">
-                                        <CodeBlock.Root
-                                            code={sample1.code.toString()}
-                                            language={sample1.language}>
-                                            <CodeBlock.Header>
-                                                <CodeBlock.Title>
-                                                    <FaJava size={18} />
-                                                    {sample1.title}
-                                                </CodeBlock.Title>
-                                            </CodeBlock.Header>
-                                            <CodeBlock.Content>
-                                                <Box
-                                                    maxH={96}
-                                                    w="100%"
-                                                    overflow="auto"
-                                                    overflowX={{
-                                                        base: "scroll",
-                                                        md: "auto",
-                                                    }}>
-                                                    <CodeBlock.Code>
-                                                        <CodeBlock.CodeText />
-                                                    </CodeBlock.Code>
-                                                </Box>
-                                            </CodeBlock.Content>
-                                        </CodeBlock.Root>
-                                    </Tabs.Content>
-                                    <Tabs.Content value="sample2">
-                                        <CodeBlock.Root
-                                            code={sample2.code.toString()}
-                                            language={sample2.language}>
-                                            <CodeBlock.Header>
-                                                <CodeBlock.Title>
-                                                    <FaDatabase size={18} />
-                                                    {sample2.title}
-                                                </CodeBlock.Title>
-                                            </CodeBlock.Header>
-                                            <CodeBlock.Content>
-                                                <Box
-                                                    maxH={96}
-                                                    w="100%"
-                                                    overflow="auto"
-                                                    overflowX={{
-                                                        base: "scroll",
-                                                        md: "auto",
-                                                    }}>
-                                                    <CodeBlock.Code>
-                                                        <CodeBlock.CodeText />
-                                                    </CodeBlock.Code>
-                                                </Box>
-                                            </CodeBlock.Content>
-                                        </CodeBlock.Root>
-                                    </Tabs.Content>
-                                    <Tabs.Content value="sample3">
-                                        <CodeBlock.Root
-                                            code={sample3.code.toString()}
-                                            language={sample3.language}>
-                                            <CodeBlock.Header>
-                                                <CodeBlock.Title>
-                                                    <FaReact size={18} />
-                                                    {sample3.title}
-                                                </CodeBlock.Title>
-                                            </CodeBlock.Header>
-                                            <CodeBlock.Content>
-                                                <Box
-                                                    maxH={96}
-                                                    w="100%"
-                                                    overflow="auto"
-                                                    overflowX={{
-                                                        base: "scroll",
-                                                        md: "auto",
-                                                    }}>
-                                                    <CodeBlock.Code>
-                                                        <CodeBlock.CodeText />
-                                                    </CodeBlock.Code>
-                                                </Box>
-                                            </CodeBlock.Content>
-                                        </CodeBlock.Root>
-                                    </Tabs.Content>
-                                    <Tabs.Content value="sample4">
-                                        <CodeBlock.Root
-                                            code={sample4.code.toString()}
-                                            language={sample4.language}>
-                                            <CodeBlock.Header>
-                                                <CodeBlock.Title>
-                                                    <FaPython size={18} />
-                                                    {sample4.title}
-                                                </CodeBlock.Title>
-                                            </CodeBlock.Header>
-                                            <CodeBlock.Content>
-                                                <Box
-                                                    maxH={96}
-                                                    w="100%"
-                                                    overflow="auto"
-                                                    overflowX={{
-                                                        base: "scroll",
-                                                        md: "auto",
-                                                    }}>
-                                                    <CodeBlock.Code>
-                                                        <CodeBlock.CodeText />
-                                                    </CodeBlock.Code>
-                                                </Box>
-                                            </CodeBlock.Content>
-                                        </CodeBlock.Root>
-                                    </Tabs.Content>
-                                </Tabs.Root>
-                            </CodeBlock.AdapterProvider>
+                            <CodeSamples />
                             <Flex direction="row" p={4} justify="center">
                                 <Link
                                     href="https://github.com/col-bc"
@@ -321,7 +150,7 @@ export default function Home() {
                                         size="lg"
                                         shadow="sm"
                                         shadowColor="teal.emphasized">
-                                        <LuGithub />
+                                        <TbBrandGithub />
                                         View More on GitHub
                                     </Button>
                                 </Link>
@@ -353,18 +182,14 @@ export default function Home() {
                         Work Authorizations
                     </Heading>
                     <Flex direction="column" gap={4}>
-                        <Flex align="center" gap={2}>
-                            <Image
-                                src="USA.svg"
-                                alt="United States Flag"
-                                w={10}
-                            />
+                        <Flex align="center" gap={4}>
+                            <Image src="USA.svg" alt="US Flag" w={10} />
                             <Text fontSize="lg" color="fg.muted">
                                 Authorized to work for any employer in the
                                 United States without sponsorship.
                             </Text>
                         </Flex>
-                        <Flex align="center" gap={2}>
+                        <Flex align="center" gap={4}>
                             <Image src="Canada.svg" alt="Canada Flag" w={10} />
                             <Text fontSize="lg" color="fg.muted">
                                 Authorized to work for any employer in Canada
@@ -389,7 +214,7 @@ export default function Home() {
                             base: "center",
                             md: "space-between",
                         }}
-                        p={4}
+                        py={4}
                         gap={4}>
                         <Link href="/education" w="100%">
                             <Button
@@ -398,7 +223,7 @@ export default function Home() {
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>
-                                <LuGraduationCap />
+                                <TbSchool />
                                 Education History
                             </Button>
                         </Link>
@@ -409,7 +234,7 @@ export default function Home() {
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>
-                                <LuBriefcaseBusiness />
+                                <TbBriefcase2 />
                                 Employment History
                             </Button>
                         </Link>

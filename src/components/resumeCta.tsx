@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { LuFileDown } from "react-icons/lu";
+import { TbCloudDownload } from "react-icons/tb";
 
 export default function ResumeCTA() {
     return (
@@ -20,7 +20,7 @@ export default function ResumeCTA() {
                         colorPalette="teal"
                         shadow="sm"
                         shadowColor="teal.emphasized">
-                        <LuFileDown /> Download Resume
+                        <TbCloudDownload /> Download Resume
                     </Button>
                 </Link>
             </Box>

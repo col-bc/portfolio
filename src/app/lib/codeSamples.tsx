@@ -1,6 +1,20 @@
-export const sample1 = {
-    code: Buffer.from(
-        `
+import React from "react";
+import { FaDatabase, FaJava, FaPython, FaReact } from "react-icons/fa";
+
+interface Sample {
+    code: Buffer;
+    language: "python" | "tsx" | "java" | "sql";
+    title: string;
+    fileName: string;
+    description: string;
+    icon: React.ReactNode;
+}
+
+const codeSamples: Record<string, Sample> = {
+    sample1: {
+        code: Buffer.from(
+            //#region
+            `
 /**
  * Name:        Colby Cooper
  * IDE Name:    IntelliJ IDEA 2025.2.1
@@ -301,17 +315,20 @@ public class HashFunctions {
     }
 }
 `,
-        "utf-8",
-    ),
-    language: "java",
-    title: "HashFunctions.java",
-    description:
-        "Engineered a custom data structure to simulate high-speed data retrieval and index optimization. Implemented advanced collision-resolution algorithms to guarantee data integrity and $O(1)$ search efficiency under extreme server loads.",
-};
-
-export const sample2 = {
-    code: Buffer.from(
-        `
+            "utf-8",
+            //#endregion
+        ),
+        language: "java",
+        title: "Java Hash Table",
+        fileName: "HashFunctions.java",
+        description:
+            "Engineered a custom data structure to simulate high-speed data retrieval and index optimization. Implemented advanced collision-resolution algorithms to guarantee data integrity and O(1) search efficiency under extreme server loads.",
+        icon: <FaJava />,
+    },
+    sample2: {
+        code: Buffer.from(
+            //#region
+            `
 -- 1. List of details of all insured Patients (join patient and insurance company tables).
 SELECT * FROM Patient p INNER JOIN Patient_Insurance pi ON p.patientId = pi.patientId;
 -- 2. List of all patients’ details and their card information (join patient, card, and payment tables)
@@ -348,17 +365,20 @@ INNER JOIN
 GROUP BY p.patientId, p.firstName, p.lastName 
 ORDER BY total DESC 
 LIMIT 1;;`,
-        "utf-8",
-    ),
-    language: "sql",
-    title: "Healthcare_Billing_Audit.sql",
-    description:
-        "Complex relational database queries designed to map data across multiple tables, audit operational records, and isolate specific variables for rapid troubleshooting and anomaly detection..",
-};
-
-export const sample3 = {
-    code: Buffer.from(
-        `"use client";
+            "utf-8",
+            //#endregion
+        ),
+        language: "sql",
+        title: "SQL Billing Audit",
+        fileName: "Healthcare_Billing_Audit.sql",
+        description:
+            "Complex relational database queries designed to map data across multiple tables, audit operational records, and isolate specific variables for rapid troubleshooting and anomaly detection..",
+        icon: <FaDatabase />,
+    },
+    sample3: {
+        code: Buffer.from(
+            //#region
+            `"use client";
 
 import {
     Alert,
@@ -777,17 +797,20 @@ export default function LoginForm() {
         </form>
     );
 }`,
-        "utf-8",
-    ),
-    language: "tsx",
-    title: "SigninForm.tsx",
-    description:
-        "A highly secure frontend authentication flow utilizing the Web Crypto API. Implements client-side key derivation and AES-GCM encryption to ensure sensitive user credentials are secure by default before ever reaching the server.",
-};
-
-export const sample4 = {
-    code: Buffer.from(
-        `"""This module contains account related views"""
+            "utf-8",
+            //#endregion
+        ),
+        language: "tsx",
+        title: "ZKA React Form",
+        fileName: "SigninForm.tsx",
+        description:
+            "A highly secure frontend authentication flow utilizing the Web Crypto API. Implements client-side key derivation and AES-GCM encryption to ensure sensitive user credentials are secure by default before ever reaching the server.",
+        icon: <FaReact />,
+    },
+    sample4: {
+        code: Buffer.from(
+            //#region
+            `"""This module contains account related views"""
 
 import json
 import re
@@ -1351,10 +1374,16 @@ def _send_password_reset_email(user: User, auth_code: str) -> None:
     raise NotImplementedError(
         "Password reset email functionality is not implemented in this example."
     )`,
-        "utf-8",
-    ),
-    language: "python",
-    title: "accounts/views.py",
-    description:
-        "Robust server-side routing handling secure session management, Google OAuth integration, and strict cryptographic password validation to protect internal systems from unauthorized access.",
+            "utf-8",
+            //#endregion
+        ),
+        language: "python",
+        fileName: "accounts/views.py",
+        title: "Django Views",
+        description:
+            "Robust server-side routing handling secure session management, Google OAuth integration, and strict cryptographic password validation to protect internal systems from unauthorized access.",
+        icon: <FaPython />,
+    },
 };
+
+export default codeSamples;

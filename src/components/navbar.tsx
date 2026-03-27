@@ -18,15 +18,17 @@ import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
-    LuBriefcaseBusiness,
-    LuGraduationCap,
-    LuHouse,
-    LuMenu,
-    LuMessageSquare,
-    LuSend,
-    LuSettings,
-    LuX,
-} from "react-icons/lu";
+    TbBriefcase2,
+    TbFlag,
+    TbHome,
+    TbLockOpen,
+    TbLogout,
+    TbMenu,
+    TbMessage,
+    TbSchool,
+    TbSend,
+    TbX,
+} from "react-icons/tb";
 
 /**
  * Renders the navigation links for the navbar.
@@ -47,7 +49,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <LuHouse size={16} />
+                <TbHome size={16} />
                 <span>Home</span>
             </Link>
             <Link
@@ -56,7 +58,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/education") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <LuGraduationCap size={16} />
+                <TbSchool size={16} />
                 <span>Education</span>
             </Link>
             <Link
@@ -65,7 +67,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/employment") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <LuBriefcaseBusiness size={16} />
+                <TbBriefcase2 size={16} />
                 Employment
             </Link>
             <Link
@@ -74,7 +76,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/contact") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <LuMessageSquare size={16} />
+                <TbMessage size={16} />
                 Contact
             </Link>
         </>
@@ -135,7 +137,7 @@ function Actions() {
                         aria-label="Get in touch"
                         variant="ghost"
                         colorPalette="bg">
-                        <LuSend size={16} />
+                        <TbSend size={16} />
                     </IconButton>
                 </Link>
             </Tooltip>
@@ -159,19 +161,21 @@ function Actions() {
                                 aria-label="Admin Panel"
                                 variant="surface"
                                 colorPalette="red">
-                                <LuSettings size={16} />
+                                <TbLockOpen size={16} />
                             </IconButton>
                         </Menu.Trigger>
                         <Portal>
                             <Menu.Positioner>
-                                <Menu.Content>
+                                <Menu.Content textStyle="body">
                                     <Menu.Item value="leads" asChild>
                                         <Link as={NextLink} href="/auth/leads">
+                                            <TbFlag />
                                             Leads
                                         </Link>
                                     </Menu.Item>
                                     <Menu.Item value="signout" asChild>
                                         <Link href="#" onClick={handleSignOut}>
+                                            <TbLogout />
                                             Sign Out
                                         </Link>
                                     </Menu.Item>
@@ -236,6 +240,7 @@ export default function Navbar() {
             ref={navbarRef}
             as="nav"
             bg="bg.muted"
+            color="f"
             position="sticky"
             top={0}
             zIndex={99}
@@ -271,7 +276,7 @@ export default function Navbar() {
                                         display={{ base: "flex", md: "none" }}
                                         alignItems="center"
                                         gap={2}>
-                                        {open ? <LuX /> : <LuMenu />}
+                                        {open ? <TbX /> : <TbMenu />}
                                         <span>Menu</span>
                                     </Button>
                                 </Collapsible.Trigger>

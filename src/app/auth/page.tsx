@@ -1,7 +1,7 @@
 import AuthForm from "@/components/authForm";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Metadata } from "next";
-import { LuShieldCheck } from "react-icons/lu";
+import { TbShieldLock } from "react-icons/tb";
 
 export const metadata: Metadata = {
     title: "Security",
@@ -18,8 +18,8 @@ export default function AuthPage() {
                 mx="auto"
                 w="fit">
                 <Heading size="3xl" textStyle="heading">
-                    <Flex align="center" gap={4}>
-                        <LuShieldCheck size={32} />
+                    <Flex align="center" direction="column" gap={2}>
+                        <TbShieldLock size={64} />
                         Authentication
                     </Flex>
                 </Heading>
