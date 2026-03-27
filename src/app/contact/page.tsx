@@ -1,13 +1,24 @@
 import ContactForm from "@/components/contactForm";
 import { Button, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { LuGithub, LuLinkedin, LuMessageSquare } from "react-icons/lu";
+import { Metadata } from "next";
+import {
+    TbBrandGithub,
+    TbBrandLinkedin,
+    TbBrandUpwork,
+    TbMessage,
+} from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Contact",
+};
+
 export default function Contact() {
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
             <Flex direction="column" gap={{ base: 8, md: 12 }} as="section">
                 <Heading size="3xl" textStyle="heading">
                     <Flex align="center" gap={4}>
-                        <LuMessageSquare size={32} />
+                        <TbMessage size={32} />
                         Get in Touch
                     </Flex>
                 </Heading>
@@ -32,7 +43,7 @@ export default function Contact() {
                             size="lg"
                             textAlign="center"
                             textStyle="subheading">
-                            Find me on social media
+                            Find me on these platforms
                         </Heading>
                         <Flex direction="row" justify="center" gap={6} w="100%">
                             <Link
@@ -41,7 +52,7 @@ export default function Contact() {
                                 rel="noopener noreferrer"
                                 textDecoration="none">
                                 <Button colorPalette="teal">
-                                    <LuLinkedin size={24} />
+                                    <TbBrandLinkedin />
                                 </Button>
                             </Link>
                             <Link
@@ -50,14 +61,18 @@ export default function Contact() {
                                 rel="noopener noreferrer"
                                 textDecoration="none">
                                 <Button colorPalette="teal">
-                                    <LuGithub size={24} />
+                                    <TbBrandGithub />
                                 </Button>
                             </Link>
-                            {/* <Link href="#" textDecoration="none">
+                            <Link
+                                href="https://www.upwork.com/freelancers/~01bbbe06071be625f4?mp_source=portfolio"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                textDecoration="none">
                                 <Button colorPalette="teal">
-                                    <FaStackOverflow size={24} />
+                                    <TbBrandUpwork />
                                 </Button>
-                            </Link> */}
+                            </Link>
                         </Flex>
                     </Flex>
                 </Flex>

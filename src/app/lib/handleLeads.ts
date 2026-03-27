@@ -14,7 +14,11 @@ import { prisma } from "./prisma";
  * @returns a promise that resolves to an array of lead objects
  */
 export async function getLeads(): Promise<Array<Lead>> {
-    await verifySession();
+    const isValidSession = await verifySession();
+    if (!isValidSession) {
+        throw new Error("Unauthorized: Invalid or missing admin session.");
+    }
+
     const leads = await prisma.lead.findMany();
     return leads;
 }
@@ -25,7 +29,10 @@ export async function getLeads(): Promise<Array<Lead>> {
  * @returns a promise that resolves to the lead object if found, or null if not found
  */
 export async function getLeadById(id: number): Promise<Lead | null> {
-    await verifySession();
+    const isValidSession = await verifySession();
+    if (!isValidSession) {
+        throw new Error("Unauthorized: Invalid or missing admin session.");
+    }
     const lead = await prisma.lead.findUnique({
         where: { id },
     });
@@ -51,7 +58,10 @@ export async function updateLead(
         viewed: boolean;
     }>,
 ): Promise<Lead> {
-    await verifySession();
+    const isValidSession = await verifySession();
+    if (!isValidSession) {
+        throw new Error("Unauthorized: Invalid or missing admin session.");
+    }
     const updatedLead = await prisma.lead.update({
         where: { id },
         data,
@@ -65,7 +75,10 @@ export async function updateLead(
  * @returns a promise that resolves when the lead is deleted
  */
 export async function deleteLead(id: number): Promise<void> {
-    await verifySession();
+    const isSessionValid = await verifySession();
+    if (!isSessionValid) {
+        throw new Error("Unauthorized: Invalid or missing admin session.");
+    }
     await prisma.lead.delete({
         where: { id },
     });

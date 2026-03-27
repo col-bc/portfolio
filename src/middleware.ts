@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-    if (request.nextUrl.pathname.startsWith("/leads")) {
+    if (request.nextUrl.pathname.startsWith("/auth/leads")) {
         const session = request.cookies.get("admin_session")?.value;
 
         if (!session) {

@@ -8,7 +8,12 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
-import { LuFlag } from "react-icons/lu";
+import { Metadata } from "next";
+import { TbFlag } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Lead Details",
+};
 
 export default async function LeadDetail({
     params,
@@ -39,7 +44,7 @@ export default async function LeadDetail({
                 <Box>
                     <Heading size="3xl" textStyle="heading">
                         <Flex align="center" gap={4}>
-                            <LuFlag size={32} />
+                            <TbFlag size={32} />
                             Lead Details
                         </Flex>
                     </Heading>

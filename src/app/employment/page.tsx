@@ -9,7 +9,12 @@ import {
     List,
     Text,
 } from "@chakra-ui/react";
-import { LuBriefcaseBusiness } from "react-icons/lu";
+import { Metadata } from "next";
+import { TbBriefcase2 } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Employment",
+};
 
 export default function Employment() {
     return (
@@ -18,7 +23,7 @@ export default function Employment() {
                 <Flex direction="column" gap={8}>
                     <Heading size="3xl" textStyle="heading">
                         <Flex align="center" gap={4}>
-                            <LuBriefcaseBusiness size={32} />
+                            <TbBriefcase2 size={32} />
                             Employment History
                         </Flex>
                     </Heading>

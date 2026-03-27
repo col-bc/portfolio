@@ -9,8 +9,13 @@ import {
     List,
     Text,
 } from "@chakra-ui/react";
+import { Metadata } from "next";
 import NextImage from "next/image";
-import { LuGraduationCap, LuScrollText } from "react-icons/lu";
+import { TbCertificate, TbSchool } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Education",
+};
 
 export default function Education() {
     return (
@@ -19,7 +24,7 @@ export default function Education() {
                 <Flex direction="column" gap={8}>
                     <Heading size="3xl" textStyle="heading">
                         <Flex align="center" gap={3}>
-                            <LuGraduationCap size={34} />
+                            <TbSchool size={34} />
                             <span>Education History</span>
                         </Flex>
                     </Heading>
@@ -93,7 +98,7 @@ export default function Education() {
                     <Flex direction="column" gap={8}>
                         <Heading size="3xl" textStyle="heading">
                             <Flex align="center" gap={4}>
-                                <LuScrollText size={32} />
+                                <TbCertificate size={32} />
                                 Certifications
                             </Flex>
                         </Heading>
