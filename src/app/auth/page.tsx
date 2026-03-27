@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { TbShieldLock } from "react-icons/tb";
 
 export const metadata: Metadata = {
-    title: "Security",
+    title: "Authentication",
 };
 
 export default function AuthPage() {

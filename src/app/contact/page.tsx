@@ -1,11 +1,17 @@
 import ContactForm from "@/components/contactForm";
 import { Button, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Metadata } from "next";
 import {
     TbBrandGithub,
     TbBrandLinkedin,
     TbBrandUpwork,
     TbMessage,
 } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Contact",
+};
+
 export default function Contact() {
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>

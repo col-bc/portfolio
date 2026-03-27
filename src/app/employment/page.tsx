@@ -9,7 +9,12 @@ import {
     List,
     Text,
 } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { TbBriefcase2 } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Employment",
+};
 
 export default function Employment() {
     return (

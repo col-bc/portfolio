@@ -9,8 +9,13 @@ import {
     List,
     Text,
 } from "@chakra-ui/react";
+import { Metadata } from "next";
 import NextImage from "next/image";
 import { TbCertificate, TbSchool } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Education",
+};
 
 export default function Education() {
     return (

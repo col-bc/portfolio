@@ -1,4 +1,3 @@
-"use client";
 import CodeSamples from "@/components/codeSamples";
 
 import {
