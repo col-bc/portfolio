@@ -319,7 +319,7 @@ public class HashFunctions {
             //#endregion
         ),
         language: "java",
-        title: "Java Hash Table",
+        title: " Hash Table",
         fileName: "HashFunctions.java",
         description:
             "Engineered a custom data structure to simulate high-speed data retrieval and index optimization. Implemented advanced collision-resolution algorithms to guarantee data integrity and O(1) search efficiency under extreme server loads.",
@@ -369,7 +369,7 @@ LIMIT 1;;`,
             //#endregion
         ),
         language: "sql",
-        title: "SQL Billing Audit",
+        title: "SQL Audit",
         fileName: "Healthcare_Billing_Audit.sql",
         description:
             "Complex relational database queries designed to map data across multiple tables, audit operational records, and isolate specific variables for rapid troubleshooting and anomaly detection..",
@@ -801,7 +801,7 @@ export default function LoginForm() {
             //#endregion
         ),
         language: "tsx",
-        title: "ZKA React Form",
+        title: "ZKA Signin",
         fileName: "SigninForm.tsx",
         description:
             "A highly secure frontend authentication flow utilizing the Web Crypto API. Implements client-side key derivation and AES-GCM encryption to ensure sensitive user credentials are secure by default before ever reaching the server.",

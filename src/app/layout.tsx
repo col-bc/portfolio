@@ -45,13 +45,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             className={`${headingFont.className} ${bodyFont.className} ${monoFont.className}`}>
             <head>
                 <style>
-                    {`
-                :root {
-                    --font-heading: ${headingFont.style.fontFamily};
-                    --font-body: ${bodyFont.style.fontFamily};
-                    --font-mono: ${monoFont.style.fontFamily};
-                }
-            `}
+                    {`:root {
+                        --font-heading: ${headingFont.style.fontFamily};
+                        --font-body: ${bodyFont.style.fontFamily};
+                        --font-mono: ${monoFont.style.fontFamily};
+                    }`}
                 </style>
                 {/* <!-- Google Tag Manager --> */}
                 <Script id="gtm-script">{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -70,8 +68,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             textStyle="body"
                             minH="100vh"
                             maxW="100vw"
-                            bg="bg.panel">
-                            <Container maxW="4xl" py={2} as="header" w="100%">
+                            bg="bg"
+                            position="relative"
+                            zIndex={0}>
+                            <Box
+                                position="fixed"
+                                bottom="-10%"
+                                right="-10%"
+                                w="50vw"
+                                h="50vw"
+                                maxW="600px"
+                                maxH="600px"
+                                borderRadius="50%"
+                                bg="rgba(32, 178, 170, 0.15)"
+                                filter="blur(120px)"
+                                pointerEvents="none"
+                                zIndex={0}
+                            />
+
+                            <Container
+                                maxW="4xl"
+                                py={2}
+                                as="header"
+                                w="100%"
+                                position="relative"
+                                zIndex={1}>
                                 <Heading
                                     textStyle="heading"
                                     fontSize="4xl"
@@ -86,7 +107,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 </Text>
                             </Container>
                             <Navbar />
-                            <Box
+                            <Flex
+                                direction="column"
                                 flexGrow={1}
                                 as="main"
                                 w="100%"
@@ -94,7 +116,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 overflowX="hidden"
                                 overflowY="auto">
                                 {children}
-                            </Box>
+                            </Flex>
                             <Footer />
                         </Flex>
                     </ThemeProvider>
@@ -112,6 +134,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     gtag('config', 'G-CBL0YRB69Y');
                     `}
                 </Script>
+                {/* <!-- End Google tag (gtag.js) --> */}
                 {/* <!-- Google Tag Manager (noscript) --> */}
                 <noscript>
                     <iframe

@@ -13,6 +13,8 @@ const typography = defineTextStyles({
         value: {
             fontFamily: "var(--font-body)",
             fontSize: "md",
+            lineHeight: "tall",
+            color: "fg.muted",
         },
     },
     heading: {
@@ -20,6 +22,7 @@ const typography = defineTextStyles({
             fontFamily: "var(--font-heading)",
             fontWeight: "bold",
             lineHeight: "short",
+            color: "fg",
         },
     },
     code: {

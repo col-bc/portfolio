@@ -7,12 +7,11 @@ import {
     Flex,
     Heading,
     Image,
-    Link,
     Tag,
     Text,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import {
-    TbBrandGithub,
     TbBriefcase2,
     TbCloudDownload,
     TbMessage,
@@ -61,12 +60,22 @@ export default function Home() {
 
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
-            <Flex direction="column" gap={{ base: 12, md: 16 }}>
+            <Flex direction="column" gap={{ base: 8, md: 12, lg: 16 }}>
                 {/* Intro, Code Samples, Skills Section */}
                 <section>
-                    <Flex direction="column" gap={10}>
+                    <Flex direction="column" gap={{ base: 8, md: 12, lg: 16 }}>
                         {/* Intro */}
-                        <Flex direction="column" gap={6}>
+                        <Flex
+                            direction="column"
+                            gap={6}
+                            align={{
+                                base: "center",
+                                md: "flex-start",
+                            }}
+                            textAlign={{
+                                base: "center",
+                                md: "left",
+                            }}>
                             <Heading size="3xl" textStyle="heading">
                                 Hi, I&apos;m Colby Cooper
                             </Heading>
@@ -79,38 +88,62 @@ export default function Home() {
                                     base: "center",
                                     md: "flex-start",
                                 }}
-                                gap={4}>
-                                <Text lineHeight={1.7} fontSize="md">
-                                    I am a technical problem-solver who treats
-                                    every operational bottleneck, data
-                                    discrepancy, and software bug like an
-                                    investigation. With over five years of
-                                    experience managing corporate compliance and
-                                    risk mitigation for Fortune 50 retailers, I
-                                    now translate those analytical skills into
-                                    system architecture and IT infrastructure.
-                                    As a Software Engineering candidate
-                                    proficient in full-stack development and
-                                    database management, I excel in dynamic
-                                    environments that require technical
-                                    precision, strict ethical standards, and the
-                                    ability to bridge the gap between physical
-                                    operations and digital ecosystems.
-                                </Text>
+                                gap={{ base: 4, md: 6 }}
+                                textAlign={{
+                                    base: "center",
+                                    md: "left",
+                                }}>
+                                <Flex direction="column" gap={4} flex={1}>
+                                    <Text
+                                        fontSize="xl"
+                                        fontWeight="medium"
+                                        color="fg"
+                                        lineHeight="short">
+                                        I am a technical problem-solver who
+                                        treats every operational bottleneck,
+                                        data discrepancy, and software bug like
+                                        an investigation.
+                                    </Text>
+                                    <Text
+                                        lineHeight="tall"
+                                        fontSize="md"
+                                        color="fg.muted">
+                                        With over five years of experience
+                                        managing corporate compliance and risk
+                                        mitigation for Fortune 50 retailers, I
+                                        now translate those analytical skills
+                                        into system architecture and IT
+                                        infrastructure. As a Software
+                                        Engineering candidate proficient in
+                                        full-stack development and database
+                                        management, I excel in dynamic
+                                        environments that require technical
+                                        precision, strict ethical standards, and
+                                        the ability to bridge the gap between
+                                        physical operations and digital
+                                        ecosystems.
+                                    </Text>
+                                </Flex>
                                 <Avatar.Root
                                     colorPalette="teal"
                                     boxSize={60}
                                     border="6px solid"
-                                    borderColor="teal.focusRing"
-                                    boxShadow="0 8px 16px color-mix(in srgb, var(--chakra-colors-teal-500) 20%, transparent)">
+                                    borderColor="teal.focusRing">
                                     <Avatar.Image
                                         src="/headshot.jpg"
                                         alt="Colby Cooper"
                                     />
                                 </Avatar.Root>
                             </Flex>
-                            <Flex direction="row" gap={4}>
-                                <Link href="/contact" textDecoration="none">
+                            <Flex
+                                direction="row"
+                                gap={4}
+                                flexWrap="wrap"
+                                justify={{
+                                    base: "center",
+                                    md: "flex-start",
+                                }}>
+                                <NextLink href="/contact">
                                     <Button
                                         colorPalette="teal"
                                         shadow="sm"
@@ -118,16 +151,15 @@ export default function Home() {
                                         <TbMessage />
                                         Get in Touch
                                     </Button>
-                                </Link>
-                                <Link
+                                </NextLink>
+                                <NextLink
                                     href="/Colby Cooper's Resume.pdf"
-                                    download
-                                    textDecoration="none">
+                                    download>
                                     <Button colorPalette="teal" variant="ghost">
                                         <TbCloudDownload />
                                         Download Resume
                                     </Button>
-                                </Link>
+                                </NextLink>
                             </Flex>
                         </Flex>
 
@@ -137,27 +169,10 @@ export default function Home() {
                                 Code Samples
                             </Heading>
                             <CodeSamples />
-                            <Flex direction="row" p={4} justify="center">
-                                <Link
-                                    href="https://github.com/col-bc"
-                                    textDecoration="none"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    <Button
-                                        w="100%"
-                                        colorPalette="teal"
-                                        size="lg"
-                                        shadow="sm"
-                                        shadowColor="teal.emphasized">
-                                        <TbBrandGithub />
-                                        View More on GitHub
-                                    </Button>
-                                </Link>
-                            </Flex>
                         </Flex>
 
                         {/* Skills */}
-                        <Flex direction="column" gap={4}>
+                        <Flex direction="column" gap={6}>
                             <Heading size="2xl" textStyle="heading">
                                 Skills, Technologies, and Frameworks
                             </Heading>
@@ -205,17 +220,11 @@ export default function Home() {
                             base: "column",
                             md: "row",
                         }}
-                        align={{
-                            base: "stretch",
-                            md: "center",
-                        }}
-                        justify={{
-                            base: "center",
-                            md: "space-between",
-                        }}
+                        align="stretch"
+                        justify="center"
                         py={4}
                         gap={4}>
-                        <Link href="/education" w="100%">
+                        <NextLink href="/education">
                             <Button
                                 w="full"
                                 colorPalette="teal"
@@ -225,8 +234,8 @@ export default function Home() {
                                 <TbSchool />
                                 Education History
                             </Button>
-                        </Link>
-                        <Link href="/employment" w="100%">
+                        </NextLink>
+                        <NextLink href="/employment">
                             <Button
                                 w="full"
                                 colorPalette="teal"
@@ -236,7 +245,7 @@ export default function Home() {
                                 <TbBriefcase2 />
                                 Employment History
                             </Button>
-                        </Link>
+                        </NextLink>
                     </Flex>
                 </section>
             </Flex>
