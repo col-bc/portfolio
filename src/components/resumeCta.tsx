@@ -1,28 +1,29 @@
-import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { TbCloudDownload } from "react-icons/tb";
 
 export default function ResumeCTA() {
     return (
-        <Flex direction="column" gap={4} bg="bg.muted" p={6} borderRadius="md">
+        <Flex direction="column" gap={4} textAlign="center" align="center">
             <Heading size="xl" textStyle="heading">
                 Download My Resume
             </Heading>
-            <Text>
-                For a more detailed overview of my work history, skills, and
-                accomplishments, please feel free to download my resume or get
-                in touch with me directly. I am always open to discussing
-                potential opportunities and collaborations.
+            <Text textStyle="body">
+                Download my resume to view my work history, skills, and
+                accomplishments. Share it with others or keep it for your
+                reference. Thank you for your interest!
             </Text>
-            <Box textAlign="center">
-                <Link href="/Colby Cooper's Resume.pdf" download>
+            <Box>
+                <NextLink href="/Colby Cooper's Resume.pdf" download>
                     <Button
                         size="lg"
+                        variant="outline"
                         colorPalette="teal"
                         shadow="sm"
                         shadowColor="teal.emphasized">
-                        <TbCloudDownload /> Download Resume
+                        <TbCloudDownload /> Download My Resume
                     </Button>
-                </Link>
+                </NextLink>
             </Box>
         </Flex>
     );

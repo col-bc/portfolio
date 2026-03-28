@@ -2,6 +2,7 @@ import ResumeCTA from "@/components/resumeCta";
 import {
     Avatar,
     Box,
+    Card,
     Container,
     Em,
     Flex,
@@ -20,17 +21,26 @@ export const metadata: Metadata = {
 export default function Education() {
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
-            <Flex direction="column" gap={{ base: 8, md: 12 }} as="section">
-                <Flex direction="column" gap={8}>
-                    <Heading size="3xl" textStyle="heading">
-                        <Flex align="center" gap={3}>
-                            <TbSchool size={34} />
-                            <span>Education History</span>
-                        </Flex>
-                    </Heading>
+            <Flex
+                direction="column"
+                gap={{ base: 8, md: 12, lg: 16 }}
+                as="section">
+                <Heading size="3xl" textStyle="heading" as="h1">
+                    <Flex align="center" gap={3}>
+                        <TbSchool size={34} />
+                        <span>Education History</span>
+                    </Flex>
+                </Heading>
 
-                    <Box>
-                        <Flex gap={4} align="start" mb={2}>
+                <Card.Root
+                    transition="all 0.2s ease-in-out"
+                    _hover={{
+                        bg: "white/05",
+                        transform: "translateY(-2px)",
+                        shadow: "lg",
+                    }}>
+                    <Card.Body>
+                        <Flex gap={4} align="start" mb={{ base: 2, md: 4 }}>
                             <Avatar.Root size="2xl">
                                 <NextImage
                                     src="/ksu.svg"
@@ -40,22 +50,25 @@ export default function Education() {
                                 />
                             </Avatar.Root>
                             <Box>
-                                <Text fontSize="xl" fontWeight="bold">
+                                <Heading
+                                    textStyle="heading"
+                                    fontSize="xl"
+                                    fontWeight="bold"
+                                    as="h2">
                                     Bachelor of Science in Software Engineering
                                     (BS SWE)
-                                </Text>
+                                </Heading>
                                 <Text color="fg.muted" fontSize="md">
                                     <Em>
                                         Southern Polytechnic College of
-                                        Computing and Software Engineering
-                                        (CCSE)
+                                        Engineering and Engineering Technology
                                     </Em>
                                     <br />
                                     Kennesaw State University, 2027
                                 </Text>
                             </Box>
                         </Flex>
-                        <Text textStyle="body" mb={4}>
+                        <Text textStyle="body" mb={{ base: 4, md: 6 }}>
                             Currently pursuing a rigorous, systems-focused
                             curriculum to complement my professional background
                             in corporate risk mitigation, with an emphasis on
@@ -66,12 +79,14 @@ export default function Education() {
                             <Heading
                                 size="lg"
                                 textStyle="heading"
-                                fontWeight={700}>
+                                fontWeight={700}
+                                as="h3">
                                 Relevant Coursework
                             </Heading>
                             <List.Root
                                 as="ul"
                                 pl={4}
+                                textStyle="body"
                                 display="grid"
                                 gridTemplateColumns={{
                                     base: "1fr",
@@ -93,64 +108,70 @@ export default function Education() {
                                 </List.Item>
                             </List.Root>
                         </Flex>
-                    </Box>
+                    </Card.Body>
+                </Card.Root>
 
-                    <Flex direction="column" gap={8}>
-                        <Heading size="3xl" textStyle="heading">
-                            <Flex align="center" gap={4}>
-                                <TbCertificate size={32} />
-                                Certifications
-                            </Flex>
-                        </Heading>
-                        <Box>
-                            <Flex align="start" gap={4} mb={2}>
-                                <Avatar.Root size="xl">
-                                    <Avatar.Image
-                                        src="/wz.png"
-                                        alt="Wicklander-Zulawski & Associates Logo"
-                                    />
-                                    <Avatar.Fallback>WZ</Avatar.Fallback>
-                                </Avatar.Root>
-                                <Flex direction="column" flexGrow={1} gap={0}>
-                                    <Heading size="xl" textStyle="heading">
-                                        Non-Confrontational Interview and
-                                        Interrogation Techniques
-                                    </Heading>
-                                    <Text>
-                                        <Em>
-                                            Wicklander-Zulawski & Associates
-                                        </Em>
-                                        , 2017
-                                    </Text>
-                                </Flex>
-                            </Flex>
-                            <List.Root textStyle="body" gap={2} pl={4}>
-                                <List.Item>
-                                    Completed intensive training in advanced
-                                    interview and interrogation techniques,
-                                    focusing on non-confrontational methods to
-                                    elicit accurate and reliable information
-                                    from subjects.
-                                </List.Item>
-                                <List.Item>
-                                    Developed expertise in behavioral analysis,
-                                    rapport-building, and ethical interviewing
-                                    practices, enhancing investigative outcomes
-                                    and ensuring compliance with legal
-                                    standards.
-                                </List.Item>
-                                <List.Item>
-                                    Applied learned techniques in real-world
-                                    scenarios, contributing to successful
-                                    investigations and improved security
-                                    outcomes.
-                                </List.Item>
-                            </List.Root>
-                        </Box>
+                <Heading size="3xl" textStyle="heading" as="h1">
+                    <Flex align="center" gap={4}>
+                        <TbCertificate size={32} />
+                        Certifications
                     </Flex>
+                </Heading>
 
-                    <ResumeCTA />
-                </Flex>
+                <Card.Root
+                    transition="all 0.2s ease-in-out"
+                    _hover={{
+                        bg: "white/05",
+                        transform: "translateY(-2px)",
+                        shadow: "lg",
+                    }}>
+                    <Card.Body>
+                        <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
+                            <Avatar.Root size="xl">
+                                <Avatar.Image
+                                    src="/wz.png"
+                                    alt="Wicklander-Zulawski & Associates Logo"
+                                />
+                                <Avatar.Fallback>WZ</Avatar.Fallback>
+                            </Avatar.Root>
+                            <Flex direction="column" flexGrow={1} gap={0}>
+                                <Heading
+                                    textStyle="heading"
+                                    fontSize="xl"
+                                    fontWeight="bold"
+                                    as="h2">
+                                    Non-Confrontational Interview and
+                                    Interrogation Techniques
+                                </Heading>
+                                <Text textStyle="body">
+                                    <Em>Wicklander-Zulawski & Associates</Em>,
+                                    2017
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <List.Root gap={2} pl={4} textStyle="body">
+                            <List.Item textStyle="body">
+                                Completed intensive training in advanced
+                                interview and interrogation techniques, focusing
+                                on non-confrontational methods to elicit
+                                accurate and reliable information from subjects.
+                            </List.Item>
+                            <List.Item>
+                                Developed expertise in behavioral analysis,
+                                rapport-building, and ethical interviewing
+                                practices, enhancing investigative outcomes and
+                                ensuring compliance with legal standards.
+                            </List.Item>
+                            <List.Item>
+                                Applied learned techniques in real-world
+                                scenarios, contributing to successful
+                                investigations and improved security outcomes.
+                            </List.Item>
+                        </List.Root>
+                    </Card.Body>
+                </Card.Root>
+
+                <ResumeCTA />
             </Flex>
         </Container>
     );

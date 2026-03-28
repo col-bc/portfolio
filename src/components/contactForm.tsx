@@ -85,9 +85,14 @@ export default function Contact() {
     }
 
     return (
-        <Flex direction="column" gap={8} id="contact">
+        <Flex direction="column" gap={8} id="contact" align="center">
             {sent ? (
-                <Flex direction="column" gap={4} alignItems="center">
+                <Flex
+                    direction="column"
+                    gap={4}
+                    alignItems="center"
+                    maxW="lg"
+                    w="100%">
                     <Avatar.Root>
                         <TbCircleCheck size={64} color="green" />
                     </Avatar.Root>
@@ -108,9 +113,8 @@ export default function Contact() {
                     onSubmit={handleSubmit}
                     direction="column"
                     gap={6}
-                    maxW="md"
                     w="100%"
-                    mx="auto">
+                    maxW="lg">
                     <Heading size="xl" textStyle="heading">
                         Send a Message
                     </Heading>
@@ -237,7 +241,8 @@ export default function Contact() {
                             onChange={(e) => setMessage(e.target.value)}
                         />
                     </Field.Root>
-                    <Box w="full">
+
+                    <Box shadow="sm">
                         <Turnstile
                             siteKey="0x4AAAAAACrt5VbunM62aYIZ"
                             onSuccess={(token) => {
@@ -245,9 +250,12 @@ export default function Contact() {
                             }}
                             options={{
                                 size: "flexible",
+                                appearance: "always",
+                                feedbackEnabled: true,
                             }}
                         />
                     </Box>
+
                     <Button
                         colorPalette="teal"
                         type="submit"

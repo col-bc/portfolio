@@ -1,4 +1,5 @@
 "use client";
+
 import { getSessionStatus, logoutAdmin } from "@/app/lib/handleAuth";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -45,11 +46,11 @@ function NavLinks() {
         <>
             <Link
                 as={NextLink}
-                href="/#"
+                href="/"
                 spaceX={2}
                 color={isCurrentPath("/") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <TbHome size={16} />
+                <TbHome />
                 <span>Home</span>
             </Link>
             <Link
@@ -58,7 +59,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/education") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <TbSchool size={16} />
+                <TbSchool />
                 <span>Education</span>
             </Link>
             <Link
@@ -67,7 +68,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/employment") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <TbBriefcase2 size={16} />
+                <TbBriefcase2 />
                 Employment
             </Link>
             <Link
@@ -76,7 +77,7 @@ function NavLinks() {
                 spaceX={2}
                 color={isCurrentPath("/contact") ? "teal.fg" : "inherit"}
                 w={{ base: "100%", md: "auto" }}>
-                <TbMessage size={16} />
+                <TbMessage />
                 Contact
             </Link>
         </>
@@ -132,22 +133,22 @@ function Actions() {
     return (
         <>
             <Tooltip content="Get in touch">
-                <Link href="/contact">
-                    <IconButton
-                        aria-label="Get in touch"
-                        variant="ghost"
-                        colorPalette="bg">
-                        <TbSend size={16} />
-                    </IconButton>
-                </Link>
+                <IconButton
+                    aria-label="Get in touch"
+                    variant="ghost"
+                    colorPalette="blackAlpha">
+                    <NextLink href="/contact">
+                        <TbSend />
+                    </NextLink>
+                </IconButton>
             </Tooltip>
             {mounted ? (
-                <ColorModeButton variant="ghost" colorPalette="bg" />
+                <ColorModeButton variant="ghost" colorPalette="whiteAlpha" />
             ) : (
                 <IconButton
                     aria-label="Loading"
                     variant="ghost"
-                    colorPalette="bg"
+                    colorPalette="whiteAlpha"
                     disabled
                     opacity={0.5}>
                     <Spinner size="xs" />
@@ -239,10 +240,13 @@ export default function Navbar() {
         <Flex
             ref={navbarRef}
             as="nav"
-            bg="bg.muted"
-            color="f"
+            bg="bg.subtle"
+            color="fg"
             position="sticky"
             top={0}
+            borderY="1px solid"
+            borderTopColor="border"
+            borderBottomColor="border"
             zIndex={99}
             shadow={elevate ? "sm" : "none"}>
             <Container maxW="4xl">
@@ -256,10 +260,11 @@ export default function Navbar() {
                         h="100%"
                         flex={1}
                         align="center"
-                        gap={6}>
+                        gap={8}
+                        color="fg">
                         <NavLinks />
                         <Box flexGrow={1} />
-                        <Flex gap={2} align="center">
+                        <Flex gap={4} align="center">
                             <Actions />
                         </Flex>
                     </Flex>
@@ -269,7 +274,7 @@ export default function Navbar() {
                             open={open}
                             onOpenChange={(e) => setOpen(e.open)}
                             style={{ width: "100%" }}>
-                            <Flex align="center" gap={2}>
+                            <Flex align="center" gap={4}>
                                 <Collapsible.Trigger asChild>
                                     <Button
                                         variant="surface"
@@ -289,7 +294,8 @@ export default function Navbar() {
                                     w="100%"
                                     gap={4}
                                     py={4}
-                                    zIndex={99}>
+                                    zIndex={99}
+                                    color="fg">
                                     <NavLinks />
                                 </Flex>
                             </Collapsible.Content>

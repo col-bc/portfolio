@@ -14,24 +14,29 @@ import {
     Tabs,
     Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TbExternalLink } from "react-icons/tb";
 import { HighlighterGeneric } from "shiki";
-
-const shikiAdapter = createShikiAdapter<HighlighterGeneric<never, never>>({
-    async load() {
-        const { createHighlighter } = await import("shiki");
-        return createHighlighter({
-            langs: ["python", "tsx", "java", "sql"],
-            themes: ["ayu-dark", "github-dark"],
-        });
-    },
-    theme: "ayu-dark",
-});
+import { useColorMode } from "./ui/color-mode";
 
 export default function CodeSamples() {
     const [currentSample, setCurrentSample] = useState("sample1");
     const [showDialog, setShowDialog] = useState(false);
+    const { colorMode } = useColorMode();
+
+    const shikiAdapter = useMemo(() => {
+        return createShikiAdapter<HighlighterGeneric<never, never>>({
+            async load() {
+                const { createHighlighter } = await import("shiki");
+                return createHighlighter({
+                    langs: ["python", "tsx", "java", "sql"],
+                    themes: ["ayu-dark", "ayu-light"],
+                });
+            },
+            // Dynamically assign the active theme based on the current mode
+            theme: colorMode === "dark" ? "ayu-dark" : "ayu-light",
+        });
+    }, [colorMode]);
 
     return (
         <>
@@ -43,9 +48,22 @@ export default function CodeSamples() {
                     orientation="horizontal"
                     value={currentSample}
                     onValueChange={(e) => setCurrentSample(e.value)}>
-                    <Tabs.List>
+                    <Tabs.List
+                        overflowX="auto"
+                        overflowY="hidden"
+                        display="flex"
+                        flexDirection="row"
+                        gap={{
+                            base: 2,
+                            md: 4,
+                        }}
+                        w="100%">
                         {Object.keys(samples).map((key) => (
-                            <Tabs.Trigger key={key} value={key}>
+                            <Tabs.Trigger
+                                key={key}
+                                value={key}
+                                whiteSpace="nowrap"
+                                flexShrink={0}>
                                 {samples[key].title}
                             </Tabs.Trigger>
                         ))}
@@ -58,6 +76,12 @@ export default function CodeSamples() {
                                 </Text>
                             </Box>
                             <CodeBlock.Root
+                                meta={{
+                                    colorScheme:
+                                        colorMode === "dark"
+                                            ? "ayu-dark"
+                                            : "ayu-light",
+                                }}
                                 code={samples[key].code.toString()}
                                 language={samples[key].language}>
                                 <CodeBlock.Header>
@@ -145,7 +169,13 @@ export default function CodeSamples() {
                                             ].code.toString()}
                                             language={
                                                 samples[currentSample].language
-                                            }>
+                                            }
+                                            meta={{
+                                                colorScheme:
+                                                    colorMode === "dark"
+                                                        ? "ayu-dark"
+                                                        : "ayu-light",
+                                            }}>
                                             <CodeBlock.Header>
                                                 <CodeBlock.Title>
                                                     {
