@@ -101,22 +101,27 @@ export default function Employment() {
 
                 <EmploymentItem
                     company="Red Dirt Equipment"
-                    role="Systems Analyst"
+                    role="Business Analyst"
                     location="Remote, FL"
                     dates="Jan 2020 - Mar 2025"
                     logo="/red_dirt_equipment.png">
                     <List.Item>
-                        Analyzed and optimized system workflows to improve
-                        operational efficiency and data integrity.
+                        Analyzed financial and operational data across sales,
+                        service, accounting, and rentals to pinpoint
+                        underperforming areas, while simultaneously managing IT
+                        systems to ensure the integrity and availability of
+                        critical business data.
                     </List.Item>
                     <List.Item>
-                        Developed and maintained software solutions to support
-                        business processes and reporting needs.
+                        Evaluated cross-departmental workflows to identify
+                        process gaps, designing and executing targeted action
+                        plans that improved overall organizational efficiency.
                     </List.Item>
                     <List.Item>
-                        Collaborated with cross-functional teams to implement
-                        technology solutions that align with organizational
-                        goals.
+                        Collaborated with external vendors to scope, develop,
+                        and implement customized software solutions,
+                        streamlining dealership operations and directly
+                        increasing profitability.
                     </List.Item>
                 </EmploymentItem>
 
