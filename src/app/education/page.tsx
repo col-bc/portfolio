@@ -35,7 +35,6 @@ export default function Education() {
                 <Card.Root
                     transition="all 0.2s ease-in-out"
                     _hover={{
-                        bg: "white/05",
                         transform: "translateY(-2px)",
                         shadow: "lg",
                     }}>
@@ -121,7 +120,56 @@ export default function Education() {
                 <Card.Root
                     transition="all 0.2s ease-in-out"
                     _hover={{
-                        bg: "white/05",
+                        transform: "translateY(-2px)",
+                        shadow: "lg",
+                    }}>
+                    <Card.Body>
+                        <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
+                            <Avatar.Root size="xl">
+                                <Avatar.Image
+                                    src="/avade.png"
+                                    alt="AVADE® Retail Loss PreventionTM Logo"
+                                />
+                                <Avatar.Fallback>AV</Avatar.Fallback>
+                            </Avatar.Root>
+                            <Flex direction="column" flexGrow={1} gap={0}>
+                                <Heading
+                                    textStyle="heading"
+                                    fontSize="xl"
+                                    fontWeight="bold"
+                                    as="h2">
+                                    AVADE&reg; Retail Loss Prevention&trade;
+                                </Heading>
+                                <Text textStyle="body">
+                                    <Em>AVADE</Em>, 2025
+                                </Text>
+                            </Flex>
+                        </Flex>
+                        <List.Root gap={2} pl={4} textStyle="body">
+                            <List.Item>
+                                Mastered advanced verbal de-escalation
+                                strategies to identify, prevent, and mitigate
+                                workplace aggression and violence.
+                            </List.Item>
+                            <List.Item>
+                                {" "}
+                                Trained in the use of reasonable and appropriate
+                                force, including physical restraints, blocking,
+                                and disengaging techniques to ensure personal
+                                and customer safety.
+                            </List.Item>
+                            <List.Item>
+                                Proficient in legal and safe handcuffing
+                                procedures and suspect apprehension according to
+                                established retail security standards.
+                            </List.Item>
+                        </List.Root>
+                    </Card.Body>
+                </Card.Root>
+
+                <Card.Root
+                    transition="all 0.2s ease-in-out"
+                    _hover={{
                         transform: "translateY(-2px)",
                         shadow: "lg",
                     }}>
