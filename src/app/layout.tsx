@@ -72,9 +72,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             position="relative"
                             zIndex={0}>
                             <Box
-                                position="fixed"
-                                bottom="-10%"
-                                right="-10%"
+                                position="absolute"
+                                top="10%"
+                                left="-10%"
                                 w="50vw"
                                 h="50vw"
                                 maxW="600px"

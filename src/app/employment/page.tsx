@@ -16,51 +16,83 @@ export const metadata: Metadata = {
     title: "Employment",
 };
 
-function EmploymentItem({
-    company,
-    role,
-    location,
-    dates,
-    logo,
-    children,
-}: {
+interface Employment {
     company: string;
     role: string;
     location: string;
     dates: string;
-    logo: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <Card.Root
-            transition="all 0.2s ease-in-out"
-            _hover={{
-                bg: "white/05",
-                transform: "translateY(-2px)",
-                shadow: "lg",
-            }}>
-            <Card.Body>
-                <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
-                    <Avatar.Root size="xl">
-                        <Avatar.Image src={logo} alt={`${company} Logo`} />
-                        <Avatar.Fallback>{company[0]}</Avatar.Fallback>
-                    </Avatar.Root>
-                    <Flex direction="column" flexGrow={1} gap={0}>
-                        <Heading size="xl" textStyle="heading">
-                            {role}
-                        </Heading>
-                        <Text textStyle="body">
-                            <Em>{company}</Em>, {location} | {dates}
-                        </Text>
-                    </Flex>
-                </Flex>
-                <List.Root textStyle="body" gap={2} pl={4}>
-                    {children}
-                </List.Root>
-            </Card.Body>
-        </Card.Root>
-    );
+    logo?: string | null;
+    logoAlt?: string;
+    description: string[];
 }
+
+const history: Employment[] = [
+    {
+        company: "Freelance",
+        role: "Full Stack Developer",
+        location: "Remote",
+        dates: "Nov 2021 - Present",
+        logo: null,
+        logoAlt: "Freelance Developer",
+        description: [
+            "Engineered responsive, secure, and accessible web applications tailored to strict client specifications and business requirements.",
+            "Maintained modern security standards and development best practices through proactive code updates, dependency management, and peer code reviews.",
+            "Utilized Git version control to manage complex codebases and facilitate seamless collaboration across distributed teams.",
+        ],
+    },
+    {
+        company: "Target Corporation",
+        role: "Assets Protection Specialist",
+        location: "Metro Atlanta Area",
+        dates: "Oct 2025 - March 2026",
+        logo: "/target.jpg",
+        logoAlt: "Target Corporation Logo",
+        description: [
+            "Audited operational procedures and physical inventory data to identify systemic vulnerabilities and mitigate corporate liability.",
+            "Conducted complex, high-stakes investigations requiring strict adherence to legal standards, company policy, and ethical compliance.",
+            "Partnered with cross-functional teams and external law enforcement to resolve security escalations and neutralize physical and financial risks.",
+        ],
+    },
+    {
+        company: "Red Dirt Equipment",
+        role: "Business Analyst",
+        location: "Remote, FL",
+        dates: "Jan 2020 - Mar 2025",
+        logo: "/red_dirt_equipment.png",
+        logoAlt: "Red Dirt Equipment Logo",
+        description: [
+            "Analyzed financial and operational data across sales, service, accounting, and rentals to pinpoint underperforming areas, while simultaneously managing IT systems to ensure the integrity and availability of critical business data.",
+            "Evaluated cross-departmental workflows to identify process gaps, designing and executing targeted action plans that improved overall organizational efficiency.",
+            "Collaborated with external vendors to scope, develop, and implement customized software solutions, streamlining dealership operations and directly increasing profitability.",
+        ],
+    },
+    {
+        company: "Walmart Inc.",
+        role: "Assistant Store Manager, Asset Protection",
+        location: "Charlotte, NC",
+        dates: "Jun 2017 - Nov 2021",
+        logo: "/walmart.webp",
+        logoAlt: "Walmart Inc. Logo",
+        description: [
+            "Directed a 25-person risk management team, optimizing store profitability and achieving a record-low 0.75% annual shrinkage rate through data-driven operational audits.",
+            "Managed the full employee lifecycle for the department, including recruiting, coaching, and performance management to exceed high-level corporate metrics.",
+            "Developed and implemented comprehensive safety and security protocols, resulting in a 20% reduction in workplace incidents and ensuring strict regulatory compliance.",
+        ],
+    },
+    {
+        company: "Walmart Inc.",
+        role: "Asset Protection Associate",
+        location: "Duluth, GA",
+        dates: "Jul 2016 - Jun 2017",
+        logo: "/walmart.webp",
+        logoAlt: "Walmart Inc. Logo",
+        description: [
+            "Analyzed loss patterns to detect, deter, and detain bad actors, recovering merchandise and drafting highly accurate legal incident reports for prosecution.",
+            "Collaborated with local law enforcement and internal teams to resolve security escalations, ensuring a safe shopping environment and minimizing financial losses.",
+            "Maintained strict adherence to company policies and legal standards while providing exceptional customer service and support.",
+        ],
+    },
+];
 
 export default function Employment() {
     return (
@@ -76,128 +108,58 @@ export default function Employment() {
                     </Flex>
                 </Heading>
 
-                <EmploymentItem
-                    company="Target Corporation"
-                    role="Assets Protection Specialist"
-                    location="Metro Atlanta Area"
-                    dates="Oct 2025 - March 2026"
-                    logo="/target.jpg">
-                    <List.Item>
-                        Audited operational procedures and physical inventory
-                        data to identify systemic vulnerabilities and mitigate
-                        corporate liability.
-                    </List.Item>
-                    <List.Item>
-                        Conducted complex, high-stakes investigations requiring
-                        strict adherence to legal standards, company policy, and
-                        ethical compliance.
-                    </List.Item>
-                    <List.Item>
-                        Partnered with cross-functional teams and external law
-                        enforcement to resolve security escalations and
-                        neutralize physical and financial risks.
-                    </List.Item>
-                </EmploymentItem>
-
-                <EmploymentItem
-                    company="Red Dirt Equipment"
-                    role="Business Analyst"
-                    location="Remote, FL"
-                    dates="Jan 2020 - Mar 2025"
-                    logo="/red_dirt_equipment.png">
-                    <List.Item>
-                        Analyzed financial and operational data across sales,
-                        service, accounting, and rentals to pinpoint
-                        underperforming areas, while simultaneously managing IT
-                        systems to ensure the integrity and availability of
-                        critical business data.
-                    </List.Item>
-                    <List.Item>
-                        Evaluated cross-departmental workflows to identify
-                        process gaps, designing and executing targeted action
-                        plans that improved overall organizational efficiency.
-                    </List.Item>
-                    <List.Item>
-                        Collaborated with external vendors to scope, develop,
-                        and implement customized software solutions,
-                        streamlining dealership operations and directly
-                        increasing profitability.
-                    </List.Item>
-                </EmploymentItem>
-
-                <EmploymentItem
-                    company="Confidential"
-                    role="Full Stack Developer"
-                    location="Remote"
-                    dates="Nov 2021 - Present"
-                    logo="/confidential.png">
-                    <List.Item>
-                        Engineered responsive, secure, and accessible web
-                        applications tailored to strict client specifications
-                        and business requirements.
-                    </List.Item>
-                    <List.Item>
-                        Maintained modern security standards and development
-                        best practices through proactive code updates,
-                        dependency management, and peer code reviews.
-                    </List.Item>
-                    <List.Item>
-                        Utilized Git version control to manage complex codebases
-                        and facilitate seamless collaboration across distributed
-                        teams.
-                    </List.Item>
-                </EmploymentItem>
-
-                <EmploymentItem
-                    company="Walmart Inc."
-                    role="Asset Protection Assistant Store Manager"
-                    location="Charlotte, NC"
-                    dates="Jun 2017 - Nov 2021"
-                    logo="/walmart.webp">
-                    <List.Item>
-                        Directed a 25-person risk management team, optimizing
-                        store profitability and achieving a record-low 0.75%
-                        annual shrinkage rate through data-driven operational
-                        audits.
-                    </List.Item>
-                    <List.Item>
-                        Managed the full employee lifecycle for the department,
-                        including recruiting, coaching, and performance
-                        management to exceed high-level corporate metrics.
-                    </List.Item>
-                    <List.Item>
-                        Developed and implemented comprehensive safety and
-                        security protocols, resulting in a 20% reduction in
-                        workplace incidents and ensuring strict regulatory
-                        compliance.
-                    </List.Item>
-                </EmploymentItem>
-
-                <EmploymentItem
-                    company="Walmart Inc."
-                    role="Asset Protection Associate"
-                    location="Duluth, GA"
-                    dates="Jul 2016 - Jun 2017"
-                    logo="/walmart.webp">
-                    <List.Item>
-                        Analyzed loss patterns to detect, deter, and detain bad
-                        actors, recovering merchandise and drafting highly
-                        accurate legal incident reports for prosecution.
-                    </List.Item>
-                    <List.Item>
-                        Collaborated with local law enforcement and internal
-                        teams to resolve security escalations, ensuring a safe
-                        shopping environment and minimizing financial losses.
-                    </List.Item>
-                    <List.Item>
-                        Maintained strict adherence to company policies and
-                        legal standards while providing exceptional customer
-                        service and support.
-                    </List.Item>
-                </EmploymentItem>
+                {history.map((job: Employment, index) => (
+                    <EmploymentItem
+                        key={index}
+                        company={job.company}
+                        role={job.role}
+                        location={job.location}
+                        dates={job.dates}
+                        logo={job.logo}
+                        logoAlt={job.logoAlt}
+                        description={job.description}
+                    />
+                ))}
 
                 <ResumeCTA />
             </Flex>
         </Container>
+    );
+}
+
+function EmploymentItem(data: Employment) {
+    const { company, role, location, dates, logo, logoAlt, description } = data;
+    return (
+        <Card.Root
+            transition="all 0.2s ease-in-out"
+            _hover={{
+                transform: "translateY(-2px)",
+                shadow: "lg",
+            }}>
+            <Card.Body>
+                <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
+                    <Avatar.Root size="xl">
+                        <Avatar.Image
+                            src={logo ?? undefined}
+                            alt={logoAlt ?? `${company} Logo`}
+                        />
+                        <Avatar.Fallback>{company[0]}</Avatar.Fallback>
+                    </Avatar.Root>
+                    <Flex direction="column" flexGrow={1} gap={0}>
+                        <Heading size="xl" textStyle="heading">
+                            {role}
+                        </Heading>
+                        <Text textStyle="body">
+                            <Em>{company}</Em>, {location} | {dates}
+                        </Text>
+                    </Flex>
+                </Flex>
+                <List.Root textStyle="body" gap={2} pl={4}>
+                    {description.map((item, index) => (
+                        <List.Item key={index}>{item}</List.Item>
+                    ))}
+                </List.Root>
+            </Card.Body>
+        </Card.Root>
     );
 }
