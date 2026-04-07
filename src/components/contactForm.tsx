@@ -21,18 +21,19 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { useState } from "react";
 import { TbCircleCheck, TbSend2 } from "react-icons/tb";
 
-export default function Contact() {
-    const subjects = createListCollection({
-        items: [
-            { value: "general", label: "General Inquiry" },
-            { value: "job", label: "Job Opportunity" },
-            { value: "contract", label: "Contract / Freelance Work" },
-            { value: "consulting", label: "Consulting Opportunity" },
-            { value: "Collaboration", label: "Collaboration" },
-            { value: "other", label: "Other" },
-        ],
-    });
+// 1. Hoist the collection outside the render cycle
+const subjects = createListCollection({
+    items: [
+        { value: "general", label: "General Inquiry" },
+        { value: "job", label: "Job Opportunity" },
+        { value: "contract", label: "Contract / Freelance Work" },
+        { value: "consulting", label: "Consulting Opportunity" },
+        { value: "collaboration", label: "Collaboration" }, // Normalized to lowercase
+        { value: "other", label: "Other" },
+    ],
+});
 
+export default function ContactForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -43,6 +44,9 @@ export default function Contact() {
     const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [sent, setSent] = useState(false);
+
+    // 2. Add loading state to prevent double-submissions
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     function resetForm() {
         setName("");
@@ -56,18 +60,22 @@ export default function Contact() {
         setError(null);
     }
 
-    async function handleSubmit(e: React.ChangeEvent) {
+    async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
         setError(null);
+
         if (!turnstileToken) {
             setError("Please complete the CAPTCHA challenge.");
             return;
         }
+
+        setIsSubmitting(true);
+
         try {
             await handleContactForm({
                 name,
                 email: email || null,
-                phone: phone ? parseInt(phone) : null,
+                phone: phone ? parseInt(phone.replace(/\D/g, "")) : null,
                 preferredContactMethod: contactMethod as "email" | "phone",
                 organization: orgName,
                 subject: subject,
@@ -81,6 +89,8 @@ export default function Contact() {
             setError(
                 "There was an error submitting the form. Please try again later.",
             );
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -108,164 +118,171 @@ export default function Contact() {
                     </Button>
                 </Flex>
             ) : (
-                <Flex
-                    as="form"
+                <form
                     onSubmit={handleSubmit}
-                    direction="column"
-                    gap={6}
-                    w="100%"
-                    maxW="lg">
-                    <Heading size="xl" textStyle="heading">
-                        Send a Message
-                    </Heading>
-                    {error && (
-                        <Alert.Root status="error">
-                            <Alert.Indicator />
-                            <Alert.Description>{error}</Alert.Description>
-                        </Alert.Root>
-                    )}
-                    <Field.Root required colorPalette="teal">
-                        <Field.Label>
-                            Name
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <Input
-                            type="text"
-                            placeholder="John Doe"
-                            shadow="xs"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </Field.Root>
+                    style={{
+                        width: "100%",
+                        maxWidth: "var(--chakra-sizes-lg)",
+                    }} // Replaces w="100%" maxW="lg"
+                >
+                    <Flex direction="column" gap={6}>
+                        <Heading size="xl" textStyle="heading">
+                            Send a Message
+                        </Heading>
+                        {error && (
+                            <Alert.Root status="error">
+                                <Alert.Indicator />
+                                <Alert.Description>{error}</Alert.Description>
+                            </Alert.Root>
+                        )}
+                        <Field.Root required colorPalette="teal">
+                            <Field.Label>
+                                Name
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <Input
+                                type="text"
+                                placeholder="John Doe"
+                                shadow="xs"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </Field.Root>
 
-                    <Field.Root
-                        required={contactMethod === "email"}
-                        colorPalette="teal">
-                        <Field.Label>
-                            Email
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <Input
-                            type="email"
-                            placeholder="john.doe@acmeinc.com"
-                            shadow="xs"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </Field.Root>
+                        <Field.Root
+                            required={contactMethod === "email"}
+                            colorPalette="teal">
+                            <Field.Label>
+                                Email
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <Input
+                                type="email"
+                                placeholder="john.doe@acmeinc.com"
+                                shadow="xs"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </Field.Root>
 
-                    <Field.Root
-                        required={contactMethod === "phone"}
-                        colorPalette="teal">
-                        <Field.Label>
-                            Phone
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <Input
-                            type="tel"
-                            placeholder="(123) 456-7890"
-                            shadow="xs"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                    </Field.Root>
+                        <Field.Root
+                            required={contactMethod === "phone"}
+                            colorPalette="teal">
+                            <Field.Label>
+                                Phone
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <Input
+                                type="tel"
+                                placeholder="(123) 456-7890"
+                                shadow="xs"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                            />
+                        </Field.Root>
 
-                    <Field.Root colorPalette="teal">
-                        <Field.Label>Organization Name</Field.Label>
-                        <Input
-                            type="text"
-                            placeholder="Acme Inc."
-                            shadow="xs"
-                            value={orgName}
-                            onChange={(e) => setOrgName(e.target.value)}
-                        />
-                    </Field.Root>
+                        <Field.Root colorPalette="teal">
+                            <Field.Label>Organization Name</Field.Label>
+                            <Input
+                                type="text"
+                                placeholder="Acme Inc."
+                                shadow="xs"
+                                value={orgName}
+                                onChange={(e) => setOrgName(e.target.value)}
+                            />
+                        </Field.Root>
 
-                    <Field.Root required colorPalette="teal">
-                        <Field.Label>
-                            Requested Contact Method
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <RadioGroup
-                            defaultValue="Email"
-                            onValueChange={(e) => setContactMethod(e.value)}>
-                            <Flex gap={4}>
-                                <Radio value="email">Email</Radio>
-                                <Radio value="phone">Phone</Radio>
-                            </Flex>
-                        </RadioGroup>
-                    </Field.Root>
+                        <Field.Root required colorPalette="teal">
+                            <Field.Label>
+                                Requested Contact Method
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <RadioGroup
+                                defaultValue="Email"
+                                onValueChange={(e) =>
+                                    setContactMethod(e.value)
+                                }>
+                                <Flex gap={4}>
+                                    <Radio value="email">Email</Radio>
+                                    <Radio value="phone">Phone</Radio>
+                                </Flex>
+                            </RadioGroup>
+                        </Field.Root>
 
-                    <Field.Root required colorPalette="teal">
-                        <Field.Label>
-                            Subject
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <Select.Root
-                            collection={subjects}
-                            onValueChange={(e) => setSubject(e.value[0])}>
-                            <Select.HiddenSelect />
-                            <Select.Control shadow="xs" rounded="sm">
-                                <Select.Trigger>
-                                    <Select.ValueText placeholder="Choose a subject" />
-                                    <Select.Indicator />
-                                </Select.Trigger>
-                            </Select.Control>
-                            <Portal>
-                                <Select.Positioner>
-                                    <Select.Content
-                                        textStyle="body"
-                                        fontSize="sm">
-                                        {subjects.items.map((s) => (
-                                            <Select.Item item={s} key={s.value}>
-                                                {s.label}
-                                                <Select.ItemIndicator />
-                                            </Select.Item>
-                                        ))}
-                                    </Select.Content>
-                                </Select.Positioner>
-                            </Portal>
-                        </Select.Root>
-                    </Field.Root>
+                        <Field.Root required colorPalette="teal">
+                            <Field.Label>
+                                Subject
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <Select.Root
+                                collection={subjects}
+                                onValueChange={(e) => setSubject(e.value[0])}>
+                                <Select.HiddenSelect />
+                                <Select.Control shadow="xs" rounded="sm">
+                                    <Select.Trigger>
+                                        <Select.ValueText placeholder="Choose a subject" />
+                                        <Select.Indicator />
+                                    </Select.Trigger>
+                                </Select.Control>
+                                <Portal>
+                                    <Select.Positioner>
+                                        <Select.Content
+                                            textStyle="body"
+                                            fontSize="sm">
+                                            {subjects.items.map((s) => (
+                                                <Select.Item
+                                                    item={s}
+                                                    key={s.value}>
+                                                    {s.label}
+                                                    <Select.ItemIndicator />
+                                                </Select.Item>
+                                            ))}
+                                        </Select.Content>
+                                    </Select.Positioner>
+                                </Portal>
+                            </Select.Root>
+                        </Field.Root>
 
-                    <Field.Root required colorPalette="teal">
-                        <Field.Label>
-                            Message
-                            <Field.RequiredIndicator />
-                        </Field.Label>
-                        <Textarea
-                            rows={6}
-                            placeholder="Type your message here..."
-                            shadow="xs"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                    </Field.Root>
+                        <Field.Root required colorPalette="teal">
+                            <Field.Label>
+                                Message
+                                <Field.RequiredIndicator />
+                            </Field.Label>
+                            <Textarea
+                                rows={6}
+                                placeholder="Type your message here..."
+                                shadow="xs"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            />
+                        </Field.Root>
 
-                    <Box shadow="sm">
-                        <Turnstile
-                            siteKey="0x4AAAAAACrt5VbunM62aYIZ"
-                            onSuccess={(token) => {
-                                setTurnstileToken(token);
-                            }}
-                            options={{
-                                size: "flexible",
-                                appearance: "always",
-                                feedbackEnabled: true,
-                            }}
-                        />
-                    </Box>
+                        <Box shadow="sm">
+                            <Turnstile
+                                siteKey="0x4AAAAAACrt5VbunM62aYIZ"
+                                onSuccess={(token) => {
+                                    setTurnstileToken(token);
+                                }}
+                                options={{
+                                    size: "flexible",
+                                    appearance: "always",
+                                    feedbackEnabled: true,
+                                }}
+                            />
+                        </Box>
 
-                    <Button
-                        colorPalette="teal"
-                        type="submit"
-                        shadow="sm"
-                        shadowColor="teal.emphasized"
-                        disabled={!turnstileToken}>
-                        Send Message
-                        <TbSend2 />
-                    </Button>
-                </Flex>
+                        <Button
+                            colorPalette="teal"
+                            type="submit"
+                            shadow="sm"
+                            shadowColor="teal.emphasized"
+                            loading={isSubmitting}
+                            disabled={!turnstileToken || isSubmitting}>
+                            Send Message
+                            <TbSend2 />
+                        </Button>
+                    </Flex>
+                </form>
             )}
         </Flex>
     );

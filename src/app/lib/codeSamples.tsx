@@ -2,7 +2,7 @@ import React from "react";
 import { FaDatabase, FaJava, FaPython, FaReact } from "react-icons/fa";
 
 interface Sample {
-    code: Buffer;
+    code: string;
     language: "python" | "tsx" | "java" | "sql";
     title: string;
     fileName: string;
@@ -12,7 +12,7 @@ interface Sample {
 
 const codeSamples: Record<string, Sample> = {
     sample1: {
-        code: Buffer.from(
+        code:
             //#region
             `
 /**
@@ -314,10 +314,8 @@ public class HashFunctions {
         }
     }
 }
-`,
-            "utf-8",
-            //#endregion
-        ),
+`.trim(),
+        //#endregion
         language: "java",
         title: " Hash Table",
         fileName: "HashFunctions.java",
@@ -326,7 +324,7 @@ public class HashFunctions {
         icon: <FaJava />,
     },
     sample2: {
-        code: Buffer.from(
+        code:
             //#region
             `
 -- 1. List of details of all insured Patients (join patient and insurance company tables).
@@ -364,10 +362,8 @@ INNER JOIN
     Procedures pro ON ap.procedureId = pro.procedureId 
 GROUP BY p.patientId, p.firstName, p.lastName 
 ORDER BY total DESC 
-LIMIT 1;;`,
-            "utf-8",
-            //#endregion
-        ),
+LIMIT 1;`.trim(),
+        //#endregion
         language: "sql",
         title: "SQL Audit",
         fileName: "Healthcare_Billing_Audit.sql",
@@ -376,7 +372,7 @@ LIMIT 1;;`,
         icon: <FaDatabase />,
     },
     sample3: {
-        code: Buffer.from(
+        code:
             //#region
             `"use client";
 
@@ -796,10 +792,9 @@ export default function LoginForm() {
             </Flex>
         </form>
     );
-}`,
-            "utf-8",
-            //#endregion
-        ),
+}`.trim(),
+
+        //#endregion
         language: "tsx",
         title: "ZKA Signin",
         fileName: "SigninForm.tsx",
@@ -808,7 +803,7 @@ export default function LoginForm() {
         icon: <FaReact />,
     },
     sample4: {
-        code: Buffer.from(
+        code:
             //#region
             `"""This module contains account related views"""
 
@@ -1373,10 +1368,8 @@ def _send_password_reset_email(user: User, auth_code: str) -> None:
     )
     raise NotImplementedError(
         "Password reset email functionality is not implemented in this example."
-    )`,
-            "utf-8",
-            //#endregion
-        ),
+    )`.trim(),
+        //#endregion
         language: "python",
         fileName: "accounts/views.py",
         title: "Django Views",

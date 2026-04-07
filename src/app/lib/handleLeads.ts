@@ -50,7 +50,7 @@ export async function updateLead(
     data: Partial<{
         name: string;
         email: string;
-        phone: number;
+        phone: string;
         preferredContactMethod: string;
         organization: string;
         subject: string;

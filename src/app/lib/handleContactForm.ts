@@ -9,10 +9,11 @@ import { prisma } from "./prisma";
 /**
  * @interface ContactFormData
  * @description Represents the data submitted through the contact form.
- */ export interface ContactFormData {
+ */
+export interface ContactFormData {
     name: string;
     email: string | null;
-    phone: number | null;
+    phone: string | null;
     preferredContactMethod: "email" | "phone";
     organization: string | null;
     subject: string;
@@ -26,6 +27,15 @@ import { prisma } from "./prisma";
  * @returns a promise that resolves when the form data is successfully saved
  */
 export async function handleContactForm(data: ContactFormData): Promise<void> {
+    const { turnstileToken, ...leadData } = data;
+
+    // Server-Side Validation
+    if (!leadData.name || !leadData.message || !turnstileToken) {
+        throw new Error(
+            "Missing required fields. Please fill out the form completely.",
+        );
+    }
+
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
         throw new Error(
@@ -36,13 +46,14 @@ export async function handleContactForm(data: ContactFormData): Promise<void> {
     // Verify the Turnstile token with Cloudflare's API
     const formData = new URLSearchParams();
     formData.append("secret", secretKey);
-    formData.append("response", data.turnstileToken);
+    formData.append("response", turnstileToken);
 
     const verifyResponse = await fetch(
         "https://challenges.cloudflare.com/turnstile/v0/siteverify",
         {
             method: "POST",
             body: formData,
+            cache: "no-store",
         },
     );
 
@@ -55,16 +66,9 @@ export async function handleContactForm(data: ContactFormData): Promise<void> {
     }
 
     try {
+        // Save the lead data to the database using Prisma
         await prisma.lead.create({
-            data: {
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-                preferredContactMethod: data.preferredContactMethod,
-                organization: data.organization,
-                subject: data.subject,
-                message: data.message,
-            },
+            data: leadData,
         });
     } catch (error) {
         console.error("Error saving contact form data:", error);
