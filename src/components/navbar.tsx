@@ -1,6 +1,6 @@
 "use client";
 
-import { getSessionStatus, logoutAdmin } from "@/app/lib/handleAuth";
+import { logoutAdmin, verifySession } from "@/app/lib/handleAuth";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { Tooltip } from "@/components/ui/tooltip";
 import {
@@ -103,7 +103,7 @@ function Actions() {
 
         async function checkAuth() {
             try {
-                const status = await getSessionStatus();
+                const status = await verifySession();
                 if (isMountedComponent) {
                     setIsAuth(status);
                 }

@@ -18,6 +18,50 @@ export const metadata: Metadata = {
     title: "Education",
 };
 
+const coursework = [
+    "Database Systems",
+    "Data Structures and Algorithms",
+    "Software Architecture & Design",
+    "Computer Networks",
+    "Cloud Computing Software",
+    "Testing & Quality",
+    "Assurance Operating Systems",
+];
+
+const certifications = [
+    {
+        title: "AVADE® Retail Loss Prevention™",
+        issuer: "AVADE",
+        year: "2025",
+        logoSrc: "/avade.png",
+        fallback: "AV",
+        alt: "AVADE® Retail Loss PreventionTM Logo",
+        bullets: [
+            "Mastered advanced verbal de-escalation strategies to identify, prevent, and mitigate workplace aggression and violence.",
+            "Trained in the use of reasonable and appropriate force, including physical restraints, blocking, and disengaging techniques to ensure personal and customer safety.",
+            "Proficient in legal and safe handcuffing procedures and suspect apprehension according to established retail security standards.",
+        ],
+    },
+    {
+        title: "Non-Confrontational Interview and Interrogation Techniques",
+        issuer: "Wicklander-Zulawski & Associates",
+        year: "2017",
+        logoSrc: "/wz.png",
+        fallback: "WZ",
+        alt: "Wicklander-Zulawski & Associates Logo",
+        bullets: [
+            "Completed intensive training in advanced interview and interrogation techniques, focusing on non-confrontational methods to elicit accurate and reliable information from subjects.",
+            "Developed expertise in behavioral analysis, rapport-building, and ethical interviewing practices, enhancing investigative outcomes and ensuring compliance with legal standards.",
+            "Applied learned techniques in real-world scenarios, contributing to successful investigations and improved security outcomes.",
+        ],
+    },
+];
+
+const cardHoverStyles = {
+    transform: "translateY(-2px)",
+    shadow: "lg",
+};
+
 export default function Education() {
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
@@ -34,10 +78,7 @@ export default function Education() {
 
                 <Card.Root
                     transition="all 0.2s ease-in-out"
-                    _hover={{
-                        transform: "translateY(-2px)",
-                        shadow: "lg",
-                    }}>
+                    _hover={cardHoverStyles}>
                     <Card.Body>
                         <Flex gap={4} align="start" mb={{ base: 2, md: 4 }}>
                             <Avatar.Root size="2xl">
@@ -61,9 +102,8 @@ export default function Education() {
                                     <Em>
                                         Southern Polytechnic College of
                                         Engineering and Engineering Technology
-                                    </Em>
-                                    <br />
-                                    Kennesaw State University, 2027
+                                    </Em>{" "}
+                                    at Kennesaw State University, 2027
                                 </Text>
                             </Box>
                         </Flex>
@@ -92,19 +132,9 @@ export default function Education() {
                                     md: "repeat(2, 1fr)",
                                 }}
                                 gap={2}>
-                                <List.Item>Database Systems</List.Item>
-                                <List.Item>
-                                    Data Structures and Algorithms
-                                </List.Item>
-                                <List.Item>
-                                    Software Architecture & Design
-                                </List.Item>
-                                <List.Item>Computer Networks</List.Item>
-                                <List.Item>Cloud Computing Software </List.Item>
-                                <List.Item>Testing & Quality</List.Item>
-                                <List.Item>
-                                    Assurance Operating Systems
-                                </List.Item>
+                                {coursework.map((course) => (
+                                    <List.Item key={course}>{course}</List.Item>
+                                ))}
                             </List.Root>
                         </Flex>
                     </Card.Body>
@@ -117,107 +147,43 @@ export default function Education() {
                     </Flex>
                 </Heading>
 
-                <Card.Root
-                    transition="all 0.2s ease-in-out"
-                    _hover={{
-                        transform: "translateY(-2px)",
-                        shadow: "lg",
-                    }}>
-                    <Card.Body>
-                        <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
-                            <Avatar.Root size="xl">
-                                <Avatar.Image
-                                    src="/avade.png"
-                                    alt="AVADE® Retail Loss PreventionTM Logo"
-                                />
-                                <Avatar.Fallback>AV</Avatar.Fallback>
-                            </Avatar.Root>
-                            <Flex direction="column" flexGrow={1} gap={0}>
-                                <Heading
-                                    textStyle="heading"
-                                    fontSize="xl"
-                                    fontWeight="bold"
-                                    as="h2">
-                                    AVADE&reg; Retail Loss Prevention&trade;
-                                </Heading>
-                                <Text textStyle="body">
-                                    <Em>AVADE</Em>, 2025
-                                </Text>
+                {certifications.map((cert) => (
+                    <Card.Root
+                        key={cert.title}
+                        transition="all 0.2s ease-in-out"
+                        _hover={cardHoverStyles}>
+                        <Card.Body>
+                            <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
+                                <Avatar.Root size="xl">
+                                    <Avatar.Image
+                                        src={cert.logoSrc}
+                                        alt={cert.alt}
+                                    />
+                                    <Avatar.Fallback>
+                                        {cert.fallback}
+                                    </Avatar.Fallback>
+                                </Avatar.Root>
+                                <Flex direction="column" flexGrow={1} gap={0}>
+                                    <Heading
+                                        textStyle="heading"
+                                        fontSize="xl"
+                                        fontWeight="bold"
+                                        as="h2">
+                                        {cert.title}
+                                    </Heading>
+                                    <Text textStyle="body">
+                                        <Em>{cert.issuer}</Em>, {cert.year}
+                                    </Text>
+                                </Flex>
                             </Flex>
-                        </Flex>
-                        <List.Root gap={2} pl={4} textStyle="body">
-                            <List.Item>
-                                Mastered advanced verbal de-escalation
-                                strategies to identify, prevent, and mitigate
-                                workplace aggression and violence.
-                            </List.Item>
-                            <List.Item>
-                                {" "}
-                                Trained in the use of reasonable and appropriate
-                                force, including physical restraints, blocking,
-                                and disengaging techniques to ensure personal
-                                and customer safety.
-                            </List.Item>
-                            <List.Item>
-                                Proficient in legal and safe handcuffing
-                                procedures and suspect apprehension according to
-                                established retail security standards.
-                            </List.Item>
-                        </List.Root>
-                    </Card.Body>
-                </Card.Root>
-
-                <Card.Root
-                    transition="all 0.2s ease-in-out"
-                    _hover={{
-                        transform: "translateY(-2px)",
-                        shadow: "lg",
-                    }}>
-                    <Card.Body>
-                        <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
-                            <Avatar.Root size="xl">
-                                <Avatar.Image
-                                    src="/wz.png"
-                                    alt="Wicklander-Zulawski & Associates Logo"
-                                />
-                                <Avatar.Fallback>WZ</Avatar.Fallback>
-                            </Avatar.Root>
-                            <Flex direction="column" flexGrow={1} gap={0}>
-                                <Heading
-                                    textStyle="heading"
-                                    fontSize="xl"
-                                    fontWeight="bold"
-                                    as="h2">
-                                    Non-Confrontational Interview and
-                                    Interrogation Techniques
-                                </Heading>
-                                <Text textStyle="body">
-                                    <Em>Wicklander-Zulawski & Associates</Em>,
-                                    2017
-                                </Text>
-                            </Flex>
-                        </Flex>
-                        <List.Root gap={2} pl={4} textStyle="body">
-                            <List.Item textStyle="body">
-                                Completed intensive training in advanced
-                                interview and interrogation techniques, focusing
-                                on non-confrontational methods to elicit
-                                accurate and reliable information from subjects.
-                            </List.Item>
-                            <List.Item>
-                                Developed expertise in behavioral analysis,
-                                rapport-building, and ethical interviewing
-                                practices, enhancing investigative outcomes and
-                                ensuring compliance with legal standards.
-                            </List.Item>
-                            <List.Item>
-                                Applied learned techniques in real-world
-                                scenarios, contributing to successful
-                                investigations and improved security outcomes.
-                            </List.Item>
-                        </List.Root>
-                    </Card.Body>
-                </Card.Root>
+                            <List.Root gap={2} pl={4} textStyle="body">
+                                {cert.bullets.map((bullet, index) => (
+                                    <List.Item key={index}>{bullet}</List.Item>
+                                ))}
+                            </List.Root>
+                        </Card.Body>
+                    </Card.Root>
+                ))}
 
                 <ResumeCTA />
             </Flex>

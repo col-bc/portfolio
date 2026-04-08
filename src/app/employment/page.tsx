@@ -28,16 +28,16 @@ interface Employment {
 
 const history: Employment[] = [
     {
-        company: "Freelance",
-        role: "Full Stack Developer",
+        company: "Targeted Technologies",
+        role: "Full Stack Engineer",
         location: "Remote",
         dates: "Nov 2021 - Present",
         logo: null,
         logoAlt: "Freelance Developer",
         description: [
-            "Engineered responsive, secure, and accessible web applications tailored to strict client specifications and business requirements.",
-            "Maintained modern security standards and development best practices through proactive code updates, dependency management, and peer code reviews.",
-            "Utilized Git version control to manage complex codebases and facilitate seamless collaboration across distributed teams.",
+            "Engineered responsive, secure, and accessible web applications utilizing TypeScript and Next.js, tailoring features to strict client specifications.",
+            "Architected robust backend services and RESTful APIs using Python (Django/FastAPI) and SQL, applying strict database normalization to optimize data retrieval and system performance.",
+            "Managed complex version control operations utilizing Git and maintained Linux-based environments, enforcing security best practices through rigorous peer code reviews.",
         ],
     },
     {
@@ -49,7 +49,7 @@ const history: Employment[] = [
         logoAlt: "Target Corporation Logo",
         description: [
             "Audited operational procedures and physical inventory data to identify systemic vulnerabilities and mitigate corporate liability.",
-            "Conducted complex, high-stakes investigations requiring strict adherence to legal standards, company policy, and ethical compliance.",
+            "Conducted complex, high-stakes investigations requiring strict adherence to legal standards, company policy, and ethical compliance, and increased law enforcement response time by 15%.",
             "Partnered with cross-functional teams and external law enforcement to resolve security escalations and neutralize physical and financial risks.",
         ],
     },
@@ -61,7 +61,7 @@ const history: Employment[] = [
         logo: "/red_dirt_equipment.png",
         logoAlt: "Red Dirt Equipment Logo",
         description: [
-            "Analyzed financial and operational data across sales, service, accounting, and rentals to pinpoint underperforming areas, while simultaneously managing IT systems to ensure the integrity and availability of critical business data.",
+            "Analyzed financial and operational data across sales, service, accounting, and rentals to pinpoint underperforming areas, while simultaneously managing IT systems to ensure the integrity and availability of critical business data, increasing profitability by 22%.",
             "Evaluated cross-departmental workflows to identify process gaps, designing and executing targeted action plans that improved overall organizational efficiency.",
             "Collaborated with external vendors to scope, develop, and implement customized software solutions, streamlining dealership operations and directly increasing profitability.",
         ],
@@ -74,9 +74,9 @@ const history: Employment[] = [
         logo: "/walmart.webp",
         logoAlt: "Walmart Inc. Logo",
         description: [
-            "Directed a 25-person risk management team, optimizing store profitability and achieving a record-low 0.75% annual shrinkage rate through data-driven operational audits.",
-            "Managed the full employee lifecycle for the department, including recruiting, coaching, and performance management to exceed high-level corporate metrics.",
-            "Developed and implemented comprehensive safety and security protocols, resulting in a 20% reduction in workplace incidents and ensuring strict regulatory compliance.",
+            "Analyzed complex inventory and Point of Sale (POS) data to identify anomalous trends, directing a 25-person team to execute targeted audits that achieved a record-low 0.75% annual shrinkage rate.",
+            "Investigated systemic vulnerabilities and procedural gaps, utilizing evidence-based interviewing techniques to resolve complex internal fraud cases, mitigate liability, and recover corporate assets.",
+            "Engineered data-driven risk mitigation protocols and managed physical security systems, driving a 20% reduction in workplace safety incidents while ensuring strict regulatory compliance.",
         ],
     },
     {
@@ -108,16 +108,10 @@ export default function Employment() {
                     </Flex>
                 </Heading>
 
-                {history.map((job: Employment, index) => (
+                {history.map((job) => (
                     <EmploymentItem
-                        key={index}
-                        company={job.company}
-                        role={job.role}
-                        location={job.location}
-                        dates={job.dates}
-                        logo={job.logo}
-                        logoAlt={job.logoAlt}
-                        description={job.description}
+                        key={`${job.company}-${job.role}`}
+                        {...job}
                     />
                 ))}
 
@@ -127,8 +121,15 @@ export default function Employment() {
     );
 }
 
-function EmploymentItem(data: Employment) {
-    const { company, role, location, dates, logo, logoAlt, description } = data;
+function EmploymentItem({
+    company,
+    role,
+    location,
+    dates,
+    logo,
+    logoAlt,
+    description,
+}: Employment) {
     return (
         <Card.Root
             transition="all 0.2s ease-in-out"

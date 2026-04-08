@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { TbCloudDownload } from "react-icons/tb";
 
 export default function ResumeCTA() {
@@ -14,7 +13,7 @@ export default function ResumeCTA() {
                 reference. Thank you for your interest!
             </Text>
             <Box>
-                <NextLink href="/Colby Cooper's Resume.pdf" download>
+                <Link href="/Colby%20Cooper's%20Resume.pdf" download>
                     <Button
                         size="lg"
                         variant="outline"
@@ -23,7 +22,7 @@ export default function ResumeCTA() {
                         shadowColor="teal.emphasized">
                         <TbCloudDownload /> Download My Resume
                     </Button>
-                </NextLink>
+                </Link>
             </Box>
         </Flex>
     );

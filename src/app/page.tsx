@@ -18,46 +18,46 @@ import {
     TbSchool,
 } from "react-icons/tb";
 
+const skillList = [
+    // Core Languages
+    "TypeScript",
+    "JavaScript",
+    "Python",
+    "Java",
+    "SQL",
+
+    // Frameworks & Backend Logic
+    "React",
+    "Next.js",
+    "Node.js",
+    "Django",
+    "FastAPI",
+    "Prisma",
+
+    // Architecture, Data & Integration
+    "PostgreSQL",
+    "NoSQL",
+    "RESTful APIs",
+    "System Integration",
+    "Database Design & Normalization",
+
+    // Infrastructure & DevOps
+    "GCP",
+    "Cloudflare",
+    "Docker",
+    "Linux",
+    "CI/CD",
+
+    // Security, Testing & Operations
+    "TCP/IP Networking",
+    "Cryptography",
+    "Data Integrity",
+    "Root-Cause Analysis",
+    "Agile Methodologies",
+    "Data Structures & Algorithms",
+];
+
 export default function Home() {
-    const skillList = [
-        // Core Languages
-        "TypeScript",
-        "JavaScript",
-        "Python",
-        "Java",
-        "SQL",
-
-        // Frameworks & Backend Logic
-        "React",
-        "Next.js",
-        "Node.js",
-        "Django",
-        "Flask",
-        "Prisma",
-
-        // Architecture, Data & Integration
-        "SQLite",
-        "NoSQL",
-        "GraphQL",
-        "RESTful APIs",
-        "System Integration",
-
-        // Infrastructure & DevOps
-        "GCP",
-        "Cloudflare",
-        "Docker",
-        "Linux",
-        "CI/CD",
-
-        // Security, Testing & Operations
-        "TCP/IP Networking",
-        "Cryptography",
-        "Data Integrity",
-        "Root-Cause Analysis",
-        "Test-Driven Development (TDD)",
-        "Agile Methodologies",
-    ];
-
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
             <Flex direction="column" gap={{ base: 8, md: 12, lg: 16 }}>
@@ -197,14 +197,28 @@ export default function Home() {
                     </Heading>
                     <Flex direction="column" gap={4}>
                         <Flex align="center" gap={4}>
-                            <Image src="USA.svg" alt="US Flag" w={10} />
+                            <Image
+                                src="USA.svg"
+                                alt="US Flag"
+                                w={{
+                                    base: 8,
+                                    md: 10,
+                                }}
+                            />
                             <Text fontSize="lg" color="fg.muted">
                                 Authorized to work for any employer in the
                                 United States without sponsorship.
                             </Text>
                         </Flex>
                         <Flex align="center" gap={4}>
-                            <Image src="Canada.svg" alt="Canada Flag" w={10} />
+                            <Image
+                                src="Canada.svg"
+                                alt="Canada Flag"
+                                w={{
+                                    base: 8,
+                                    md: 10,
+                                }}
+                            />
                             <Text fontSize="lg" color="fg.muted">
                                 Authorized to work for any employer in Canada
                                 without sponsorship.

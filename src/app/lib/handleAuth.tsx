@@ -3,10 +3,10 @@
  * @description This module contains functions for handling authentication and TOTP verification for the admin user.
  *
  * Sign in is a two-step process.
- *   1. AuthAttempt is submitted to the server with username, password, and Turnstile token.
- *   2. If the Turnstile token is valid and the credentials are correct, a TOTP session JWT is issued.
- *   3. The user submits a TOTP code, which is verified against the server while the TOTP session JWT is still valid.
- *   4. If the TOTP is valid, an authenticated admin session JWT is issued and the TOTP session JWT is invalidated.
+ * 1. AuthAttempt is submitted to the server with username, password, and Turnstile token.
+ * 2. If the Turnstile token is valid and the credentials are correct, a TOTP session JWT is issued.
+ * 3. The user submits a TOTP code, which is verified against the server while the TOTP session JWT is still valid.
+ * 4. If the TOTP is valid, an authenticated admin session JWT is issued and the TOTP session JWT is invalidated.
  *
  */
 
@@ -45,14 +45,17 @@ export async function handleAuthAttempt(data: AuthAttempt) {
     const formData = new URLSearchParams();
     formData.append("secret", secretKey);
     formData.append("response", data.turnstileToken);
+
     const verifyResponse = await fetch(
         "https://challenges.cloudflare.com/turnstile/v0/siteverify",
         {
             method: "POST",
             body: formData,
+            cache: "no-store",
         },
     );
     const verifyJson = await verifyResponse.json();
+
     // Reject the submission if Cloudflare says it's invalid
     if (!verifyJson.success) {
         console.error("Turnstile validation failed:", verifyJson);
@@ -88,14 +91,9 @@ export async function handleVerifyOtp(otp: string) {
         throw new Error("TOTP session not found");
     }
 
-    try {
-        await jwtVerify(
-            totpSession.value,
-            new TextEncoder().encode(process.env.SESSION_SECRET as string),
-        );
-    } catch (err) {
-        console.error("Invalid TOTP session:", err);
-        throw new Error("Invalid TOTP session. ");
+    const payload = await verifyJWT(totpSession.value);
+    if (!payload) {
+        throw new Error("Invalid or expired TOTP session.");
     }
 
     const totp = new OTPAuth.TOTP({
@@ -131,37 +129,19 @@ export async function handleVerifyOtp(otp: string) {
 }
 
 /**
- * Initializes the admin account by hashing the master password.
- * The hashed password should be stored in the environment variables.
- */
-// async function initAdminAccount() {
-//     // Initialize the admin account
-//     const saltRounds = 12;
-//     const myPassword = "your-master-password";
-
-//     const hash = await bcrypt.hash(myPassword, saltRounds);
-//     console.log("Hashed Master Password. Store this in .env:", hash);
-
-//     const myAdminEmail = "admin@colbyc.com";
-//     const hashedAdminEmail = await bcrypt.hash(myAdminEmail, saltRounds);
-//     console.log("Hashed Admin Email. Store this in .env:", hashedAdminEmail);
-// }
-
-/**
  * Authenticates the admin user with the provided credentials
  * @param data the authentication attempt containing username, password, and turnstile token
  * @returns true if authentication is successful, otherwise throws an error
  */
 async function authenticateAdmin(data: AuthAttempt) {
-    if (data.username !== process.env.ADMIN_EMAIL) {
-        throw new Error("Invalid credentials");
-    }
-    // await initAdminAccount();
+    const isEmailValid = data.username === process.env.ADMIN_EMAIL;
+
     const isPasswordValid = await bcrypt.compare(
         data.password,
         process.env.HASHED_ADMIN_PASSWORD as string,
     );
-    if (!isPasswordValid) {
+
+    if (!isEmailValid || !isPasswordValid) {
         throw new Error("Invalid credentials");
     }
 
@@ -213,17 +193,6 @@ export async function verifyJWT(token: string) {
         console.error("JWT verification failed:", err);
         return null;
     }
-}
-
-/** Checks if the session cookie exists and contains a valid, unexpired JWT */
-export async function getSessionStatus() {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("admin_session");
-    if (!sessionCookie || !sessionCookie.value) {
-        return false;
-    }
-    const payload = await verifyJWT(sessionCookie.value);
-    return payload !== null;
 }
 
 /** Destroys the session cookie and forces a redirect to the home page */
