@@ -21,14 +21,14 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { useState } from "react";
 import { TbCircleCheck, TbSend2 } from "react-icons/tb";
 
-// 1. Hoist the collection outside the render cycle
 const subjects = createListCollection({
     items: [
         { value: "general", label: "General Inquiry" },
         { value: "job", label: "Job Opportunity" },
         { value: "contract", label: "Contract / Freelance Work" },
         { value: "consulting", label: "Consulting Opportunity" },
-        { value: "collaboration", label: "Collaboration" }, // Normalized to lowercase
+        { value: "collaboration", label: "Collaboration" },
+        { value: "Bug Report", label: "Bug Report / Website Issue" },
         { value: "other", label: "Other" },
     ],
 });
@@ -45,7 +45,6 @@ export default function ContactForm() {
     const [error, setError] = useState<string | null>(null);
     const [sent, setSent] = useState(false);
 
-    // 2. Add loading state to prevent double-submissions
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function resetForm() {

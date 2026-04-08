@@ -1,14 +1,16 @@
 "use client";
 import {
+    Badge,
+    Box,
     Button,
     Card,
     Code,
     Container,
     Flex,
     Heading,
+    Link,
     Text,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { TbAlertTriangleFilled, TbArrowNarrowRight } from "react-icons/tb";
 
@@ -23,50 +25,49 @@ export default function NotFound() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center">
-            <Flex
-                h="100%"
-                direction="column"
-                align="center"
-                justify="center"
-                gap={{ base: 8, md: 12 }}
-                as="section">
-                <Card.Root
-                    w="100%"
-                    borderColor="border.error"
-                    boxShadow="sm"
-                    boxShadowColor="bg.error">
-                    <Card.Header>
-                        <Heading size="3xl" textStyle="heading">
-                            <Flex align="center" gap={4}>
-                                <TbAlertTriangleFilled size={32} />
-                                Page Not Found
-                            </Flex>
-                        </Heading>
-                    </Card.Header>
-                    <Card.Body gap={4}>
-                        <Heading size="lg" textStyle="heading">
+            <Card.Root maxW="md" textAlign="center" shadow="lg">
+                <Card.Header>
+                    <Flex
+                        align="center"
+                        justify="center"
+                        textStyle="heading"
+                        mb={4}>
+                        <TbAlertTriangleFilled size={64} />
+                    </Flex>
+                    <Heading size="3xl" textStyle="heading" mb={6}>
+                        Page Not Found
+                    </Heading>
+                </Card.Header>
+                <Card.Body>
+                    <Box mb={2}>
+                        <Badge size="lg" colorPalette="red">
                             HTTP Error 404
-                        </Heading>
-
-                        <Text>
-                            The page at <Code size="md">{path}</Code> does not
-                            exist. Please check the URL for errors or return to
-                            the homepage.
-                        </Text>
-                    </Card.Body>
-                    <Card.Footer>
-                        <NextLink href="/">
-                            <Button
-                                size="lg"
-                                colorPalette="teal"
-                                shadow="sm"
-                                shadowColor="teal.emphasized">
-                                Go Home <TbArrowNarrowRight />
-                            </Button>
-                        </NextLink>
-                    </Card.Footer>
-                </Card.Root>
-            </Flex>
+                        </Badge>
+                    </Box>
+                    <Text mb={4} textAlign="left" textStyle="body">
+                        The page at <Code size="md">{path}</Code> does not
+                        exist. Please check the URL for errors and try again. If
+                        you believe this is a mistake, please{" "}
+                        <Link
+                            href="https://github.com/col-bc/portfolio/issues/new"
+                            color="teal.fg">
+                            report the issue
+                        </Link>
+                        .
+                    </Text>
+                </Card.Body>
+                <Card.Footer>
+                    <Link href="/" _hover={{ textDecoration: "none" }}>
+                        <Button
+                            size="lg"
+                            colorPalette="teal"
+                            shadow="sm"
+                            shadowColor="teal.emphasized">
+                            Go Home <TbArrowNarrowRight />
+                        </Button>
+                    </Link>
+                </Card.Footer>
+            </Card.Root>
         </Container>
     );
 }

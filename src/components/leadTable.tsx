@@ -1,6 +1,6 @@
 "use client";
 import { getLeads } from "@/app/lib/handleLeads";
-import { Checkbox, Link, Spinner, Table, Tag } from "@chakra-ui/react";
+import { Checkbox, Link, Spinner, Table, Tag, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Lead } from "../../prisma/generated/prisma/client";
 
@@ -38,6 +38,14 @@ export default function LeadTable() {
                         <Table.Row>
                             <Table.Cell colSpan={7} textAlign="center">
                                 <Spinner size="lg" />
+                            </Table.Cell>
+                        </Table.Row>
+                    ) : leads.length === 0 ? (
+                        <Table.Row>
+                            <Table.Cell colSpan={7} textAlign="center">
+                                <Text textStyle="body" color="fg.muted">
+                                    No leads found.
+                                </Text>
                             </Table.Cell>
                         </Table.Row>
                     ) : (

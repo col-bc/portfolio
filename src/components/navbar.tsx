@@ -240,7 +240,7 @@ export default function Navbar() {
         <Flex
             ref={navbarRef}
             as="nav"
-            bg="bg.subtle"
+            bg="bg.panel"
             color="fg"
             position="sticky"
             top={0}
