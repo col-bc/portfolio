@@ -75,7 +75,7 @@ export default function ContactForm() {
             await handleContactForm({
                 name,
                 email: email || null,
-                phone: phone ? parseInt(phone.replace(/\D/g, "")) : null,
+                phone: phone || null,
                 preferredContactMethod: contactMethod as "email" | "phone",
                 organization: orgName,
                 subject: subject,
