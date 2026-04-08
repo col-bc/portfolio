@@ -2,7 +2,7 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ThemeProvider } from "@/theme";
-import { Box, Container, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { Inter, Lexend, Source_Code_Pro } from "next/font/google";
 import Script from "next/script";
@@ -93,18 +93,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 w="100%"
                                 position="relative"
                                 zIndex={1}>
-                                <Heading
-                                    textStyle="heading"
-                                    fontSize="4xl"
-                                    textDecoration="underline"
-                                    textDecorationColor="teal"
-                                    textDecorationStyle="wavy"
-                                    m={0}>
-                                    Colby Cooper
-                                </Heading>
-                                <Text fontSize="lg" color="fg.muted">
-                                    Technical Problem-Solver & Developer
-                                </Text>
+                                <Link
+                                    href="/"
+                                    _hover={{ textDecoration: "none" }}
+                                    w="fit"
+                                    display="flex"
+                                    flexDir="column"
+                                    alignItems="start">
+                                    <Heading
+                                        textStyle="heading"
+                                        fontSize="4xl"
+                                        textDecoration="underline"
+                                        textDecorationColor="teal"
+                                        textDecorationStyle="wavy"
+                                        m={0}>
+                                        Colby Cooper
+                                    </Heading>
+                                    <Text fontSize="lg" color="fg.muted">
+                                        Technical Problem-Solver & Developer
+                                    </Text>
+                                </Link>
                             </Container>
                             <Navbar />
                             <Flex
