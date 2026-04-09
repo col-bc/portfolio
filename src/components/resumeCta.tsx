@@ -13,13 +13,15 @@ export default function ResumeCTA() {
                 reference. Thank you for your interest!
             </Text>
             <Box>
-                <Link href="/Colby%20Cooper's%20Resume.pdf" download>
-                    <Button
-                        size="lg"
-                        variant="outline"
-                        colorPalette="teal"
-                        shadow="sm"
-                        shadowColor="teal.emphasized">
+                <Link
+                    href="/Colby%20Cooper's%20Resume.pdf"
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    _hover={{
+                        textDecor: "none",
+                    }}>
+                    <Button size="lg" variant="outline" colorPalette="teal">
                         <TbCloudDownload /> Download My Resume
                     </Button>
                 </Link>

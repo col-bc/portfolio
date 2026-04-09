@@ -86,8 +86,7 @@ export default function LeadTable() {
                                     <Checkbox.Root
                                         checked={lead.viewed}
                                         readOnly
-                                        variant="solid"
-                                        shadow="md">
+                                        variant="solid">
                                         <Checkbox.HiddenInput />
                                         <Checkbox.Control />
                                     </Checkbox.Root>

@@ -4,23 +4,23 @@ import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ThemeProvider } from "@/theme";
 import { Box, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import { Inter, Lexend, Source_Code_Pro } from "next/font/google";
+import { Fira_Code, Geist, Roboto_Flex } from "next/font/google";
 import Script from "next/script";
 
-const headingFont = Lexend({
+const headingFont = Geist({
     subsets: ["latin"],
     weight: ["400", "700"],
     variable: "--font-heading",
     display: "swap",
 });
 
-const bodyFont = Inter({
+const bodyFont = Roboto_Flex({
     subsets: ["latin"],
     variable: "--font-body",
     display: "swap",
 });
 
-const monoFont = Source_Code_Pro({
+const monoFont = Fira_Code({
     subsets: ["latin"],
     weight: ["400"],
     variable: "--font-mono",
@@ -81,7 +81,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 maxH="600px"
                                 borderRadius="50%"
                                 bg="rgba(32, 178, 170, 0.15)"
-                                filter="blur(120px)"
+                                filter="blur(140px)"
                                 pointerEvents="none"
                                 zIndex={0}
                             />
@@ -109,7 +109,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         m={0}>
                                         Colby Cooper
                                     </Heading>
-                                    <Text fontSize="lg" color="fg.muted">
+                                    <Text
+                                        fontSize="lg"
+                                        color="fg.muted"
+                                        fontWeight={500}
+                                        mb={2}>
                                         Technical Problem-Solver & Developer
                                     </Text>
                                 </Link>

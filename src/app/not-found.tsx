@@ -25,7 +25,11 @@ export default function NotFound() {
             flexDirection="column"
             alignItems="center"
             justifyContent="center">
-            <Card.Root maxW="md" textAlign="center" shadow="lg">
+            <Card.Root
+                maxW="md"
+                textAlign="center"
+                bg="bg.panel"
+                variant="elevated">
                 <Card.Header>
                     <Flex
                         align="center"
@@ -34,20 +38,23 @@ export default function NotFound() {
                         mb={4}>
                         <TbAlertTriangleFilled size={64} />
                     </Flex>
-                    <Heading size="3xl" textStyle="heading" mb={6}>
+                    <Heading size="3xl" textStyle="heading">
                         Page Not Found
                     </Heading>
                 </Card.Header>
                 <Card.Body>
                     <Box mb={2}>
-                        <Badge size="lg" colorPalette="red">
+                        <Badge size="lg" colorPalette="red" fontStyle="code">
                             HTTP Error 404
                         </Badge>
                     </Box>
                     <Text mb={4} textAlign="left" textStyle="body">
-                        The page at <Code size="md">{path}</Code> does not
-                        exist. Please check the URL for errors and try again. If
-                        you believe this is a mistake, please{" "}
+                        The page at{" "}
+                        <Code size="md" fontStyle="code">
+                            {path}
+                        </Code>{" "}
+                        does not exist. Please check the URL for errors and try
+                        again. If you believe this is a mistake, please{" "}
                         <Link
                             href="https://github.com/col-bc/portfolio/issues/new"
                             color="teal.fg">
@@ -58,11 +65,7 @@ export default function NotFound() {
                 </Card.Body>
                 <Card.Footer>
                     <Link href="/" _hover={{ textDecoration: "none" }}>
-                        <Button
-                            size="lg"
-                            colorPalette="teal"
-                            shadow="sm"
-                            shadowColor="teal.emphasized">
+                        <Button size="lg" colorPalette="teal">
                             Go Home <TbArrowNarrowRight />
                         </Button>
                     </Link>

@@ -49,7 +49,7 @@ export default function CodeSamples() {
     const activeSampleData = samples[currentSample];
 
     if (!mounted) {
-        return <Skeleton height="400px" width="100%" borderRadius="md" />;
+        return <Skeleton height="400px" width="100%" borderRadius="lg" />;
     }
 
     return (
