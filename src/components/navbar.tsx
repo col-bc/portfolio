@@ -44,42 +44,50 @@ function NavLinks() {
 
     return (
         <>
-            <Link
-                as={NextLink}
-                href="/"
-                spaceX={2}
-                color={isCurrentPath("/") ? "teal.fg" : "inherit"}
-                w={{ base: "100%", md: "auto" }}>
-                <TbHome />
-                <span>Home</span>
-            </Link>
-            <Link
-                as={NextLink}
-                href="/education"
-                spaceX={2}
-                color={isCurrentPath("/education") ? "teal.fg" : "inherit"}
-                w={{ base: "100%", md: "auto" }}>
-                <TbSchool />
-                <span>Education</span>
-            </Link>
-            <Link
-                as={NextLink}
-                href="/employment"
-                spaceX={2}
-                color={isCurrentPath("/employment") ? "teal.fg" : "inherit"}
-                w={{ base: "100%", md: "auto" }}>
-                <TbBriefcase2 />
-                Employment
-            </Link>
-            <Link
-                as={NextLink}
-                href="/contact"
-                spaceX={2}
-                color={isCurrentPath("/contact") ? "teal.fg" : "inherit"}
-                w={{ base: "100%", md: "auto" }}>
-                <TbMessage />
-                Contact
-            </Link>
+            <NextLink href="/">
+                <Button
+                    variant="ghost"
+                    spaceX={2}
+                    justifyContent={{ base: "left", md: "center" }}
+                    color={isCurrentPath("/") ? "teal.fg" : "inherit"}
+                    w={{ base: "100%", md: "auto" }}>
+                    <TbHome />
+                    <span>Home</span>
+                </Button>
+            </NextLink>
+            <NextLink href="/education">
+                <Button
+                    variant="ghost"
+                    spaceX={2}
+                    justifyContent={{ base: "left", md: "center" }}
+                    color={isCurrentPath("/education") ? "teal.fg" : "inherit"}
+                    w={{ base: "100%", md: "auto" }}>
+                    <TbSchool />
+                    <span>Education</span>
+                </Button>
+            </NextLink>
+            <NextLink href="/employment">
+                <Button
+                    variant="ghost"
+                    spaceX={2}
+                    justifyContent={{ base: "left", md: "center" }}
+                    color={isCurrentPath("/employment") ? "teal.fg" : "inherit"}
+                    w={{ base: "100%", md: "auto" }}>
+                    <TbBriefcase2 />
+                    <span>Employment</span>
+                </Button>
+            </NextLink>
+            <NextLink href="/contact">
+                <Button
+                    variant="ghost"
+                    spaceX={2}
+                    justifyContent={{ base: "left", md: "center" }}
+                    color={isCurrentPath("/contact") ? "teal.fg" : "inherit"}
+                    w={{ base: "100%", md: "auto" }}>
+                    <TbMessage />
+                    <span>Contact</span>
+                </Button>
+            </NextLink>
         </>
     );
 }
@@ -135,7 +143,7 @@ function Actions() {
             <Tooltip content="Get in touch">
                 <IconButton
                     aria-label="Get in touch"
-                    variant="ghost"
+                    variant="surface"
                     colorPalette="blackAlpha">
                     <NextLink href="/contact">
                         <TbSend />
@@ -143,11 +151,11 @@ function Actions() {
                 </IconButton>
             </Tooltip>
             {mounted ? (
-                <ColorModeButton variant="ghost" colorPalette="whiteAlpha" />
+                <ColorModeButton variant="surface" colorPalette="whiteAlpha" />
             ) : (
                 <IconButton
                     aria-label="Loading"
-                    variant="ghost"
+                    variant="surface"
                     colorPalette="whiteAlpha"
                     disabled
                     opacity={0.5}>
@@ -240,7 +248,8 @@ export default function Navbar() {
         <Flex
             ref={navbarRef}
             as="nav"
-            bg="bg.panel"
+            bg="bg.panel/80"
+            backdropFilter="blur(10px)"
             color="fg"
             position="sticky"
             top={0}
@@ -260,7 +269,7 @@ export default function Navbar() {
                         h="100%"
                         flex={1}
                         align="center"
-                        gap={8}
+                        gap={4}
                         color="fg">
                         <NavLinks />
                         <Box flexGrow={1} />
@@ -292,7 +301,7 @@ export default function Navbar() {
                                 <Flex
                                     direction="column"
                                     w="100%"
-                                    gap={4}
+                                    gap={2}
                                     py={4}
                                     zIndex={99}
                                     color="fg">

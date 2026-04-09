@@ -99,11 +99,10 @@ export default function Education() {
                                     (BS SWE)
                                 </Heading>
                                 <Text color="fg.muted" fontSize="md">
-                                    <Em>
-                                        Southern Polytechnic College of
-                                        Engineering and Engineering Technology
-                                    </Em>{" "}
-                                    at Kennesaw State University, 2027
+                                    College of Computing and Software
+                                    Engineering at{" "}
+                                    <Em>Kennesaw State University,</Em>
+                                    2027
                                 </Text>
                             </Box>
                         </Flex>
