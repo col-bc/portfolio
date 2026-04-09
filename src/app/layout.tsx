@@ -109,7 +109,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         m={0}>
                                         Colby Cooper
                                     </Heading>
-                                    <Text fontSize="lg" color="fg.muted">
+                                    <Text
+                                        fontSize="lg"
+                                        color="fg.muted"
+                                        fontWeight={500}
+                                        mb={2}>
                                         Technical Problem-Solver & Developer
                                     </Text>
                                 </Link>

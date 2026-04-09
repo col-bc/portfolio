@@ -141,22 +141,18 @@ function Actions() {
     return (
         <>
             <Tooltip content="Get in touch">
-                <IconButton
-                    aria-label="Get in touch"
-                    variant="surface"
-                    colorPalette="blackAlpha">
+                <IconButton aria-label="Get in touch" variant="ghost">
                     <NextLink href="/contact">
                         <TbSend />
                     </NextLink>
                 </IconButton>
             </Tooltip>
             {mounted ? (
-                <ColorModeButton variant="surface" colorPalette="whiteAlpha" />
+                <ColorModeButton variant="ghost" />
             ) : (
                 <IconButton
                     aria-label="Loading"
-                    variant="surface"
-                    colorPalette="whiteAlpha"
+                    variant="ghost"
                     disabled
                     opacity={0.5}>
                     <Spinner size="xs" />
@@ -248,8 +244,8 @@ export default function Navbar() {
         <Flex
             ref={navbarRef}
             as="nav"
-            bg="bg.panel/80"
-            backdropFilter="blur(10px)"
+            bg="bg.panel/60"
+            backdropFilter="saturate(180%) blur(10px)"
             color="fg"
             position="sticky"
             top={0}
@@ -269,7 +265,7 @@ export default function Navbar() {
                         h="100%"
                         flex={1}
                         align="center"
-                        gap={4}
+                        gap={2}
                         color="fg">
                         <NavLinks />
                         <Box flexGrow={1} />

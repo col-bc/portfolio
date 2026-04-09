@@ -20,7 +20,7 @@ interface Employment {
     company: string;
     role: string;
     location: string;
-    dates: string;
+    dates: [Date, Date];
     logo?: string | null;
     logoAlt?: string;
     description: string[];
@@ -31,7 +31,7 @@ const history: Employment[] = [
         company: "Targeted Technologies",
         role: "Full Stack Engineer",
         location: "Remote",
-        dates: "Nov 2021 - Present",
+        dates: [new Date("2021-11-01"), new Date()],
         logo: null,
         logoAlt: "Freelance Developer",
         description: [
@@ -41,10 +41,23 @@ const history: Employment[] = [
         ],
     },
     {
+        company: "Catalyst  Brands",
+        role: "Asset Protection Associate",
+        location: "Metro Atlanta Area",
+        dates: [new Date("2026-04-01"), new Date()],
+        logo: "catalyst_brands.jpg",
+        logoAlt: "Catalyst Brands Logo",
+        description: [
+            "Conducted comprehensive audits of inventory management and loss prevention protocols, identifying systemic vulnerabilities and implementing corrective action plans to mitigate financial risk.",
+            "Executed complex investigations into internal and external theft, utilizing evidence-based interviewing techniques and collaborating with law enforcement to resolve escalations and recover assets.",
+            "Maintained strict adherence to company policies and legal standards while providing exceptional customer service and support in a fast-paced retail environment.",
+        ],
+    },
+    {
         company: "Target Corporation",
         role: "Assets Protection Specialist",
         location: "Metro Atlanta Area",
-        dates: "Oct 2025 - March 2026",
+        dates: [new Date("2025-10-01"), new Date("2026-03-31")],
         logo: "/target.jpg",
         logoAlt: "Target Corporation Logo",
         description: [
@@ -57,7 +70,7 @@ const history: Employment[] = [
         company: "Red Dirt Equipment",
         role: "Business Analyst",
         location: "Remote, FL",
-        dates: "Jan 2020 - Mar 2025",
+        dates: [new Date("2020-01-01"), new Date("2025-03-31")],
         logo: "/red_dirt_equipment.png",
         logoAlt: "Red Dirt Equipment Logo",
         description: [
@@ -70,7 +83,7 @@ const history: Employment[] = [
         company: "Walmart Inc.",
         role: "Assistant Store Manager, Asset Protection",
         location: "Charlotte, NC",
-        dates: "Jun 2017 - Nov 2021",
+        dates: [new Date("2017-06-01"), new Date("2021-11-30")],
         logo: "/walmart.webp",
         logoAlt: "Walmart Inc. Logo",
         description: [
@@ -83,7 +96,7 @@ const history: Employment[] = [
         company: "Walmart Inc.",
         role: "Asset Protection Associate",
         location: "Duluth, GA",
-        dates: "Jul 2016 - Jun 2017",
+        dates: [new Date("2016-07-01"), new Date("2017-06-30")],
         logo: "/walmart.webp",
         logoAlt: "Walmart Inc. Logo",
         description: [
@@ -130,13 +143,33 @@ function EmploymentItem({
     logoAlt,
     description,
 }: Employment) {
+    function formattedDate(d: Date) {
+        return d.toLocaleString("en-US", {
+            month: "short",
+            year: "numeric",
+        });
+    }
+
+    function elapsedTime(start: Date, end: Date) {
+        const totalMonths =
+            (end.getFullYear() - start.getFullYear()) * 12 +
+            (end.getMonth() - start.getMonth());
+        const years = Math.floor(totalMonths / 12);
+        const months = totalMonths % 12;
+        return `${years > 0 ? `${years} yr${years > 1 ? "s" : ""} ` : ""}${
+            months > 0 ? `${months} mo${months > 1 ? "s" : ""}` : ""
+        }`.trim();
+    }
+
     return (
         <Card.Root
             transition="all 0.2s ease-in-out"
             _hover={{
-                transform: "translateY(-2px)",
-                shadow: "lg",
-            }}>
+                transform: "translateY(-4px)",
+                shadow: "xl",
+            }}
+            variant="elevated"
+            bg="bg.panel">
             <Card.Body>
                 <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>
                     <Avatar.Root size="xl">
@@ -151,7 +184,10 @@ function EmploymentItem({
                             {role}
                         </Heading>
                         <Text textStyle="body">
-                            <Em>{company}</Em>, {location} | {dates}
+                            <Em>{company}</Em>, {location} |{" "}
+                            {formattedDate(dates[0])} -{" "}
+                            {formattedDate(dates[1])} (
+                            {elapsedTime(dates[0], dates[1])})
                         </Text>
                     </Flex>
                 </Flex>

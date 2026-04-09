@@ -127,7 +127,6 @@ export default function AuthForm({ ...rest }: FlexProps) {
                             name="username"
                             autoComplete="username"
                             placeholder="Enter your email"
-                            shadow="xs"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
@@ -145,7 +144,6 @@ export default function AuthForm({ ...rest }: FlexProps) {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             colorPalette="teal"
-                            shadow="xs"
                         />
                     </Field.Root>
                 </>
@@ -165,7 +163,6 @@ export default function AuthForm({ ...rest }: FlexProps) {
                         value={otp}
                         onChange={(e) => updateOtp(e.target.value)}
                         mb={2}
-                        shadow="xs"
                     />
                 </Field.Root>
             )}
@@ -186,7 +183,6 @@ export default function AuthForm({ ...rest }: FlexProps) {
             <Button
                 type="submit"
                 colorPalette="teal"
-                shadow="sm"
                 loading={isSubmitting}
                 disabled={isSubmitting || (step === "auth" && !turnstileToken)}>
                 {step === "auth" ? "Sign In" : "Verify"}

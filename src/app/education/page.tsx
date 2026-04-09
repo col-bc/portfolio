@@ -58,8 +58,8 @@ const certifications = [
 ];
 
 const cardHoverStyles = {
-    transform: "translateY(-2px)",
-    shadow: "lg",
+    transform: "translateY(-4px)",
+    shadow: "xl",
 };
 
 export default function Education() {
@@ -78,6 +78,8 @@ export default function Education() {
 
                 <Card.Root
                     transition="all 0.2s ease-in-out"
+                    variant="elevated"
+                    bg="bg.panel"
                     _hover={cardHoverStyles}>
                     <Card.Body>
                         <Flex gap={4} align="start" mb={{ base: 2, md: 4 }}>
@@ -150,6 +152,8 @@ export default function Education() {
                     <Card.Root
                         key={cert.title}
                         transition="all 0.2s ease-in-out"
+                        variant="elevated"
+                        bg="bg.panel"
                         _hover={cardHoverStyles}>
                         <Card.Body>
                             <Flex align="start" gap={4} mb={{ base: 2, md: 4 }}>

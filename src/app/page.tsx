@@ -127,7 +127,7 @@ export default function Home() {
                                 <Avatar.Root
                                     colorPalette="teal"
                                     boxSize={60}
-                                    border="6px solid"
+                                    border="8px solid"
                                     borderColor="teal.focusRing">
                                     <Avatar.Image
                                         src="/headshot.jpg"
@@ -144,10 +144,7 @@ export default function Home() {
                                     md: "flex-start",
                                 }}>
                                 <NextLink href="/contact">
-                                    <Button
-                                        colorPalette="teal"
-                                        shadow="sm"
-                                        shadowColor="teal.emphasized">
+                                    <Button colorPalette="teal">
                                         <TbMessage />
                                         Get in Touch
                                     </Button>
@@ -155,7 +152,9 @@ export default function Home() {
                                 <NextLink
                                     href="/Colby Cooper's Resume.pdf"
                                     download>
-                                    <Button colorPalette="teal" variant="ghost">
+                                    <Button
+                                        colorPalette="teal"
+                                        variant="surface">
                                         <TbCloudDownload />
                                         Download Resume
                                     </Button>
