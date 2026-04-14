@@ -1,5 +1,6 @@
 "use client";
 
+import { logoutAdmin } from "@/app/lib/handleAuth";
 import { getLeadById, updateLead } from "@/app/lib/handleLeads";
 import { CheckboxCheckedChangeDetails, Field } from "@ark-ui/react";
 import {
@@ -26,11 +27,16 @@ export function LeadDetailForm({ slug }: { slug: string }) {
      */
     useEffect(() => {
         async function fetchLeadDetail() {
-            try {
-                setDetail(await getLeadById(parseInt(slug)));
-            } finally {
-                setLoading(false);
+            const result = await getLeadById(Number(slug));
+            if (result.success) {
+                setDetail(result.data);
+            } else {
+                setDetail(null);
+                if (result.type === "UNAUTHORIZED") {
+                    await logoutAdmin();
+                }
             }
+            setLoading(false);
         }
         fetchLeadDetail();
     }, [slug]);
@@ -45,13 +51,26 @@ export function LeadDetailForm({ slug }: { slug: string }) {
 
         if (detail) {
             setDetail({ ...detail, viewed: !!checked });
-            await updateLead(detail.id, { viewed: !!checked });
-            toaster.create({
-                title: "Lead Updated",
-                description: `The lead has been marked as ${!!checked ? "viewed" : "not viewed"}.`,
-                closable: true,
-                type: "success",
-            });
+            const result = await updateLead(detail.id, { viewed: !!checked });
+            if (result.success) {
+                toaster.create({
+                    title: "Lead Updated",
+                    description: `The lead has been marked as ${!!checked ? "viewed" : "not viewed"}.`,
+                    closable: true,
+                    type: "success",
+                });
+            } else {
+                if (result.type === "UNAUTHORIZED") {
+                    await logoutAdmin();
+                }
+                setDetail({ ...detail, viewed: !checked });
+                toaster.create({
+                    title: "Error Updating Lead",
+                    description: result.error,
+                    closable: true,
+                    type: "error",
+                });
+            }
         }
     }
 

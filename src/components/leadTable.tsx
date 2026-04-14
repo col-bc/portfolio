@@ -1,4 +1,5 @@
 "use client";
+import { logoutAdmin } from "@/app/lib/handleAuth";
 import { getLeads } from "@/app/lib/handleLeads";
 import { Checkbox, Link, Spinner, Table, Tag, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -11,7 +12,19 @@ export default function LeadTable() {
     useEffect(() => {
         async function fetchLeads() {
             setLoading(true);
-            setLeads(await getLeads());
+            const response = await getLeads();
+            if (response.success) {
+                setLeads(
+                    response.data.sort(
+                        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+                    ),
+                );
+            } else {
+                if (response.type === "UNAUTHORIZED") {
+                    setLeads([]);
+                    await logoutAdmin();
+                }
+            }
             setLoading(false);
         }
 
@@ -19,8 +32,8 @@ export default function LeadTable() {
     }, []);
 
     return (
-        <Table.ScrollArea borderWidth="1px" rounded="md">
-            <Table.Root>
+        <Table.ScrollArea borderWidth="1px">
+            <Table.Root variant="outline">
                 <Table.Header>
                     <Table.Row>
                         <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -52,7 +65,8 @@ export default function LeadTable() {
                         leads.map((lead) => (
                             <Table.Row key={lead.id}>
                                 <Table.Cell>
-                                    <Link href={`/auth/leads/${lead.id}`}>
+                                    <Link
+                                        href={`/auth/manage/leads/${lead.id}`}>
                                         {lead.id}
                                     </Link>
                                 </Table.Cell>

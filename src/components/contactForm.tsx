@@ -70,27 +70,24 @@ export default function ContactForm() {
 
         setIsSubmitting(true);
 
-        try {
-            await handleContactForm({
-                name,
-                email: email || null,
-                phone: phone || null,
-                preferredContactMethod: contactMethod as "email" | "phone",
-                organization: orgName,
-                subject: subject,
-                message: message,
-                turnstileToken: turnstileToken,
-            });
-            setSent(true);
-            resetForm();
-        } catch (error) {
-            console.error("Error submitting contact form:", error);
-            setError(
-                "There was an error submitting the form. Please try again later.",
-            );
-        } finally {
+        const result = await handleContactForm({
+            name,
+            email: email || null,
+            phone: phone || null,
+            preferredContactMethod: contactMethod as "email" | "phone",
+            organization: orgName,
+            subject: subject,
+            message: message,
+            turnstileToken: turnstileToken,
+        });
+        if (!result.success) {
+            setError(result.error);
             setIsSubmitting(false);
+            return;
         }
+        setSent(true);
+        resetForm();
+        setIsSubmitting(false);
     }
 
     return (
@@ -250,7 +247,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Box rounded="xl">
+                        <Box>
                             <Turnstile
                                 siteKey="0x4AAAAAACrt5VbunM62aYIZ"
                                 onSuccess={(token) => {

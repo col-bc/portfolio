@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Ignore private_assets contents
+/private_assets/*
+
+# BUT do not ignore the .gitkeep file!
+!/private_assets/.gitkeep
+
 # dependencies
 /node_modules
 /.pnp

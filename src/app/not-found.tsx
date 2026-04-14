@@ -11,11 +11,17 @@ import {
     Link,
     Text,
 } from "@chakra-ui/react";
-import { usePathname } from "next/navigation";
-import { TbAlertTriangleFilled, TbArrowNarrowRight } from "react-icons/tb";
+import { usePathname, useRouter } from "next/navigation";
+import {} from "next/router";
+import {
+    TbAlertTriangleFilled,
+    TbArrowNarrowLeft,
+    TbArrowNarrowRight,
+} from "react-icons/tb";
 
 export default function NotFound() {
     const path = usePathname();
+    const router = useRouter();
     return (
         <Container
             maxW="4xl"
@@ -64,11 +70,17 @@ export default function NotFound() {
                     </Text>
                 </Card.Body>
                 <Card.Footer>
-                    <Link href="/" _hover={{ textDecoration: "none" }}>
-                        <Button size="lg" colorPalette="teal">
-                            Go Home <TbArrowNarrowRight />
+                    <Flex align="center" justify="space-between" w="100%">
+                        <Button onClick={() => router.back()}>
+                            <TbArrowNarrowLeft />
+                            Go Back
                         </Button>
-                    </Link>
+                        <Link href="/" _hover={{ textDecoration: "none" }}>
+                            <Button size="lg" colorPalette="teal">
+                                Go Home <TbArrowNarrowRight />
+                            </Button>
+                        </Link>
+                    </Flex>
                 </Card.Footer>
             </Card.Root>
         </Container>

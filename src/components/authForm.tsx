@@ -47,20 +47,26 @@ export default function AuthForm({ ...rest }: FlexProps) {
             return;
         }
         setIsSubmitting(true);
-        try {
-            await handleAuthAttempt({ username, password, turnstileToken });
-            setTurnstileToken(null);
-            setStep("otp");
-        } catch {
-            setError("Invalid username or password.");
-        } finally {
-            setIsSubmitting(false);
-            setUsername("");
-            setPassword("");
-            setOtp("");
+        const result = await handleAuthAttempt({
+            username,
+            password,
+            turnstileToken,
+        });
+        if (!result.success) {
+            setError(result.error || "Invalid username or password.");
             setTurnstileToken(null);
             turnstileRef.current?.reset();
+            setPassword("");
+            setIsSubmitting(false);
+            return;
         }
+        setTurnstileToken(null);
+        setStep("otp");
+        setIsSubmitting(false);
+        setUsername("");
+        setPassword("");
+        setOtp("");
+        turnstileRef.current?.reset();
     }
 
     /**
@@ -77,23 +83,14 @@ export default function AuthForm({ ...rest }: FlexProps) {
             return;
         }
         setIsSubmitting(true);
-        try {
-            await handleVerifyOtp(otp);
-        } catch (err) {
-            // Do not treat Next.js redirect errors as OTP failures.
-            if (
-                err instanceof Error &&
-                "digest" in err &&
-                err.digest === "NEXT_REDIRECT"
-            ) {
-                throw err;
-            }
-            console.error("OTP verification failed:", err);
-            setError("Invalid OTP.");
-        } finally {
-            setIsSubmitting(false);
+        const result = await handleVerifyOtp(otp);
+        if (!result.success) {
+            setError(result.error || "Invalid OTP.");
             setOtp("");
+            setIsSubmitting(false);
+            return;
         }
+        setIsSubmitting(false);
     }
 
     return (

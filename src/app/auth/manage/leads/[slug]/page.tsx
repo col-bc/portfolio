@@ -1,13 +1,5 @@
 import { LeadDetailForm } from "@/components/leadDetailForm";
-import {
-    Box,
-    Breadcrumb,
-    Code,
-    Container,
-    Flex,
-    Heading,
-    Text,
-} from "@chakra-ui/react";
+import { Box, Code, Container, Flex, Heading, Text } from "@chakra-ui/react";
 import { Metadata } from "next";
 import { TbFlag } from "react-icons/tb";
 
@@ -25,22 +17,6 @@ export default async function LeadDetail({
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
             <Flex direction="column" gap={{ base: 8, md: 12 }} as="section">
-                <Breadcrumb.Root>
-                    <Breadcrumb.List>
-                        <Breadcrumb.Item>
-                            <Breadcrumb.Link href="/leads">
-                                All Leads
-                            </Breadcrumb.Link>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Separator />
-                        <Breadcrumb.Item>
-                            <Breadcrumb.CurrentLink>
-                                Lead {slug} Details
-                            </Breadcrumb.CurrentLink>
-                        </Breadcrumb.Item>
-                    </Breadcrumb.List>
-                </Breadcrumb.Root>
-
                 <Box>
                     <Heading size="3xl" textStyle="heading">
                         <Flex align="center" gap={4}>

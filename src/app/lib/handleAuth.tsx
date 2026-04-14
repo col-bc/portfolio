@@ -11,8 +11,9 @@
  */
 
 "use server";
+import { ActionState } from "@/types";
 import bcrypt from "bcrypt";
-import { jwtVerify, SignJWT } from "jose";
+import { JWTPayload, jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import * as OTPAuth from "otpauth";
@@ -31,14 +32,18 @@ export interface AuthAttempt {
 /**
  * Handles an authentication attempt by verifying the Turnstile token and authenticating the admin user
  * @param data the authentication attempt containing username, password, and turnstile token
- * @returns an object with a success property if authentication is successful, otherwise throws an error
+ * @returns {ActionState<void>} an object indicating the success or failure of the authentication attempt
  */
-export async function handleAuthAttempt(data: AuthAttempt) {
+export async function handleAuthAttempt(
+    data: AuthAttempt,
+): Promise<ActionState<void>> {
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
-        throw new Error(
-            "Server configuration error: Turnstile secret missing.",
-        );
+        return {
+            success: false,
+            error: "Server configuration error: Turnstile secret missing.",
+            type: "UNKNOWN",
+        };
     }
 
     // Verify the Turnstile token with Cloudflare's API
@@ -59,11 +64,16 @@ export async function handleAuthAttempt(data: AuthAttempt) {
     // Reject the submission if Cloudflare says it's invalid
     if (!verifyJson.success) {
         console.error("Turnstile validation failed:", verifyJson);
-        throw new Error("CAPTCHA verification failed.");
+        return {
+            success: false,
+            error: "CAPTCHA validation failed. Please try again.",
+            type: "VALIDATION",
+        };
     }
 
     // authenticate and issue a JWT for the TOTP session
-    if (await authenticateAdmin(data)) {
+    const authResult = await authenticateAdmin(data);
+    if (authResult.success) {
         const jwt = await issueJWT({ username: "admin" }, "3m");
         // Save the jwt in a cookie for the TOTP session
         (await cookies()).set("totp_session", jwt, {
@@ -73,10 +83,13 @@ export async function handleAuthAttempt(data: AuthAttempt) {
             path: "/",
             maxAge: 60 * 3, // 3 minutes
         });
-
-        return { success: true };
+        return { success: true, data: undefined };
     }
-    return { success: false };
+    return {
+        success: false,
+        error: "Authentication failed",
+        type: "UNAUTHORIZED",
+    };
 }
 
 /**
@@ -84,16 +97,24 @@ export async function handleAuthAttempt(data: AuthAttempt) {
  * @param otp the TOTP to verify
  * @returns a redirect to the leads page if the OTP is valid, otherwise throws an error
  */
-export async function handleVerifyOtp(otp: string) {
+export async function handleVerifyOtp(otp: string): Promise<ActionState<void>> {
     //validate the totp session
     const totpSession = (await cookies()).get("totp_session");
     if (!totpSession) {
-        throw new Error("TOTP session not found");
+        return {
+            success: false,
+            error: "TOTP session not found",
+            type: "UNAUTHORIZED",
+        };
     }
 
     const payload = await verifyJWT(totpSession.value);
     if (!payload) {
-        throw new Error("Invalid or expired TOTP session.");
+        return {
+            success: false,
+            error: "Invalid or expired TOTP session.",
+            type: "UNAUTHORIZED",
+        };
     }
 
     const totp = new OTPAuth.TOTP({
@@ -121,10 +142,14 @@ export async function handleVerifyOtp(otp: string) {
             path: "/",
             maxAge: 60 * 60 * 2, // 2 hours
         });
-        return redirect("/auth/leads");
+        return redirect("/auth/manage");
     } else {
         console.error("OTP validation failed:", otp);
-        throw new Error("Invalid OTP");
+        return {
+            success: false,
+            error: "Invalid OTP",
+            type: "UNAUTHORIZED",
+        };
     }
 }
 
@@ -133,7 +158,9 @@ export async function handleVerifyOtp(otp: string) {
  * @param data the authentication attempt containing username, password, and turnstile token
  * @returns true if authentication is successful, otherwise throws an error
  */
-async function authenticateAdmin(data: AuthAttempt) {
+async function authenticateAdmin(
+    data: AuthAttempt,
+): Promise<ActionState<void>> {
     const isEmailValid = data.username === process.env.ADMIN_EMAIL;
 
     const isPasswordValid = await bcrypt.compare(
@@ -142,10 +169,14 @@ async function authenticateAdmin(data: AuthAttempt) {
     );
 
     if (!isEmailValid || !isPasswordValid) {
-        throw new Error("Invalid credentials");
+        return {
+            success: false,
+            error: "Invalid username or password",
+            type: "UNAUTHORIZED",
+        };
     }
 
-    return true;
+    return { success: true, data: undefined };
 }
 
 /**
@@ -154,10 +185,10 @@ async function authenticateAdmin(data: AuthAttempt) {
  * @param duration the duration for which the JWT is valid (e.g., "2h" for 2 hours)
  * @returns the signed JWT token
  */
-export async function issueJWT(
+async function issueJWT(
     payload: Record<string, unknown>,
     duration: string,
-) {
+): Promise<string> {
     const secret = process.env.SESSION_SECRET;
     if (!secret) {
         throw new Error("JWT secret is not defined");
@@ -178,25 +209,35 @@ export async function issueJWT(
  * @param token the JWT token to verify
  * @returns the payload if the token is valid, otherwise null
  */
-export async function verifyJWT(token: string) {
+export async function verifyJWT(
+    token: string,
+): Promise<ActionState<JWTPayload>> {
     const secret = process.env.SESSION_SECRET;
     if (!secret) {
-        throw new Error("JWT secret is not defined");
+        return {
+            success: false,
+            error: "JWT secret is not defined",
+            type: "UNKNOWN",
+        };
     }
     try {
         const { payload } = await jwtVerify(
             token,
             new TextEncoder().encode(secret),
         );
-        return payload;
+        return { success: true, data: payload };
     } catch (err) {
         console.error("JWT verification failed:", err);
-        return null;
+        return {
+            success: false,
+            error: "Invalid or expired token",
+            type: "UNAUTHORIZED",
+        };
     }
 }
 
 /** Destroys the session cookie and forces a redirect to the home page */
-export async function logoutAdmin() {
+export async function logoutAdmin(): Promise<void> {
     (await cookies()).delete("admin_session");
     redirect("/");
 }
@@ -205,7 +246,7 @@ export async function logoutAdmin() {
  * Verifies if the current session is valid by checking the admin_session cookie and its JWT.
  * @returns true if the session is valid, otherwise false
  */
-export async function verifySession() {
+export async function verifySession(): Promise<boolean> {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("admin_session");
     if (!sessionCookie || !sessionCookie.value) {
