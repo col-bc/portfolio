@@ -14,10 +14,8 @@ export default function ResumeCTA() {
             </Text>
             <Box>
                 <Link
-                    href="/Colby%20Cooper's%20Resume.pdf"
-                    download
+                    href="/api/resume"
                     target="_blank"
-                    rel="noopener noreferrer"
                     _hover={{
                         textDecor: "none",
                     }}>

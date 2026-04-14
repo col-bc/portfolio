@@ -149,9 +149,7 @@ export default function Home() {
                                         Get in Touch
                                     </Button>
                                 </NextLink>
-                                <NextLink
-                                    href="/Colby Cooper's Resume.pdf"
-                                    download>
+                                <NextLink href="/api/resume" target="_blank">
                                     <Button
                                         colorPalette="teal"
                                         variant="surface">

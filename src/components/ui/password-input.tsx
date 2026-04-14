@@ -128,7 +128,6 @@ export const PasswordStrengthMeter = React.forwardRef<
                         key={index}
                         height="1"
                         flex="1"
-                        rounded="sm"
                         data-selected={index < value ? "" : undefined}
                         layerStyle="fill.subtle"
                         colorPalette="gray"
