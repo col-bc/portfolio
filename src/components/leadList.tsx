@@ -59,7 +59,7 @@ export default function LeadList() {
     return (
         <>
             {leads.map((lead: Lead) => (
-                <Card.Root key={lead.id} as="article">
+                <Card.Root key={lead.id} as="article" mb={4}>
                     <Card.Header>
                         <Card.Title justifyContent="space-between">
                             <Flex>
@@ -83,7 +83,7 @@ export default function LeadList() {
                     <Card.Body>
                         <Grid
                             templateColumns="repeat(auto-fit, minmax(200px, 1fr))"
-                            gap={2}>
+                            gap={4}>
                             <GridItem>
                                 <LeadDataItem
                                     label="Received"
