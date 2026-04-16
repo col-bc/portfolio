@@ -47,7 +47,7 @@ export function ResumeForm() {
                 </Box>
             )}
             <Field.Root>
-                <FileUpload.Root maxFiles={1} mb={6}>
+                <FileUpload.Root maxFiles={1}>
                     <Field.Label h="fit-content">Upload New Resume</Field.Label>
                     <Flex align="center" w="full" gap={4}>
                         <InputGroup

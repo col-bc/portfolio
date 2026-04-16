@@ -7,6 +7,7 @@ import {
     Alert,
     Box,
     Button,
+    Card,
     createListCollection,
     Field,
     Flex,
@@ -33,17 +34,28 @@ const subjects = createListCollection({
     ],
 });
 
+const formatPhoneNumber = (value: string) => {
+    if (!value) return value;
+    const num = value.replace(/[^\d]/g, "");
+    const numLen = num.length;
+    if (numLen < 4) return num;
+    if (numLen < 7) {
+        return `(${num.slice(0, 3)}) ${num.slice(3)}`;
+    }
+    return `(${num.slice(0, 3)}) ${num.slice(3, 6)}-${num.slice(6, 10)}`;
+};
+
 export default function ContactForm() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
     const [contactMethod, setContactMethod] = useState<string | null>("email");
-    const [orgName, setOrgName] = useState("");
-    const [subject, setSubject] = useState("");
-    const [message, setMessage] = useState("");
+    const [orgName, setOrgName] = useState<string>("");
+    const [subject, setSubject] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
     const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [sent, setSent] = useState(false);
+    const [sent, setSent] = useState<boolean>(false);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -93,26 +105,40 @@ export default function ContactForm() {
     return (
         <Flex direction="column" gap={8} id="contact" align="center">
             {sent ? (
-                <Flex
-                    direction="column"
-                    gap={4}
-                    alignItems="center"
+                <Card.Root
+                    as="section"
+                    variant="subtle"
                     maxW="lg"
-                    w="100%">
-                    <Avatar.Root>
-                        <TbCircleCheck size={64} color="green" />
-                    </Avatar.Root>
-                    <Heading size="xl" textStyle="heading">
-                        Message Sent!
-                    </Heading>
-                    <Text fontSize="lg" color="fg.muted">
-                        Thank you for reaching out. I&apos;ll get back to you as
-                        soon as possible.
-                    </Text>
-                    <Button colorPalette="teal" onClick={() => setSent(false)}>
-                        Send Another Message
-                    </Button>
-                </Flex>
+                    w="100%"
+                    textAlign="center">
+                    <Card.Body gap={6}>
+                        <Flex
+                            direction="column"
+                            gap={4}
+                            alignItems="center"
+                            maxW="lg"
+                            w="100%">
+                            <Avatar.Root>
+                                <TbCircleCheck size={64} color="green" />
+                            </Avatar.Root>
+                            <Heading size="xl" textStyle="heading">
+                                Message Sent!
+                            </Heading>
+                            <Text
+                                fontSize="lg"
+                                color="fg.muted"
+                                textAlign="center">
+                                Thank you for reaching out. I&apos;ll get back
+                                to you as soon as possible.
+                            </Text>
+                            <Button
+                                colorPalette="teal"
+                                onClick={() => setSent(false)}>
+                                Send Another Message
+                            </Button>
+                        </Flex>
+                    </Card.Body>
+                </Card.Root>
             ) : (
                 <form
                     onSubmit={handleSubmit}
@@ -168,7 +194,7 @@ export default function ContactForm() {
                             <Input
                                 type="tel"
                                 placeholder="(123) 456-7890"
-                                value={phone}
+                                value={formatPhoneNumber(phone)}
                                 onChange={(e) => setPhone(e.target.value)}
                             />
                         </Field.Root>

@@ -1,4 +1,4 @@
-import LeadTable from "@/components/leadTable";
+import LeadTable from "@/components/leadList";
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import { Metadata } from "next";
 import { TbFlag } from "react-icons/tb";

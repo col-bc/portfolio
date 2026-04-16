@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
     TbBriefcase2,
-    TbFlag,
+    TbBrowser,
     TbHome,
     TbLockOpen,
     TbLogout,
@@ -159,36 +159,34 @@ function Actions() {
                 </IconButton>
             )}
             {isAuth && (
-                <Tooltip content="Admin Panel">
-                    <Menu.Root>
-                        <Menu.Trigger asChild>
-                            <IconButton
-                                aria-label="Admin Panel"
-                                variant="surface"
-                                colorPalette="red">
-                                <TbLockOpen size={16} />
-                            </IconButton>
-                        </Menu.Trigger>
-                        <Portal>
-                            <Menu.Positioner>
-                                <Menu.Content textStyle="body">
-                                    <Menu.Item value="leads" asChild>
-                                        <Link as={NextLink} href="/auth/leads">
-                                            <TbFlag />
-                                            Leads
-                                        </Link>
-                                    </Menu.Item>
-                                    <Menu.Item value="signout" asChild>
-                                        <Link href="#" onClick={handleSignOut}>
-                                            <TbLogout />
-                                            Sign Out
-                                        </Link>
-                                    </Menu.Item>
-                                </Menu.Content>
-                            </Menu.Positioner>
-                        </Portal>
-                    </Menu.Root>
-                </Tooltip>
+                <Menu.Root>
+                    <Menu.Trigger asChild>
+                        <IconButton
+                            aria-label="Admin Panel"
+                            variant="surface"
+                            colorPalette="red">
+                            <TbLockOpen size={16} />
+                        </IconButton>
+                    </Menu.Trigger>
+                    <Portal>
+                        <Menu.Positioner>
+                            <Menu.Content textStyle="body">
+                                <Menu.Item value="leads" asChild>
+                                    <Link as={NextLink} href="/auth/manage">
+                                        <TbBrowser />
+                                        Manage Site
+                                    </Link>
+                                </Menu.Item>
+                                <Menu.Item value="signout" asChild>
+                                    <Link href="#" onClick={handleSignOut}>
+                                        <TbLogout />
+                                        Sign Out
+                                    </Link>
+                                </Menu.Item>
+                            </Menu.Content>
+                        </Menu.Positioner>
+                    </Portal>
+                </Menu.Root>
             )}
         </>
     );

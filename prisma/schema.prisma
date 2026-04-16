@@ -21,6 +21,12 @@ model Lead {
   organization           String?
   subject                String
   message                String
+  ipAddress              String?
+  country                String?
+  region                 String?
+  city                   String?
+  latitude               Float?
+  longitude              Float?
   createdAt              DateTime @default(now())
   viewed                 Boolean  @default(false)
 }
