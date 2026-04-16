@@ -3,5 +3,10 @@ export type ActionState<T> =
     | {
           success: false;
           error: string;
-          type: "UNAUTHORIZED" | "VALIDATION" | "UNKNOWN" | "NOT_FOUND";
+          type:
+              | "UNAUTHORIZED"
+              | "VALIDATION"
+              | "UNKNOWN"
+              | "NOT_FOUND"
+              | "RATE_LIMIT";
       };

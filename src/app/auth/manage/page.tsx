@@ -1,6 +1,6 @@
-import LeadTable from "@/components/leadTable";
+import LeadList from "@/components/leadList";
 import { ResumeForm } from "@/components/resumeForm";
-import { Card, Container, Flex, Heading, Tabs, Text } from "@chakra-ui/react";
+import { Card, Container, Flex, Heading, Tabs } from "@chakra-ui/react";
 import { TbBrowser, TbFileTextAi, TbFlag } from "react-icons/tb";
 
 export default function ManagePage() {
@@ -14,46 +14,45 @@ export default function ManagePage() {
                     </Flex>
                 </Heading>
 
-                <Card.Root>
-                    <Tabs.Root defaultValue="resume">
-                        <Card.Body>
-                            <Tabs.List>
-                                <Tabs.Trigger value="resume">
-                                    <TbFileTextAi size={24} />
-                                    Resume
-                                </Tabs.Trigger>
-                                <Tabs.Trigger value="leads">
-                                    <TbFlag size={24} />
-                                    Leads
-                                </Tabs.Trigger>
-                            </Tabs.List>
-                            <Tabs.Content value="resume">
-                                <Card.Title mb={6}>
-                                    Resume Management
-                                </Card.Title>
+                <Tabs.Root
+                    defaultValue="resume"
+                    variant="enclosed"
+                    colorPalette="teal">
+                    <Tabs.List>
+                        <Tabs.Trigger value="resume">
+                            <TbFileTextAi size={24} />
+                            Resume
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="leads">
+                            <TbFlag size={24} />
+                            Leads
+                        </Tabs.Trigger>
+                    </Tabs.List>
+                    <Tabs.Content value="resume">
+                        <Card.Root>
+                            <Card.Header>
+                                <Card.Title>Upload New Resume</Card.Title>
+                                <Card.Description>
+                                    Update your resume to keep it current and
+                                    relevant.
+                                </Card.Description>
+                            </Card.Header>
+                            <Card.Body gap={6}>
                                 <ResumeForm />
-                                <object
-                                    data={`/api/resume?t=${Date.now()}`}
+                                <Heading size="lg">Current Resume</Heading>
+                                <embed
+                                    src={`/api/resume?t=${Date.now()}`}
                                     type="application/pdf"
                                     width="100%"
-                                    height="600px">
-                                    {/* Fallback for browsers that don't support inline PDFs */}
-                                    <Text>
-                                        Your browser does not support PDFs.{" "}
-                                        <a href="/api/resume">
-                                            Download it here
-                                        </a>
-                                        .
-                                    </Text>
-                                </object>
-                            </Tabs.Content>
-                            <Tabs.Content value="leads">
-                                <Card.Title mb={6}>Leads Management</Card.Title>
-                                <LeadTable />
-                            </Tabs.Content>
-                        </Card.Body>
-                    </Tabs.Root>
-                </Card.Root>
+                                    height="600px"
+                                />
+                            </Card.Body>
+                        </Card.Root>
+                    </Tabs.Content>
+                    <Tabs.Content value="leads">
+                        <LeadList />
+                    </Tabs.Content>
+                </Tabs.Root>
             </Flex>
         </Container>
     );

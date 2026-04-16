@@ -4,8 +4,14 @@
  */
 "use server";
 import { ActionState } from "@/types";
+import { headers } from "next/headers";
 import "server-only";
 import { prisma } from "./prisma";
+
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 3;
+
+const ipTracker = new Map<string, { count: number; startTime: number }>();
 
 /**
  * @interface ContactFormData
@@ -41,6 +47,46 @@ export async function handleContactForm(
         };
     }
 
+    const requestHeaders = await headers();
+
+    const ipAddress =
+        requestHeaders.get("cf-connecting-ip") ||
+        requestHeaders.get("x-forwarded-for") ||
+        requestHeaders.get("x-real-ip") ||
+        "Unknown";
+
+    const country = requestHeaders.get("cf-ipcountry") || "Unknown";
+    const region = requestHeaders.get("cf-ipregion") || "Unknown";
+    const city = requestHeaders.get("cf-ipcity") || "Unknown";
+    const latitude = parseFloat(requestHeaders.get("cf-iplatitude") || "0");
+    const longitude = parseFloat(requestHeaders.get("cf-iplongitude") || "0");
+
+    // Rate limiting
+    const currentTime = Date.now();
+    const record = ipTracker.get(ipAddress) || {
+        count: 0,
+        startTime: currentTime,
+    };
+    if (currentTime - record.startTime > RATE_LIMIT_WINDOW_MS) {
+        record.count = 1;
+        record.startTime = currentTime;
+    } else {
+        record.count += 1;
+    }
+
+    ipTracker.set(ipAddress, record);
+
+    if (record.count > MAX_REQUESTS_PER_WINDOW) {
+        console.warn(
+            `[RATE LIMIT EXCEEDED] Blocked IP: ${ipAddress} from ${country}`,
+        );
+        return {
+            success: false,
+            type: "RATE_LIMIT",
+            error: "Too many submissions. Please wait a minute before trying again.",
+        };
+    }
+
     const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
         return {
@@ -66,8 +112,8 @@ export async function handleContactForm(
 
     const verifyJson = await verifyResponse.json();
 
-    // Reject the submission if Cloudflare says it's invalid
     if (!verifyJson.success) {
+        // Reject the submission
         console.error("Turnstile validation failed:", verifyJson);
         return {
             success: false,
@@ -79,7 +125,15 @@ export async function handleContactForm(
     try {
         // Save the lead data to the database using Prisma
         await prisma.lead.create({
-            data: leadData,
+            data: {
+                ipAddress,
+                country,
+                region,
+                city,
+                latitude,
+                longitude,
+                ...leadData,
+            },
         });
 
         return { success: true, data: undefined };

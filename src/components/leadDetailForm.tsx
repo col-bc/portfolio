@@ -2,25 +2,29 @@
 
 import { logoutAdmin } from "@/app/lib/handleAuth";
 import { getLeadById, updateLead } from "@/app/lib/handleLeads";
-import { CheckboxCheckedChangeDetails, Field } from "@ark-ui/react";
+import { Field } from "@ark-ui/react";
 import {
     Avatar,
+    Button,
     Card,
-    Checkbox,
     DataList,
+    DataListItem,
     Flex,
     Heading,
     Spinner,
     Tag,
     Textarea,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LeadModel } from "../../prisma/generated/prisma/models/Lead";
+import DeleteLeadConfirmation from "./deleteLeadConfirmation";
 import { toaster } from "./ui/toaster";
 
 export function LeadDetailForm({ slug }: { slug: string }) {
     const [detail, setDetail] = useState<LeadModel | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
 
     /**
      * Fetches the lead details from the server and updates the state.
@@ -46,16 +50,15 @@ export function LeadDetailForm({ slug }: { slug: string }) {
      * Updates the lead's viewed status both locally and on the server.
      * @param e the checkbox change event details
      */
-    async function handleCheckboxChange(e: CheckboxCheckedChangeDetails) {
-        const checked = e.checked.valueOf();
-
+    async function handleReadToggle() {
         if (detail) {
-            setDetail({ ...detail, viewed: !!checked });
-            const result = await updateLead(detail.id, { viewed: !!checked });
+            const result = await updateLead(detail.id, {
+                viewed: !detail.viewed,
+            });
             if (result.success) {
                 toaster.create({
                     title: "Lead Updated",
-                    description: `The lead has been marked as ${!!checked ? "viewed" : "not viewed"}.`,
+                    description: `The lead has been marked as ${!!detail?.viewed ? "viewed" : "not viewed"}.`,
                     closable: true,
                     type: "success",
                 });
@@ -63,7 +66,7 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                 if (result.type === "UNAUTHORIZED") {
                     await logoutAdmin();
                 }
-                setDetail({ ...detail, viewed: !checked });
+                setDetail({ ...detail, viewed: !detail.viewed });
                 toaster.create({
                     title: "Error Updating Lead",
                     description: result.error,
@@ -74,7 +77,17 @@ export function LeadDetailForm({ slug }: { slug: string }) {
         }
     }
 
-    if (loading) {
+    function afterDelete() {
+        router.push("/auth/manage/leads");
+        toaster.create({
+            title: "Lead Deleted",
+            description: "The lead has been successfully deleted.",
+            closable: true,
+            type: "success",
+        });
+    }
+
+    if (loading || !detail) {
         return (
             <Flex justify="center" align="center" height="100%">
                 <Spinner size="xl" />
@@ -92,33 +105,7 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                     <Heading size="lg" ml={4} flex={1}>
                         {detail?.name}
                     </Heading>
-                    <Checkbox.Root
-                        display={{
-                            base: "none",
-                            md: "inline-flex",
-                        }}
-                        checked={!!detail?.viewed}
-                        onCheckedChange={handleCheckboxChange}>
-                        <Checkbox.Label>Viewed</Checkbox.Label>
-                        <Checkbox.HiddenInput />
-                        <Checkbox.Control>
-                            <Checkbox.Indicator />
-                        </Checkbox.Control>
-                    </Checkbox.Root>
                 </Flex>
-                <Checkbox.Root
-                    display={{
-                        base: "inline-flex",
-                        md: "none",
-                    }}
-                    checked={!!detail?.viewed}
-                    onCheckedChange={handleCheckboxChange}>
-                    <Checkbox.HiddenInput />
-                    <Checkbox.Control>
-                        <Checkbox.Indicator />
-                    </Checkbox.Control>
-                    <Checkbox.Label>Viewed</Checkbox.Label>
-                </Checkbox.Root>
                 <DataList.Root orientation="horizontal">
                     <DataList.Item>
                         <DataList.ItemLabel>Email</DataList.ItemLabel>
@@ -161,12 +148,43 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                             })}
                         </DataList.ItemValue>
                     </DataList.Item>
+                    <DataListItem>
+                        <DataList.ItemLabel>IP Address</DataList.ItemLabel>
+                        <DataList.ItemValue>
+                            {detail?.ipAddress || "Unknown"}
+                        </DataList.ItemValue>
+                    </DataListItem>
+                    <DataListItem>
+                        <DataList.ItemLabel>Location</DataList.ItemLabel>
+                        <DataList.ItemValue>
+                            {detail
+                                ? `${detail.region || "Unknown"}, ${
+                                      detail.city || "Unknown"
+                                  }`
+                                : "Unknown"}
+                        </DataList.ItemValue>
+                    </DataListItem>
                 </DataList.Root>
                 <Field.Root>
                     <Field.Label>Message</Field.Label>
-                    <Textarea value={detail?.message || ""} mt={2} readOnly />
+                    <Textarea
+                        value={detail?.message || ""}
+                        mt={2}
+                        readOnly
+                        rows={4}
+                    />
                 </Field.Root>
             </Card.Body>
+            <Card.Footer justifyContent="space-between" gap={2}>
+                <DeleteLeadConfirmation
+                    leadId={detail.id}
+                    onClose={afterDelete}>
+                    Delete
+                </DeleteLeadConfirmation>
+                <Button colorPalette="teal" onClick={handleReadToggle}>
+                    Mark as {detail.viewed ? "Not Viewed" : "Viewed"}
+                </Button>
+            </Card.Footer>
         </Card.Root>
     );
 }
