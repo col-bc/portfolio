@@ -8,6 +8,7 @@ import {
     Flex,
     FlexProps,
     Input,
+    PinInput,
     Text,
 } from "@chakra-ui/react";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
@@ -20,18 +21,9 @@ export default function AuthForm({ ...rest }: FlexProps) {
     const [error, setError] = useState<string | null>(null);
     const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
     const [step, setStep] = useState<"auth" | "otp">("auth");
-    const [otp, setOtp] = useState<string>("");
+    const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const turnstileRef = useRef<TurnstileInstance | null>(null);
-
-    /**
-     * Updates the OTP state with a sanitized 6-digit numeric string.
-     * @param next the next value of the OTP input
-     */
-    function updateOtp(next: string) {
-        const sanitized = next.replace(/\D/g, "").slice(0, 6);
-        setOtp((prev) => (prev === sanitized ? prev : sanitized));
-    }
 
     /**
      * Handles the submission of the authentication form.
@@ -60,12 +52,11 @@ export default function AuthForm({ ...rest }: FlexProps) {
             setIsSubmitting(false);
             return;
         }
-        setTurnstileToken(null);
         setStep("otp");
         setIsSubmitting(false);
         setUsername("");
         setPassword("");
-        setOtp("");
+        setOtp(["", "", "", "", "", ""]);
         turnstileRef.current?.reset();
     }
 
@@ -78,15 +69,15 @@ export default function AuthForm({ ...rest }: FlexProps) {
         e.preventDefault();
         if (isSubmitting) return;
         setError(null);
-        if (!/^\d{6}$/.test(otp)) {
-            setError("Enter a valid 6-digit OTP.");
+        if (otp.some((digit) => digit === "")) {
+            setError("Please enter the complete 6-digit OTP.");
             return;
         }
         setIsSubmitting(true);
-        const result = await handleVerifyOtp(otp);
+        const result = await handleVerifyOtp(otp.join(""));
         if (!result.success) {
             setError(result.error || "Invalid OTP.");
-            setOtp("");
+            setOtp(["", "", "", "", "", ""]);
             setIsSubmitting(false);
             return;
         }
@@ -151,20 +142,23 @@ export default function AuthForm({ ...rest }: FlexProps) {
                         <Field.RequiredIndicator />
                     </Field.Label>
 
-                    <Input
-                        type="text"
-                        name="one-time-code"
-                        autoComplete="one-time-code"
-                        inputMode="numeric"
-                        maxLength={6}
+                    <PinInput.Root
                         value={otp}
-                        onChange={(e) => updateOtp(e.target.value)}
-                        mb={2}
-                    />
+                        onValueChange={(e) => setOtp(e.value)}
+                        autoFocus
+                        spaceX={4}
+                        otp>
+                        <PinInput.Input index={0} />
+                        <PinInput.Input index={1} />
+                        <PinInput.Input index={2} />
+                        <PinInput.Input index={3} />
+                        <PinInput.Input index={4} />
+                        <PinInput.Input index={5} />
+                    </PinInput.Root>
                 </Field.Root>
             )}
             {step === "auth" && (
-                <Box w="full">
+                <Box my={4}>
                     <Turnstile
                         ref={turnstileRef}
                         siteKey="0x4AAAAAACrt5VbunM62aYIZ"

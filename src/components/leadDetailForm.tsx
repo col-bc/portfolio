@@ -164,14 +164,24 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                                 : "Unknown"}
                         </DataList.ItemValue>
                     </DataListItem>
+                    <DataListItem>
+                        <DataList.ItemLabel>Coordinates</DataList.ItemLabel>
+                        <DataList.ItemValue>
+                            {detail?.latitude && detail?.longitude
+                                ? `${detail.latitude.toFixed(
+                                      4,
+                                  )}, ${detail.longitude.toFixed(4)}`
+                                : "Unknown"}
+                        </DataList.ItemValue>
+                    </DataListItem>
                 </DataList.Root>
                 <Field.Root>
                     <Field.Label>Message</Field.Label>
                     <Textarea
                         value={detail?.message || ""}
                         mt={2}
+                        rows={6}
                         readOnly
-                        rows={4}
                     />
                 </Field.Root>
             </Card.Body>

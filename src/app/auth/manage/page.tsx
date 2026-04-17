@@ -1,7 +1,12 @@
 import LeadList from "@/components/leadList";
 import { ResumeForm } from "@/components/resumeForm";
 import { Card, Container, Flex, Heading, Tabs } from "@chakra-ui/react";
+import { Metadata } from "next";
 import { TbBrowser, TbFileTextAi, TbFlag } from "react-icons/tb";
+
+export const metadata: Metadata = {
+    title: "Manage Site ",
+};
 
 export default function ManagePage() {
     return (
@@ -18,7 +23,7 @@ export default function ManagePage() {
                     defaultValue="resume"
                     variant="enclosed"
                     colorPalette="teal">
-                    <Tabs.List>
+                    <Tabs.List w="100%" gap={4}>
                         <Tabs.Trigger value="resume">
                             <TbFileTextAi size={24} />
                             Resume
@@ -29,7 +34,7 @@ export default function ManagePage() {
                         </Tabs.Trigger>
                     </Tabs.List>
                     <Tabs.Content value="resume">
-                        <Card.Root>
+                        <Card.Root mt={4}>
                             <Card.Header>
                                 <Card.Title>Upload New Resume</Card.Title>
                                 <Card.Description>
@@ -49,7 +54,7 @@ export default function ManagePage() {
                             </Card.Body>
                         </Card.Root>
                     </Tabs.Content>
-                    <Tabs.Content value="leads">
+                    <Tabs.Content value="leads" mt={4}>
                         <LeadList />
                     </Tabs.Content>
                 </Tabs.Root>
