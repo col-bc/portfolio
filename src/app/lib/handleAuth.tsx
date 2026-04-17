@@ -45,12 +45,24 @@ export async function handleAuthAttempt(
             type: "UNKNOWN",
         };
     }
+    // Validate input
+    if (
+        [data.username, data.password, data.turnstileToken].some(
+            (field) => !field,
+        )
+    ) {
+        return {
+            success: false,
+            error: "Missing required fields. Please check your input and try again.",
+            type: "VALIDATION",
+        };
+    }
 
-    // Verify the Turnstile token with Cloudflare's API
+    // Verify the Turnstile token with Cloudflare
     const formData = new URLSearchParams();
     formData.append("secret", secretKey);
     formData.append("response", data.turnstileToken);
-
+    // Send the request
     const verifyResponse = await fetch(
         "https://challenges.cloudflare.com/turnstile/v0/siteverify",
         {
@@ -60,8 +72,7 @@ export async function handleAuthAttempt(
         },
     );
     const verifyJson = await verifyResponse.json();
-
-    // Reject the submission if Cloudflare says it's invalid
+    // Check Turnstile verification result
     if (!verifyJson.success) {
         console.error("Turnstile validation failed:", verifyJson);
         return {
@@ -71,11 +82,11 @@ export async function handleAuthAttempt(
         };
     }
 
-    // authenticate and issue a JWT for the TOTP session
+    // authenticate and
     const authResult = await authenticateAdmin(data);
     if (authResult.success) {
+        // Issue a short JWT for the TOTP session
         const jwt = await issueJWT({ username: "admin" }, "3m");
-        // Save the jwt in a cookie for the TOTP session
         (await cookies()).set("totp_session", jwt, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -87,7 +98,7 @@ export async function handleAuthAttempt(
     }
     return {
         success: false,
-        error: "Authentication failed",
+        error: "Authentication failed. Invalid username or password.",
         type: "UNAUTHORIZED",
     };
 }
@@ -108,6 +119,7 @@ export async function handleVerifyOtp(otp: string): Promise<ActionState<void>> {
         };
     }
 
+    // verify jwt by checking if the payload can be decoded
     const payload = await verifyJWT(totpSession.value);
     if (!payload) {
         return {
@@ -117,6 +129,7 @@ export async function handleVerifyOtp(otp: string): Promise<ActionState<void>> {
         };
     }
 
+    // verify the totp
     const totp = new OTPAuth.TOTP({
         issuer: "Colby Portfolio",
         label: "Admin",
