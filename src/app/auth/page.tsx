@@ -16,7 +16,7 @@ export default function AuthPage() {
                 as="section"
                 maxW="md"
                 mx="auto"
-                w="fit">
+                w="full">
                 <Card.Root>
                     <Card.Header>
                         <Heading size="3xl" textStyle="heading">

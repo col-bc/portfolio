@@ -6,6 +6,7 @@
 import { ActionState } from "@/types";
 import { headers } from "next/headers";
 import "server-only";
+import { sendContactConfirmation, sendContactNotification } from "./comms";
 import { prisma } from "./prisma";
 
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
@@ -19,8 +20,8 @@ const ipTracker = new Map<string, { count: number; startTime: number }>();
  */
 export interface ContactFormData {
     name: string;
-    email: string | null;
-    phone: string | null;
+    email: string;
+    phone: string;
     preferredContactMethod: "email" | "phone";
     organization: string | null;
     subject: string;
@@ -134,6 +135,13 @@ export async function handleContactForm(
                 longitude,
                 ...leadData,
             },
+        });
+
+        await sendContactNotification(leadData.name, leadData.message);
+        await sendContactConfirmation(leadData.email, {
+            name: leadData.name,
+            subject: leadData.subject,
+            message: leadData.message,
         });
 
         return { success: true, data: undefined };

@@ -140,13 +140,23 @@ function Actions() {
 
     return (
         <>
-            <Tooltip content="Get in touch">
-                <IconButton aria-label="Get in touch" variant="ghost">
-                    <NextLink href="/contact">
-                        <TbSend />
-                    </NextLink>
+            {mounted ? (
+                <Tooltip content="Get in touch">
+                    <IconButton aria-label="Get in touch" variant="ghost">
+                        <NextLink href="/contact">
+                            <TbSend />
+                        </NextLink>
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <IconButton
+                    aria-label="Loading"
+                    variant="ghost"
+                    disabled
+                    opacity={0.5}>
+                    <Spinner size="xs" />
                 </IconButton>
-            </Tooltip>
+            )}
             {mounted ? (
                 <ColorModeButton variant="ghost" />
             ) : (
