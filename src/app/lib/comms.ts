@@ -2,14 +2,13 @@ import { Resend } from "resend";
 
 export const resend = new Resend(process.env.RESEND_API_KEY!);
 
-const fromEmail = "Notify <notify@colbyc.com";
+const notificationFromEmail = "Notify <notify@colbyc.com>";
+const publicFromEmail = "Colby Cooper <contact@colbyc.com>";
 
 /**
  * Send a contact confirmation email to the user who submitted the contact form.
  * @param toEmail - The email address of the user who submitted the contact form.
- * @param name - The name of the user who submitted the contact form.
- * @param message - The message that the user submitted in the contact form.
- *
+ * @param details - An object containing the name, subject, and message from the contact form submission.
  */
 export async function sendContactConfirmation(
     toEmail: string,
@@ -20,8 +19,9 @@ export async function sendContactConfirmation(
     },
 ) {
     await resend.emails.send({
-        from: fromEmail,
+        from: publicFromEmail,
         to: toEmail,
+        subject: "Received: Your message to Colby Cooper",
         template: {
             id: "portfolio-confirmation-notification",
             variables: {
@@ -40,8 +40,9 @@ export async function sendContactConfirmation(
  */
 export async function sendContactNotification(name: string, message: string) {
     await resend.emails.send({
-        from: fromEmail,
+        from: notificationFromEmail,
         to: "colby.b.cooper@gmail.com",
+        subject: `New contact form submission from ${name}`,
         template: {
             id: "portfolio-contact-notification",
             variables: {
