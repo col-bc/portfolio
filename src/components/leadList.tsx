@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
+import { TbEye, TbTrash } from "react-icons/tb";
 import { Lead } from "../../prisma/generated/prisma/client";
 import DeleteLeadConfirmation from "./deleteLeadConfirmation";
 
@@ -63,7 +64,11 @@ export default function LeadList() {
     return (
         <>
             {leads.map((lead: Lead) => (
-                <Card.Root key={lead.id} as="article" mb={{ base: 6, md: 12 }}>
+                <Card.Root
+                    key={lead.id}
+                    as="article"
+                    mb={{ base: 6, md: 12 }}
+                    variant="elevated">
                     <Card.Header>
                         <Card.Title justifyContent="space-between">
                             <Flex>
@@ -120,10 +125,12 @@ export default function LeadList() {
                             onClose={() => {
                                 popLeadById(lead.id);
                             }}>
-                            Delete
+                            <TbTrash size={18} />
+                            Delete Lead
                         </DeleteLeadConfirmation>
                         <NextLink href={`/auth/manage/leads/${lead.id}`}>
                             <Button colorPalette="teal" variant="subtle">
+                                <TbEye size={18} />
                                 View Details
                             </Button>
                         </NextLink>

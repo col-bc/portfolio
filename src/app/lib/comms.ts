@@ -18,19 +18,24 @@ export async function sendContactConfirmation(
         message: string;
     },
 ) {
-    await resend.emails.send({
-        from: publicFromEmail,
-        to: toEmail,
-        subject: "Received: Your message to Colby Cooper",
-        template: {
-            id: "portfolio-confirmation-notification",
-            variables: {
-                name: details.name,
-                subject: details.subject,
-                message: details.message,
+    try {
+        const result = await resend.emails.send({
+            from: publicFromEmail,
+            to: toEmail,
+            subject: "Received: Your message to Colby Cooper",
+            template: {
+                id: "portfolio-confirmation-notification",
+                variables: {
+                    name: details.name,
+                    subject: details.subject,
+                    message: details.message,
+                },
             },
-        },
-    });
+        });
+        console.log("Contact confirmation email sent:", result);
+    } catch (error) {
+        console.error("Error sending contact confirmation email:", error);
+    }
 }
 
 /**
@@ -39,16 +44,21 @@ export async function sendContactConfirmation(
  * @param message  - The message that the user submitted in the contact form.
  */
 export async function sendContactNotification(name: string, message: string) {
-    await resend.emails.send({
-        from: notificationFromEmail,
-        to: "colby.b.cooper@gmail.com",
-        subject: `New contact form submission from ${name}`,
-        template: {
-            id: "portfolio-contact-notification",
-            variables: {
-                name,
-                message,
+    try {
+        const result = await resend.emails.send({
+            from: notificationFromEmail,
+            to: "colby.b.cooper@gmail.com",
+            subject: `New contact form submission from ${name}`,
+            template: {
+                id: "portfolio-contact-notification",
+                variables: {
+                    name,
+                    message,
+                },
             },
-        },
-    });
+        });
+        console.log("Contact notification email sent:", result);
+    } catch (error) {
+        console.error("Error sending contact notification email:", error);
+    }
 }

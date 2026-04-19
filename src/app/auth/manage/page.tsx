@@ -23,7 +23,11 @@ export default function ManagePage() {
                     defaultValue="resume"
                     variant="enclosed"
                     colorPalette="teal">
-                    <Tabs.List w="100%" gap={4}>
+                    <Tabs.List
+                        w="100%"
+                        gap={4}
+                        border="1px solid"
+                        borderColor="border">
                         <Tabs.Trigger value="resume">
                             <TbFileTextAi size={24} />
                             Resume
@@ -34,7 +38,7 @@ export default function ManagePage() {
                         </Tabs.Trigger>
                     </Tabs.List>
                     <Tabs.Content value="resume">
-                        <Card.Root mt={4}>
+                        <Card.Root mt={4} variant="elevated">
                             <Card.Header>
                                 <Card.Title>Upload New Resume</Card.Title>
                                 <Card.Description>

@@ -35,7 +35,7 @@ export default async function LeadDetail({
                             </Flex>
                         </Heading>
                         <Text fontSize="lg" color="fg.muted">
-                            Lead ID: <Code>{slug}</Code>
+                            <Code variant="surface">Lead ID: {slug}</Code>
                         </Text>
                     </Box>
                     <NextLink href="/auth/manage/leads">

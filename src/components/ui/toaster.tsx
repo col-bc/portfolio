@@ -32,7 +32,7 @@ export const Toaster = () => {
                                 </Toast.Title>
                             )}
                             {toast.description && (
-                                <Toast.Description textStyle="body">
+                                <Toast.Description textStyle="body" color="fg">
                                     {toast.description}
                                 </Toast.Description>
                             )}
