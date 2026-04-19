@@ -229,12 +229,18 @@ export default function Home() {
                     <Flex
                         direction={{
                             base: "column",
-                            md: "row",
+                            sm: "row",
                         }}
                         align="stretch"
-                        justify="center"
+                        justify={{
+                            base: "stretch",
+                            sm: "center",
+                        }}
                         py={4}
-                        gap={4}>
+                        gap={{
+                            base: 4,
+                            sm: 6,
+                        }}>
                         <NextLink href="/education">
                             <Button
                                 w="full"

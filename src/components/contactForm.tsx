@@ -84,8 +84,8 @@ export default function ContactForm() {
 
         const result = await handleContactForm({
             name,
-            email: email || null,
-            phone: phone || null,
+            email: email,
+            phone: phone,
             preferredContactMethod: contactMethod as "email" | "phone",
             organization: orgName,
             subject: subject,
@@ -169,9 +169,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root
-                            required={contactMethod === "email"}
-                            colorPalette="teal">
+                        <Field.Root required colorPalette="teal">
                             <Field.Label>
                                 Email
                                 <Field.RequiredIndicator />
@@ -184,9 +182,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root
-                            required={contactMethod === "phone"}
-                            colorPalette="teal">
+                        <Field.Root required colorPalette="teal">
                             <Field.Label>
                                 Phone
                                 <Field.RequiredIndicator />

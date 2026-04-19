@@ -2,7 +2,6 @@
 import { handleAuthAttempt, handleVerifyOtp } from "@/app/lib/handleAuth";
 import {
     Alert,
-    Box,
     Button,
     Field,
     Flex,
@@ -12,10 +11,11 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PasswordInput } from "./ui/password-input";
 
 export default function AuthForm({ ...rest }: FlexProps) {
+    const [mounted, setMounted] = useState(false);
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
@@ -24,6 +24,10 @@ export default function AuthForm({ ...rest }: FlexProps) {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const turnstileRef = useRef<TurnstileInstance | null>(null);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     /**
      * Handles the submission of the authentication form.
@@ -88,7 +92,7 @@ export default function AuthForm({ ...rest }: FlexProps) {
         <Flex
             as="form"
             direction="column"
-            gap={4}
+            gap={6}
             onSubmit={step === "auth" ? handleSubmit : handleVerify}
             {...rest}>
             {error && (
@@ -157,22 +161,27 @@ export default function AuthForm({ ...rest }: FlexProps) {
                     </PinInput.Root>
                 </Field.Root>
             )}
-            {step === "auth" && (
-                <Box my={4}>
-                    <Turnstile
-                        ref={turnstileRef}
-                        siteKey="0x4AAAAAACrt5VbunM62aYIZ"
-                        onSuccess={(token) => {
-                            setTurnstileToken(token);
-                        }}
-                        options={{
-                            size: "flexible",
-                        }}
-                    />
-                </Box>
+            {step === "auth" && mounted && (
+                <Turnstile
+                    ref={turnstileRef}
+                    siteKey="0x4AAAAAACrt5VbunM62aYIZ"
+                    onSuccess={(token) => {
+                        setTurnstileToken(token);
+                    }}
+                    options={{
+                        theme: "auto",
+                        size: "flexible",
+                        feedbackEnabled: true,
+                        appearance: "always",
+                    }}
+                    style={{
+                        height: "67px",
+                    }}
+                />
             )}
             <Button
                 type="submit"
+                mt={2}
                 colorPalette="teal"
                 loading={isSubmitting}
                 disabled={isSubmitting || (step === "auth" && !turnstileToken)}>
