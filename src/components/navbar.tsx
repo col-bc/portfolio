@@ -10,17 +10,18 @@ import {
     Container,
     Flex,
     IconButton,
-    Link,
     Menu,
     Portal,
+    Skeleton,
     Spinner,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
     TbBriefcase2,
     TbBrowser,
+    TbFlag,
     TbHome,
     TbLockOpen,
     TbLogout,
@@ -38,6 +39,12 @@ import {
  */
 function NavLinks() {
     const pathname = usePathname();
+
+    /**
+     * Determines if the given href matches the current pathname, accounting for potential hash fragments.
+     * @param href - The href to compare against the current pathname.
+     * @returns {boolean} True if the href matches the current pathname, false otherwise.
+     */
     const isCurrentPath = (href: string) =>
         pathname === href ||
         (href.includes("#") && pathname.startsWith(href.split("#")[0]));
@@ -49,7 +56,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/") ? "teal.fg" : "inherit"}
+                    color={isCurrentPath("/") ? "cyan.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbHome />
                     <span>Home</span>
@@ -60,7 +67,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/education") ? "teal.fg" : "inherit"}
+                    color={isCurrentPath("/education") ? "cyan.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbSchool />
                     <span>Education</span>
@@ -71,7 +78,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/employment") ? "teal.fg" : "inherit"}
+                    color={isCurrentPath("/employment") ? "cyan.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbBriefcase2 />
                     <span>Employment</span>
@@ -82,7 +89,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/contact") ? "teal.fg" : "inherit"}
+                    color={isCurrentPath("/contact") ? "cyan.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbMessage />
                     <span>Contact</span>
@@ -98,10 +105,10 @@ function NavLinks() {
  * @returns JSX.Element
  */
 function Actions() {
-    // Avoid hydration mismatch by only rendering the color mode button on the client
     const [mounted, setMounted] = useState(false);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const pathname = usePathname();
+    const router = useRouter();
 
     /**
      * Checks the authentication status of the admin user and updates the state accordingly.
@@ -136,7 +143,10 @@ function Actions() {
         e.preventDefault();
         setIsAuth(false);
         await logoutAdmin();
+        router.push("/");
     }
+
+    const handleNavigate = (url: string) => router.push(url);
 
     return (
         <>
@@ -173,25 +183,46 @@ function Actions() {
                     <Menu.Trigger asChild>
                         <IconButton
                             aria-label="Admin Panel"
-                            variant="surface"
+                            variant="ghost"
                             colorPalette="red">
                             <TbLockOpen size={16} />
                         </IconButton>
                     </Menu.Trigger>
                     <Portal>
                         <Menu.Positioner>
-                            <Menu.Content textStyle="body">
-                                <Menu.Item value="leads" asChild>
-                                    <Link as={NextLink} href="/auth/manage">
-                                        <TbBrowser />
-                                        Manage Site
-                                    </Link>
+                            <Menu.Content
+                                textStyle="body"
+                                w={40}
+                                mt={1}
+                                bg="bg.panel"
+                                borderColor="border">
+                                <Menu.Item
+                                    value="manage"
+                                    onClick={() =>
+                                        handleNavigate("/auth/manage")
+                                    }>
+                                    <TbBrowser />
+                                    Manage Site
                                 </Menu.Item>
-                                <Menu.Item value="signout" asChild>
-                                    <Link href="#" onClick={handleSignOut}>
-                                        <TbLogout />
-                                        Sign Out
-                                    </Link>
+                                <Menu.Item
+                                    value="leads"
+                                    onClick={() =>
+                                        handleNavigate("/auth/manage/leads")
+                                    }>
+                                    <TbFlag />
+                                    Leads
+                                </Menu.Item>
+                                <Menu.Separator />
+                                <Menu.Item
+                                    value="signout"
+                                    color="fg.error"
+                                    _hover={{
+                                        bg: "bg.error",
+                                        color: "fg.error",
+                                    }}
+                                    onClick={handleSignOut}>
+                                    <TbLogout />
+                                    Sign Out
                                 </Menu.Item>
                             </Menu.Content>
                         </Menu.Positioner>
@@ -207,6 +238,7 @@ export default function Navbar() {
     const navbarRef = useRef<HTMLDivElement>(null);
     const [elevate, setElevate] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
+    const [mounted, setMounted] = useState(false);
 
     /**
      * Adds a shadow to the navbar when the user scrolls past the header.
@@ -221,6 +253,13 @@ export default function Navbar() {
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
+    }, []);
+
+    /**
+     * Sets the mounted state to true after the component has been mounted to ensure that client-only features are rendered correctly.
+     */
+    useEffect(() => {
+        setMounted(true);
     }, []);
 
     /**
@@ -283,36 +322,60 @@ export default function Navbar() {
                     </Flex>
                     {/* Mobile Nav */}
                     <Flex display={{ base: "block", md: "none" }} w="100%">
-                        <Collapsible.Root
-                            open={open}
-                            onOpenChange={(e) => setOpen(e.open)}
-                            style={{ width: "100%" }}>
-                            <Flex align="center" gap={4}>
-                                <Collapsible.Trigger asChild>
-                                    <Button
-                                        variant="surface"
-                                        display={{ base: "flex", md: "none" }}
-                                        alignItems="center"
-                                        gap={2}>
-                                        {open ? <TbX /> : <TbMenu />}
-                                        <span>Menu</span>
-                                    </Button>
-                                </Collapsible.Trigger>
-                                <Box flexGrow={1} />
-                                <Actions />
-                            </Flex>
-                            <Collapsible.Content asChild>
-                                <Flex
-                                    direction="column"
-                                    w="100%"
-                                    gap={2}
-                                    py={4}
-                                    zIndex={99}
-                                    color="fg">
-                                    <NavLinks />
+                        {mounted ? (
+                            <Collapsible.Root
+                                open={open}
+                                onOpenChange={(e) => setOpen(e.open)}
+                                style={{ width: "100%" }}>
+                                <Flex align="center" gap={4}>
+                                    <Collapsible.Trigger asChild>
+                                        <Button
+                                            variant="surface"
+                                            display={{
+                                                base: "flex",
+                                                md: "none",
+                                            }}
+                                            alignItems="center"
+                                            gap={2}>
+                                            {open ? <TbX /> : <TbMenu />}
+                                            <span>Menu</span>
+                                        </Button>
+                                    </Collapsible.Trigger>
+                                    <Box flexGrow={1} />
+                                    <Actions />
                                 </Flex>
-                            </Collapsible.Content>
-                        </Collapsible.Root>
+                                <Collapsible.Content asChild>
+                                    <Flex
+                                        direction="column"
+                                        w="100%"
+                                        gap={2}
+                                        py={4}
+                                        zIndex={99}
+                                        color="fg">
+                                        <NavLinks />
+                                    </Flex>
+                                </Collapsible.Content>
+                            </Collapsible.Root>
+                        ) : (
+                            <Flex align="center" gap={4}>
+                                <Skeleton
+                                    height="40px"
+                                    width="98px"
+                                    borderRadius="lg"
+                                />
+                                <Box flexGrow={1} />
+                                <Skeleton
+                                    height="40px"
+                                    width="40px"
+                                    borderRadius="lg"
+                                />
+                                <Skeleton
+                                    height="40px"
+                                    width="40px"
+                                    borderRadius="lg"
+                                />
+                            </Flex>
+                        )}
                     </Flex>
                 </Box>
             </Container>

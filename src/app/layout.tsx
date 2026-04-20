@@ -80,7 +80,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 maxW="600px"
                                 maxH="600px"
                                 borderRadius="50%"
-                                bg="rgba(32, 178, 170, 0.15)"
+                                bg="cyan.focusRing/15"
                                 filter="blur(140px)"
                                 pointerEvents="none"
                                 zIndex={0}
@@ -104,8 +104,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         textStyle="heading"
                                         fontSize="4xl"
                                         textDecoration="underline"
-                                        textDecorationColor="teal"
+                                        textDecorationColor="cyan.focusRing"
                                         textDecorationStyle="wavy"
+                                        textUnderlineOffset={6}
                                         m={0}>
                                         Colby Cooper
                                     </Heading>

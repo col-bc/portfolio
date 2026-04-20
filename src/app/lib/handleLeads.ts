@@ -12,7 +12,7 @@ import { prisma } from "./prisma";
 
 /**
  * Retrieves all leads from the database.
- * @returns a promise that resolves to an array of lead objects
+ * @returns {Promise<ActionState<Lead[]>>} a promise that resolves to an array of lead objects
  */
 export async function getLeads(): Promise<ActionState<Lead[]>> {
     const isValidSession = await verifySession();
@@ -31,7 +31,7 @@ export async function getLeads(): Promise<ActionState<Lead[]>> {
 /**
  * Retrieves a lead by its ID.
  * @param id the ID of the lead to retrieve
- * @returns a promise that resolves to the lead object if found, or null if not found
+ * @returns {Promise<ActionState<Lead | null>>} a promise that resolves to the lead object if found, or null if not found
  */
 export async function getLeadById(
     id: number,
@@ -54,7 +54,7 @@ export async function getLeadById(
  * Updates a lead by its ID.
  * @param id the ID of the lead to update
  * @param data the data to update the lead with
- * @returns a promise that resolves to the updated lead object
+ * @returns {Promise<ActionState<Lead>>} a promise that resolves to the updated lead object
  */
 export async function updateLead(
     id: number,
@@ -87,7 +87,7 @@ export async function updateLead(
 /**
  * Deletes a lead by its ID.
  * @param id the ID of the lead to delete
- * @returns a promise that resolves when the lead is deleted
+ * @returns {Promise<ActionState<void>>} a promise that resolves when the lead is deleted
  */
 export async function deleteLead(id: number): Promise<ActionState<void>> {
     const isSessionValid = await verifySession();

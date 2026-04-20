@@ -20,6 +20,10 @@ import { TbExternalLink } from "react-icons/tb";
 import { HighlighterGeneric } from "shiki";
 import { useColorMode } from "./ui/color-mode";
 
+/**
+ * Loads the Shiki highlighter with the specified languages and themes.
+ * @returns {Promise<HighlighterGeneric>} A promise that resolves to the Shiki highlighter instance.
+ */
 const loadShiki = async () => {
     const { createHighlighter } = await import("shiki");
     return createHighlighter({
@@ -34,10 +38,16 @@ export default function CodeSamples() {
     const [showDialog, setShowDialog] = useState(false);
     const { colorMode } = useColorMode();
 
+    /**
+     * Set the component as mounted to ensure that the Shiki highlighter is only loaded on the client side, preventing hydration issues with server-side rendering.
+     */
     useEffect(() => {
         setMounted(true);
     }, []);
 
+    /**
+     * Memoize the Shiki adapter to avoid unnecessary re-renders and re-initializations of the highlighter when the color mode changes. The adapter is configured to load the Shiki highlighter with the appropriate theme based on the current color mode (dark or light).
+     */
     const shikiAdapter = useMemo(() => {
         return createShikiAdapter<HighlighterGeneric<never, never>>({
             load: loadShiki,
@@ -57,7 +67,7 @@ export default function CodeSamples() {
             <Tabs.Root
                 defaultValue="sample1"
                 variant="line"
-                colorPalette="teal"
+                colorPalette="cyan"
                 orientation="horizontal"
                 value={currentSample}
                 onValueChange={(e) => setCurrentSample(e.value)}>

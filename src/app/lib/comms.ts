@@ -1,3 +1,6 @@
+/**
+ * This module provides functions for sending emails using the Resend service. It includes two main functions: `sendContactConfirmation`, which sends a confirmation email to users who submit the contact form, and `sendContactNotification`, which sends a notification email to the site owner when a user submits the contact form. The module uses environment variables to securely manage the Resend API key and defines consistent email templates for both types of communications.
+ */
 import { Resend } from "resend";
 
 export const resend = new Resend(process.env.RESEND_API_KEY!);

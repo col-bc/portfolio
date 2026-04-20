@@ -22,7 +22,7 @@ export default function ManagePage() {
                 <Tabs.Root
                     defaultValue="resume"
                     variant="enclosed"
-                    colorPalette="teal">
+                    colorPalette="cyan">
                     <Tabs.List
                         w="100%"
                         gap={4}

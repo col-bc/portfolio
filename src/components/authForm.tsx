@@ -25,6 +25,9 @@ export default function AuthForm({ ...rest }: FlexProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const turnstileRef = useRef<TurnstileInstance | null>(null);
 
+    /**
+     * Sets the mounted state to true when the component is mounted. This is used to conditionally render the Turnstile component, which relies on client-side rendering and should not be rendered during server-side rendering.
+     */
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -135,7 +138,7 @@ export default function AuthForm({ ...rest }: FlexProps) {
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            colorPalette="teal"
+                            colorPalette="cyan"
                         />
                     </Field.Root>
                 </>
@@ -182,7 +185,7 @@ export default function AuthForm({ ...rest }: FlexProps) {
             <Button
                 type="submit"
                 mt={2}
-                colorPalette="teal"
+                colorPalette="cyan"
                 loading={isSubmitting}
                 disabled={isSubmitting || (step === "auth" && !turnstileToken)}>
                 {step === "auth" ? "Sign In" : "Verify"}

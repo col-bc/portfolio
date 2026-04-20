@@ -78,7 +78,11 @@ export function LeadDetailForm({ slug }: { slug: string }) {
         }
     }
 
-    function afterDelete() {
+    /**
+     * Handles the actions to be taken after a lead is deleted. It navigates the user back to the leads management page and displays a success toast notification confirming the deletion of the lead.
+     * @returns {void}
+     */
+    function afterDelete(): void {
         router.push("/auth/manage/leads");
         toaster.create({
             title: "Lead Deleted",
@@ -193,7 +197,7 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                     <TbTrash size={18} />
                     Delete Lead
                 </DeleteLeadConfirmation>
-                <Button colorPalette="teal" onClick={handleReadToggle}>
+                <Button colorPalette="cyan" onClick={handleReadToggle}>
                     <TbCheck size={18} />
                     Mark as {detail.viewed ? "Not Viewed" : "Viewed"}
                 </Button>

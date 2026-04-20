@@ -1,3 +1,7 @@
+/**
+ * @module resumeRoute
+ * @description API route for handling resume retrieval and updates
+ */
 import { verifySession } from "@/app/lib/handleAuth";
 import fs from "fs/promises";
 import { NextResponse } from "next/server";
@@ -6,8 +10,10 @@ import path from "path";
 /**
  * API route for handling resume retrieval
  * GET: Serves the resume PDF file with appropriate headers to prevent indexing and allow inline display.
+ * @param request the incoming request object (not used in this case)
+ * @returns {NextResponse} the PDF file response or an error message if the file is not found
  */
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
     const filePath = path.join(
         process.cwd(),
         "private_assets",
@@ -34,8 +40,10 @@ export async function GET() {
 /**
  * API route for handling resume updates
  * POST: Accepts a PDF file upload, validates it, and saves it to the server. Requires authentication.
+ * @param request the incoming request object containing the PDF file
+ * @returns {NextResponse} a JSON response indicating success or failure
  */
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse> {
     const session = await verifySession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
