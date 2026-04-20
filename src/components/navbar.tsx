@@ -54,10 +54,9 @@ function NavLinks() {
         <>
             <NextLink href="/">
                 <Button
-                    variant="ghost"
-                    spaceX={2}
+                    variant={isCurrentPath("/") ? "subtle" : "ghost"}
+                    colorPalette={isCurrentPath("/") ? "primary" : "whiteAlpha"}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/") ? "primary.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbHome />
                     <span>Home</span>
@@ -65,12 +64,11 @@ function NavLinks() {
             </NextLink>
             <NextLink href="/education">
                 <Button
-                    variant="ghost"
-                    spaceX={2}
-                    justifyContent={{ base: "left", md: "center" }}
-                    color={
-                        isCurrentPath("/education") ? "primary.fg" : "inherit"
+                    variant={isCurrentPath("/education") ? "subtle" : "ghost"}
+                    colorPalette={
+                        isCurrentPath("/education") ? "primary" : "whiteAlpha"
                     }
+                    justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbSchool />
                     <span>Education</span>
@@ -78,12 +76,11 @@ function NavLinks() {
             </NextLink>
             <NextLink href="/employment">
                 <Button
-                    variant="ghost"
-                    spaceX={2}
-                    justifyContent={{ base: "left", md: "center" }}
-                    color={
-                        isCurrentPath("/employment") ? "primary.fg" : "inherit"
+                    variant={isCurrentPath("/employment") ? "subtle" : "ghost"}
+                    colorPalette={
+                        isCurrentPath("/employment") ? "primary" : "whiteAlpha"
                     }
+                    justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbBriefcase2 />
                     <span>Employment</span>
@@ -91,10 +88,11 @@ function NavLinks() {
             </NextLink>
             <NextLink href="/contact">
                 <Button
-                    variant="ghost"
-                    spaceX={2}
+                    variant={isCurrentPath("/contact") ? "subtle" : "ghost"}
+                    colorPalette={
+                        isCurrentPath("/contact") ? "primary" : "whiteAlpha"
+                    }
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/contact") ? "primary.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbMessage />
                     <span>Contact</span>

@@ -5,7 +5,7 @@ import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ThemeProvider } from "@/theme";
 import { Box, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import { Fira_Code, Geist, Roboto_Flex } from "next/font/google";
+import { Fira_Code, Geist, Inter } from "next/font/google";
 import Script from "next/script";
 
 const headingFont = Geist({
@@ -15,7 +15,7 @@ const headingFont = Geist({
     display: "swap",
 });
 
-const bodyFont = Roboto_Flex({
+const bodyFont = Inter({
     subsets: ["latin"],
     variable: "--font-body",
     display: "swap",

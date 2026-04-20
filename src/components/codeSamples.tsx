@@ -62,14 +62,14 @@ export default function CodeSamples() {
     const activeSampleData = samples[currentSample];
 
     if (!mounted) {
-        return <Skeleton height="400px" width="100%" borderRadius="lg" />;
+        return <Skeleton height="400px" width="100%" />;
     }
 
     return (
         <CodeBlock.AdapterProvider value={shikiAdapter}>
             <Tabs.Root
                 defaultValue="sample1"
-                variant="line"
+                variant="enclosed"
                 colorPalette="primary"
                 orientation="horizontal"
                 value={currentSample}
@@ -80,7 +80,10 @@ export default function CodeSamples() {
                     display="flex"
                     flexDirection="row"
                     gap={{ base: 2, md: 4 }}
-                    w="100%">
+                    w="100%"
+                    border="1px solid"
+                    borderColor="border"
+                    borderRadius="xl">
                     {sampleKeys.map((key) => (
                         <Tabs.Trigger
                             key={key}
@@ -100,7 +103,6 @@ export default function CodeSamples() {
                             </Text>
                         </Box>
 
-                        {/* 5. Lazy-render CodeBlock: Only highlight the active tab */}
                         {currentSample === key && (
                             <CodeBlock.Root
                                 meta={{
@@ -109,6 +111,7 @@ export default function CodeSamples() {
                                             ? "ayu-dark"
                                             : "ayu-light",
                                 }}
+                                borderRadius="xl"
                                 code={samples[key].code.toString()}
                                 language={samples[key].language}>
                                 <CodeBlock.Header>
