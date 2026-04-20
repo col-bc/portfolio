@@ -46,7 +46,7 @@ const AccentContext = React.createContext<AccentContextType | undefined>(
 export const AccentProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [color, setColor] = React.useState<string>("");
+    const [color, setColor] = React.useState<string>("cyan");
 
     const handleChangeColor = (newColor: string) => {
         if (AVAILABLE_COLORS.includes(newColor)) {
