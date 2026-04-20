@@ -10,7 +10,11 @@ export default function DeleteLeadConfirmation({
     onClose: () => void;
     children: React.ReactNode;
 }) {
-    async function handleDelete() {
+    /**
+     * Handles the deletion of a lead by calling the deleteLead function with the specified lead ID. After the lead is deleted, it calls the onClose callback to close the confirmation dialog.
+     * @returns {Promise<void>} A promise that resolves when the lead deletion process is complete.
+     */
+    async function handleDelete(): Promise<void> {
         await deleteLead(leadId);
         onClose();
     }

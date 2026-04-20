@@ -21,7 +21,7 @@ import "server-only";
 
 /**
  * @interface AuthAttempt
- * @description Represents an authentication attempt by the admin user, including username, password, and Turnstile token.
+ * Represents an authentication attempt by the admin user, including username, password, and Turnstile token.
  */
 export interface AuthAttempt {
     username: string;

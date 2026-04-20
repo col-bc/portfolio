@@ -72,7 +72,7 @@ export function ResumeForm() {
                                 </FileUpload.Trigger>
                             </Input>
                         </InputGroup>
-                        <Button type="submit" colorPalette="teal">
+                        <Button type="submit" colorPalette="cyan">
                             Change Resume
                         </Button>
                     </Flex>

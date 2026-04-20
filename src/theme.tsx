@@ -10,6 +10,7 @@ import {
     defineTextStyles,
 } from "@chakra-ui/react";
 
+// Define a set of animations for tactile interactions (hover and active states)
 const tactileAnimations = {
     transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
     _hover: {
@@ -20,6 +21,7 @@ const tactileAnimations = {
     },
 };
 
+// Define a recipe for buttons that includes the tactile animations for different variants (solid, outline, surface)
 const buttonRecipe = defineRecipe({
     base: {},
 
@@ -32,6 +34,7 @@ const buttonRecipe = defineRecipe({
     },
 });
 
+// Define a slot recipe for dialogs that includes animations for opening and closing the dialog content and backdrop
 const dialogRecipe = defineSlotRecipe({
     base: {
         content: {
@@ -52,6 +55,7 @@ const dialogRecipe = defineSlotRecipe({
     slots: [],
 });
 
+// Define a set of typography styles for body text, headings, and code blocks
 const typography = defineTextStyles({
     body: {
         value: {
@@ -78,6 +82,7 @@ const typography = defineTextStyles({
     },
 });
 
+// Create a custom theme configuration that includes the defined tokens, semantic tokens, keyframes, text styles, slot recipes, and recipes
 const config = defineConfig({
     theme: {
         tokens: {

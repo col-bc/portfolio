@@ -13,7 +13,8 @@ import {
     Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
+import { TbEye, TbTrash } from "react-icons/tb";
 import { Lead } from "../../prisma/generated/prisma/client";
 import DeleteLeadConfirmation from "./deleteLeadConfirmation";
 
@@ -21,6 +22,9 @@ export default function LeadList() {
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
+    /**
+     * Fetches the list of leads from the server and updates the state.
+     */
     useEffect(() => {
         async function fetchLeads() {
             setLoading(true);
@@ -44,7 +48,11 @@ export default function LeadList() {
         fetchLeads();
     }, []);
 
-    function popLeadById(id: number) {
+    /**
+     * Removes a lead from the state by its ID.
+     * @param id - The ID of the lead to remove.
+     */
+    function popLeadById(id: number): void {
         setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== id));
     }
 
@@ -63,7 +71,11 @@ export default function LeadList() {
     return (
         <>
             {leads.map((lead: Lead) => (
-                <Card.Root key={lead.id} as="article" mb={{ base: 6, md: 12 }}>
+                <Card.Root
+                    key={lead.id}
+                    as="article"
+                    mb={{ base: 6, md: 12 }}
+                    variant="elevated">
                     <Card.Header>
                         <Card.Title justifyContent="space-between">
                             <Flex>
@@ -120,10 +132,12 @@ export default function LeadList() {
                             onClose={() => {
                                 popLeadById(lead.id);
                             }}>
-                            Delete
+                            <TbTrash size={18} />
+                            Delete Lead
                         </DeleteLeadConfirmation>
                         <NextLink href={`/auth/manage/leads/${lead.id}`}>
-                            <Button colorPalette="teal" variant="subtle">
+                            <Button colorPalette="cyan" variant="subtle">
+                                <TbEye size={18} />
                                 View Details
                             </Button>
                         </NextLink>
@@ -134,7 +148,18 @@ export default function LeadList() {
     );
 }
 
-function LeadDataItem({ label, value }: { label: string; value: string }) {
+/**
+ * LeadDataItem component renders a single data item with a label and value. It uses the DataList component from Chakra UI to display the label and value in a horizontal orientation. This component is used within the LeadList component to display various details about each lead, such as the received date, phone number, email, and location.
+ * @param param0 - An object containing the label and value for the data item.
+ * @returns {JSX.Element} A JSX element representing the data item with its label and value.
+ */
+function LeadDataItem({
+    label,
+    value,
+}: {
+    label: string;
+    value: string;
+}): JSX.Element {
     return (
         <DataList.Root orientation="horizontal">
             <DataList.ItemLabel>{label}</DataList.ItemLabel>

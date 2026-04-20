@@ -77,7 +77,7 @@ export default function Contact() {
                                     href="https://www.linkedin.com/in/colbycooper/"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                    <IconButton colorPalette="teal" size="lg">
+                                    <IconButton colorPalette="cyan" size="lg">
                                         <TbBrandLinkedin />
                                     </IconButton>
                                 </NextLink>
@@ -85,7 +85,7 @@ export default function Contact() {
                                     href="https://www.github.com/col-bc"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                    <IconButton colorPalette="teal" size="lg">
+                                    <IconButton colorPalette="cyan" size="lg">
                                         <TbBrandGithub />
                                     </IconButton>
                                 </NextLink>
@@ -93,7 +93,7 @@ export default function Contact() {
                                     href="https://www.upwork.com/freelancers/~01bbbe06071be625f4?mp_source=portfolio"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                    <IconButton colorPalette="teal" size="lg">
+                                    <IconButton colorPalette="cyan" size="lg">
                                         <TbBrandUpwork />
                                     </IconButton>
                                 </NextLink>

@@ -17,7 +17,7 @@ export default function AuthPage() {
                 maxW="md"
                 mx="auto"
                 w="full">
-                <Card.Root>
+                <Card.Root variant="elevated">
                     <Card.Header>
                         <Heading size="3xl" textStyle="heading">
                             <Flex align="center" direction="column" gap={2}>

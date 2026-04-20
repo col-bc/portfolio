@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { TbCheck, TbTrash } from "react-icons/tb";
 import { LeadModel } from "../../prisma/generated/prisma/models/Lead";
 import DeleteLeadConfirmation from "./deleteLeadConfirmation";
 import { toaster } from "./ui/toaster";
@@ -77,7 +78,11 @@ export function LeadDetailForm({ slug }: { slug: string }) {
         }
     }
 
-    function afterDelete() {
+    /**
+     * Handles the actions to be taken after a lead is deleted. It navigates the user back to the leads management page and displays a success toast notification confirming the deletion of the lead.
+     * @returns {void}
+     */
+    function afterDelete(): void {
         router.push("/auth/manage/leads");
         toaster.create({
             title: "Lead Deleted",
@@ -96,7 +101,7 @@ export function LeadDetailForm({ slug }: { slug: string }) {
     }
 
     return (
-        <Card.Root w="100%">
+        <Card.Root w="100%" variant="elevated">
             <Card.Body gap={4}>
                 <Flex align="center">
                     <Avatar.Root>
@@ -189,9 +194,11 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                 <DeleteLeadConfirmation
                     leadId={detail.id}
                     onClose={afterDelete}>
-                    Delete
+                    <TbTrash size={18} />
+                    Delete Lead
                 </DeleteLeadConfirmation>
-                <Button colorPalette="teal" onClick={handleReadToggle}>
+                <Button colorPalette="cyan" onClick={handleReadToggle}>
+                    <TbCheck size={18} />
                     Mark as {detail.viewed ? "Not Viewed" : "Viewed"}
                 </Button>
             </Card.Footer>

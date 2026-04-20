@@ -34,7 +34,12 @@ const subjects = createListCollection({
     ],
 });
 
-const formatPhoneNumber = (value: string) => {
+/**
+ * Formats a phone number string by removing non-digit characters and applying a standard formatting pattern. The function takes a string input, extracts the numeric digits, and formats it in the style of (123) 456-7890 for 10-digit numbers, or (123) 456 for shorter numbers. If the input is empty or null, it returns the original value.
+ * @param {string} value - The phone number string to be formatted.
+ * @returns {string} The formatted phone number string.
+ */
+function formatPhoneNumber(value: string): string {
     if (!value) return value;
     const num = value.replace(/[^\d]/g, "");
     const numLen = num.length;
@@ -43,7 +48,7 @@ const formatPhoneNumber = (value: string) => {
         return `(${num.slice(0, 3)}) ${num.slice(3)}`;
     }
     return `(${num.slice(0, 3)}) ${num.slice(3, 6)}-${num.slice(6, 10)}`;
-};
+}
 
 export default function ContactForm() {
     const [name, setName] = useState<string>("");
@@ -59,7 +64,11 @@ export default function ContactForm() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function resetForm() {
+    /**
+     * Resets the contact form fields and state to their initial values. This function clears all input fields, resets the preferred contact method to "email", clears any error messages, and resets the CAPTCHA token. It is called after a successful form submission to prepare the form for a new message.
+     * @returns {void}
+     */
+    function resetForm(): void {
         setName("");
         setEmail("");
         setPhone("");
@@ -71,7 +80,14 @@ export default function ContactForm() {
         setError(null);
     }
 
-    async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    /**
+     * Handles the form submission event by validating the input fields, checking the CAPTCHA token, and sending the form data to the server. If the CAPTCHA challenge is not completed, it sets an error message. If the form submission is successful, it displays a success message and resets the form. If there is an error during submission, it sets the appropriate error message and allows the user to try again.
+     * @param {React.SyntheticEvent<HTMLFormElement>} e - The form submission event object.
+     * @returns {Promise<void>} A promise that resolves when the form submission process is complete.
+     */
+    async function handleSubmit(
+        e: React.SyntheticEvent<HTMLFormElement>,
+    ): Promise<void> {
         e.preventDefault();
         setError(null);
 
@@ -132,7 +148,7 @@ export default function ContactForm() {
                                 to you as soon as possible.
                             </Text>
                             <Button
-                                colorPalette="teal"
+                                colorPalette="cyan"
                                 onClick={() => setSent(false)}>
                                 Send Another Message
                             </Button>
@@ -156,7 +172,7 @@ export default function ContactForm() {
                                 <Alert.Description>{error}</Alert.Description>
                             </Alert.Root>
                         )}
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Name
                                 <Field.RequiredIndicator />
@@ -169,7 +185,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Email
                                 <Field.RequiredIndicator />
@@ -182,7 +198,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Phone
                                 <Field.RequiredIndicator />
@@ -195,7 +211,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root colorPalette="teal">
+                        <Field.Root colorPalette="cyan">
                             <Field.Label>Organization Name</Field.Label>
                             <Input
                                 type="text"
@@ -205,7 +221,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Requested Contact Method
                                 <Field.RequiredIndicator />
@@ -222,7 +238,7 @@ export default function ContactForm() {
                             </RadioGroup>
                         </Field.Root>
 
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Subject
                                 <Field.RequiredIndicator />
@@ -256,7 +272,7 @@ export default function ContactForm() {
                             </Select.Root>
                         </Field.Root>
 
-                        <Field.Root required colorPalette="teal">
+                        <Field.Root required colorPalette="cyan">
                             <Field.Label>
                                 Message
                                 <Field.RequiredIndicator />
@@ -284,7 +300,7 @@ export default function ContactForm() {
                         </Box>
 
                         <Button
-                            colorPalette="teal"
+                            colorPalette="cyan"
                             type="submit"
                             loading={isSubmitting}
                             disabled={!turnstileToken || isSubmitting}>

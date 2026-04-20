@@ -1,6 +1,14 @@
+/**
+ * @module codeSamples
+ * @description This module defines the structure and content of code samples to be displayed in the portfolio website. Each code sample includes a code snippet, programming language, title, file name, description, and an associated icon. The code samples are organized in a record object for easy access and rendering within the application.
+ */
 import React from "react";
 import { FaDatabase, FaJava, FaPython, FaReact } from "react-icons/fa";
 
+/**
+ * @interface Sample
+ * Defines the structure of a code sample, including the code snippet, programming language, title, file name, description, and an associated icon. This interface is used to type the code samples data and ensure consistency across the application when displaying code examples in the portfolio website.
+ */
 interface Sample {
     code: string;
     language: "python" | "tsx" | "java" | "sql";
@@ -10,6 +18,9 @@ interface Sample {
     icon: React.ReactNode;
 }
 
+/**
+ * A record object containing multiple code samples, each identified by a unique key. Each code sample includes a code snippet, programming language, title, file name, description, and an associated icon. This data structure allows for easy access and rendering of code examples within the portfolio website, showcasing the individual's coding skills and experience across different programming languages and projects.
+ */
 const codeSamples: Record<string, Sample> = {
     sample1: {
         code:
@@ -670,7 +681,7 @@ export default function LoginForm() {
             justifyContent="center"
             alignItems="center"
             my={12}>
-            <Spinner size="xl" colorPalette="teal" />
+            <Spinner size="xl" colorPalette="cyan" />
             <Text color="fg.muted" mt={4}>
                 Verifying your credentials ...
             </Text>
@@ -762,7 +773,7 @@ export default function LoginForm() {
                         md: 6,
                     }}>
                     <Button
-                        colorPalette="teal"
+                        colorPalette="cyan"
                         variant="solid"
                         type="submit"
                         disabled={loading}>

@@ -16,7 +16,7 @@ const ipTracker = new Map<string, { count: number; startTime: number }>();
 
 /**
  * @interface ContactFormData
- * @description Represents the data submitted through the contact form.
+ * Represents the data submitted through the contact form.
  */
 export interface ContactFormData {
     name: string;

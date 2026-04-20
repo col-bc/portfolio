@@ -1,18 +1,21 @@
 import CodeSamples from "@/components/codeSamples";
 
+import SplitFlag from "@/components/splitFlag";
+import { ClientOnly } from "@ark-ui/react";
 import {
     Avatar,
     Button,
     Container,
     Flex,
     Heading,
-    Image,
+    SkeletonCircle,
     Tag,
     Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import {
     TbBriefcase2,
+    TbCheckbox,
     TbCloudDownload,
     TbMessage,
     TbSchool,
@@ -124,16 +127,19 @@ export default function Home() {
                                         ecosystems.
                                     </Text>
                                 </Flex>
-                                <Avatar.Root
-                                    colorPalette="teal"
-                                    boxSize={60}
-                                    border="8px solid"
-                                    borderColor="teal.focusRing">
-                                    <Avatar.Image
-                                        src="/headshot.jpg"
-                                        alt="Colby Cooper"
-                                    />
-                                </Avatar.Root>
+                                <ClientOnly
+                                    fallback={<SkeletonCircle boxSize={60} />}>
+                                    <Avatar.Root
+                                        colorPalette="cyan"
+                                        boxSize={60}
+                                        border="8px solid"
+                                        borderColor="cyan.focusRing">
+                                        <Avatar.Image
+                                            src="/headshot.jpg"
+                                            alt="Colby Cooper"
+                                        />
+                                    </Avatar.Root>
+                                </ClientOnly>
                             </Flex>
                             <Flex
                                 direction="row"
@@ -144,14 +150,14 @@ export default function Home() {
                                     md: "flex-start",
                                 }}>
                                 <NextLink href="/contact">
-                                    <Button colorPalette="teal">
+                                    <Button colorPalette="cyan">
                                         <TbMessage />
                                         Get in Touch
                                     </Button>
                                 </NextLink>
                                 <NextLink href="/api/resume" target="_blank">
                                     <Button
-                                        colorPalette="teal"
+                                        colorPalette="cyan"
                                         variant="surface">
                                         <TbCloudDownload />
                                         Download Resume
@@ -192,34 +198,36 @@ export default function Home() {
                     <Heading size="2xl" textStyle="heading" mb={4}>
                         Work Authorizations
                     </Heading>
-                    <Flex direction="column" gap={4}>
-                        <Flex align="center" gap={4}>
-                            <Image
-                                src="USA.svg"
-                                alt="US Flag"
-                                w={{
-                                    base: 8,
-                                    md: 10,
-                                }}
-                            />
-                            <Text fontSize="lg" color="fg.muted">
-                                Authorized to work for any employer in the
-                                United States without sponsorship.
-                            </Text>
-                        </Flex>
-                        <Flex align="center" gap={4}>
-                            <Image
-                                src="Canada.svg"
-                                alt="Canada Flag"
-                                w={{
-                                    base: 8,
-                                    md: 10,
-                                }}
-                            />
-                            <Text fontSize="lg" color="fg.muted">
-                                Authorized to work for any employer in Canada
-                                without sponsorship.
-                            </Text>
+                    <Flex
+                        direction={{ base: "column", md: "row-reverse" }}
+                        align="center"
+                        gap={6}>
+                        <SplitFlag />
+                        <Flex
+                            direction="column"
+                            align="flex-start"
+                            gap={2}
+                            flex={1}>
+                            <Flex direction="row" align="center" gap={2}>
+                                <TbCheckbox
+                                    size={20}
+                                    style={{ flexShrink: 0 }}
+                                />
+                                <Text fontSize="lg" color="fg.muted">
+                                    Authorized to work for any employer in the
+                                    United States without sponsorship.
+                                </Text>
+                            </Flex>
+                            <Flex direction="row" align="center" gap={2}>
+                                <TbCheckbox
+                                    size={20}
+                                    style={{ flexShrink: 0 }}
+                                />
+                                <Text fontSize="lg" color="fg.muted">
+                                    Authorized to work for any employer in
+                                    Canada without sponsorship.
+                                </Text>
+                            </Flex>
                         </Flex>
                     </Flex>
                 </section>
@@ -244,7 +252,7 @@ export default function Home() {
                         <NextLink href="/education">
                             <Button
                                 w="full"
-                                colorPalette="teal"
+                                colorPalette="cyan"
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>
@@ -255,7 +263,7 @@ export default function Home() {
                         <NextLink href="/employment">
                             <Button
                                 w="full"
-                                colorPalette="teal"
+                                colorPalette="cyan"
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>

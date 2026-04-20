@@ -17,11 +17,13 @@ import {
     TbAlertTriangleFilled,
     TbArrowNarrowLeft,
     TbArrowNarrowRight,
+    TbExternalLink,
 } from "react-icons/tb";
 
 export default function NotFound() {
     const path = usePathname();
     const router = useRouter();
+
     return (
         <Container
             maxW="4xl"
@@ -63,20 +65,23 @@ export default function NotFound() {
                         again. If you believe this is a mistake, please{" "}
                         <Link
                             href="https://github.com/col-bc/portfolio/issues/new"
-                            color="teal.fg">
-                            report the issue
+                            color="cyan.fg">
+                            report the issue <TbExternalLink size={16} />
                         </Link>
                         .
                     </Text>
                 </Card.Body>
                 <Card.Footer>
                     <Flex align="center" justify="space-between" w="100%">
-                        <Button onClick={() => router.back()}>
+                        <Button
+                            onClick={() => router.back()}
+                            variant="outline"
+                            size="lg">
                             <TbArrowNarrowLeft />
                             Go Back
                         </Button>
                         <Link href="/" _hover={{ textDecoration: "none" }}>
-                            <Button size="lg" colorPalette="teal">
+                            <Button size="lg" colorPalette="cyan">
                                 Go Home <TbArrowNarrowRight />
                             </Button>
                         </Link>

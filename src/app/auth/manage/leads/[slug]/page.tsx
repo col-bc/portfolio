@@ -35,11 +35,11 @@ export default async function LeadDetail({
                             </Flex>
                         </Heading>
                         <Text fontSize="lg" color="fg.muted">
-                            Lead ID: <Code>{slug}</Code>
+                            <Code variant="surface">Lead ID: {slug}</Code>
                         </Text>
                     </Box>
                     <NextLink href="/auth/manage/leads">
-                        <Button variant="ghost" colorPalette="teal" size="sm">
+                        <Button variant="ghost" colorPalette="cyan" size="sm">
                             <TbArrowLeft size={20} />
                             Back to Leads
                         </Button>

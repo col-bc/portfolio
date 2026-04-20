@@ -10,12 +10,16 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { Metadata } from "next";
+import { JSX } from "react";
 import { TbBriefcase2 } from "react-icons/tb";
 
 export const metadata: Metadata = {
     title: "Employment",
 };
 
+/**
+ * Defines the structure of an employment record, including company name, role, location, dates of employment, optional logo information, and a description of responsibilities and achievements. This interface is used to type the employment history data and ensure consistency across the application.
+ */
 interface Employment {
     company: string;
     role: string;
@@ -26,6 +30,9 @@ interface Employment {
     description: string[];
 }
 
+/**
+ * An array of employment records representing the individual's work history. Each record includes detailed information about the company, role, location, dates of employment, and a description of responsibilities and achievements. This data is used to populate the Employment History section of the portfolio website, providing visitors with insights into the individual's professional background and experience.
+ */
 const history: Employment[] = [
     {
         company: "Targeted Technologies",
@@ -107,6 +114,35 @@ const history: Employment[] = [
     },
 ];
 
+/**
+ * Formats a Date object into a human-readable string format (e.g., "Jan 2020").
+ * @param d - The Date object to format.
+ * @returns {string} A formatted date string in the format "Mon YYYY".
+ */
+function formattedDate(d: Date): string {
+    return d.toLocaleString("en-US", {
+        month: "short",
+        year: "numeric",
+    });
+}
+
+/**
+ * Calculates the elapsed time between two Date objects and returns a human-readable string representation of the duration in years and months.
+ * @param start - The starting Date object.
+ * @param end - The ending Date object.
+ * @returns {string} A formatted string representing the elapsed time in years and months (e.g., "2 yrs 3 mos").
+ */
+function elapsedTime(start: Date, end: Date): string {
+    const totalMonths =
+        (end.getFullYear() - start.getFullYear()) * 12 +
+        (end.getMonth() - start.getMonth());
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+    return `${years > 0 ? `${years} yr${years > 1 ? "s" : ""} ` : ""}${
+        months > 0 ? `${months} mo${months > 1 ? "s" : ""}` : ""
+    }`.trim();
+}
+
 export default function Employment() {
     return (
         <Container maxW="4xl" py={{ base: 6, md: 8 }}>
@@ -134,6 +170,11 @@ export default function Employment() {
     );
 }
 
+/**
+ * Renders an individual employment record as a card component, displaying the company logo, role, company name, location, dates of employment, and a description of responsibilities and achievements. The component is designed to be visually appealing and informative, providing visitors with insights into the individual's professional experience in a clear and concise format.
+ * @param param0 - An object containing the properties of an employment record, including company name, role, location, dates of employment, optional logo information, and a description of responsibilities and achievements. This data is used to populate the content of the employment item card.
+ * @returns {JSX.Element} A React component representing an individual employment record, styled as a card with hover effects and structured content.
+ */
 function EmploymentItem({
     company,
     role,
@@ -142,25 +183,7 @@ function EmploymentItem({
     logo,
     logoAlt,
     description,
-}: Employment) {
-    function formattedDate(d: Date) {
-        return d.toLocaleString("en-US", {
-            month: "short",
-            year: "numeric",
-        });
-    }
-
-    function elapsedTime(start: Date, end: Date) {
-        const totalMonths =
-            (end.getFullYear() - start.getFullYear()) * 12 +
-            (end.getMonth() - start.getMonth());
-        const years = Math.floor(totalMonths / 12);
-        const months = totalMonths % 12;
-        return `${years > 0 ? `${years} yr${years > 1 ? "s" : ""} ` : ""}${
-            months > 0 ? `${months} mo${months > 1 ? "s" : ""}` : ""
-        }`.trim();
-    }
-
+}: Employment): JSX.Element {
     return (
         <Card.Root
             transition="all 0.2s ease-in-out"

@@ -20,7 +20,7 @@ export default function LeadsPage() {
                         </Flex>
                     </Heading>
                     <NextLink href="/auth/manage">
-                        <Button variant="ghost" colorPalette="teal" size="sm">
+                        <Button variant="ghost" colorPalette="cyan" size="sm">
                             <TbArrowLeft size={20} />
                             Back to Manage
                         </Button>
