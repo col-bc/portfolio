@@ -148,7 +148,7 @@ export default function ContactForm() {
                                 to you as soon as possible.
                             </Text>
                             <Button
-                                colorPalette="cyan"
+                                colorPalette="primary"
                                 onClick={() => setSent(false)}>
                                 Send Another Message
                             </Button>
@@ -172,7 +172,7 @@ export default function ContactForm() {
                                 <Alert.Description>{error}</Alert.Description>
                             </Alert.Root>
                         )}
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Name
                                 <Field.RequiredIndicator />
@@ -185,7 +185,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Email
                                 <Field.RequiredIndicator />
@@ -198,7 +198,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Phone
                                 <Field.RequiredIndicator />
@@ -211,7 +211,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root colorPalette="cyan">
+                        <Field.Root colorPalette="primary">
                             <Field.Label>Organization Name</Field.Label>
                             <Input
                                 type="text"
@@ -221,7 +221,7 @@ export default function ContactForm() {
                             />
                         </Field.Root>
 
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Requested Contact Method
                                 <Field.RequiredIndicator />
@@ -238,7 +238,7 @@ export default function ContactForm() {
                             </RadioGroup>
                         </Field.Root>
 
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Subject
                                 <Field.RequiredIndicator />
@@ -272,7 +272,7 @@ export default function ContactForm() {
                             </Select.Root>
                         </Field.Root>
 
-                        <Field.Root required colorPalette="cyan">
+                        <Field.Root required colorPalette="primary">
                             <Field.Label>
                                 Message
                                 <Field.RequiredIndicator />
@@ -300,7 +300,7 @@ export default function ContactForm() {
                         </Box>
 
                         <Button
-                            colorPalette="cyan"
+                            colorPalette="primary"
                             type="submit"
                             loading={isSubmitting}
                             disabled={!turnstileToken || isSubmitting}>

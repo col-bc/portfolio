@@ -136,7 +136,7 @@ export default function LeadList() {
                             Delete Lead
                         </DeleteLeadConfirmation>
                         <NextLink href={`/auth/manage/leads/${lead.id}`}>
-                            <Button colorPalette="cyan" variant="subtle">
+                            <Button colorPalette="primary" variant="subtle">
                                 <TbEye size={18} />
                                 View Details
                             </Button>

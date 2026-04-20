@@ -86,7 +86,30 @@ const typography = defineTextStyles({
 const config = defineConfig({
     theme: {
         tokens: {
-            colors: {},
+            colors: {
+                primary: {
+                    // Color Scale
+                    50: { value: "var(--color-primary-50)" },
+                    100: { value: "var(--color-primary-100)" },
+                    200: { value: "var(--color-primary-200)" },
+                    300: { value: "var(--color-primary-300)" },
+                    400: { value: "var(--color-primary-400)" },
+                    500: { value: "var(--color-primary-500)" },
+                    600: { value: "var(--color-primary-600)" },
+                    700: { value: "var(--color-primary-700)" },
+                    800: { value: "var(--color-primary-800)" },
+                    900: { value: "var(--color-primary-900)" },
+                    // Semantic Slots
+                    solid: { value: "var(--color-primary-solid)" },
+                    contrast: { value: "var(--color-primary-contrast)" },
+                    fg: { value: "var(--color-primary-fg)" },
+                    muted: { value: "var(--color-primary-muted)" },
+                    plain: { value: "var(--color-primary-plain)" },
+                    subtle: { value: "var(--color-primary-subtle)" },
+                    emphasized: { value: "var(--color-primary-emphasized)" },
+                    focusRing: { value: "var(--color-primary-focusRing)" },
+                },
+            },
             fonts: {
                 heading: { value: "var(--font-heading)" },
                 body: { value: "var(--font-body)" },

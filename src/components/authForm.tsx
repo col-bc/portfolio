@@ -138,7 +138,7 @@ export default function AuthForm({ ...rest }: FlexProps) {
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            colorPalette="cyan"
+                            colorPalette="primary"
                         />
                     </Field.Root>
                 </>
@@ -185,7 +185,7 @@ export default function AuthForm({ ...rest }: FlexProps) {
             <Button
                 type="submit"
                 mt={2}
-                colorPalette="cyan"
+                colorPalette="primary"
                 loading={isSubmitting}
                 disabled={isSubmitting || (step === "auth" && !turnstileToken)}>
                 {step === "auth" ? "Sign In" : "Verify"}

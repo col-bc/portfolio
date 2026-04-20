@@ -1,3 +1,4 @@
+import { AccentProvider } from "@/components/accentProvider";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { ColorModeProvider } from "@/components/ui/color-mode";
@@ -63,75 +64,77 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <body>
                 <ColorModeProvider>
                     <ThemeProvider>
-                        <Flex
-                            direction="column"
-                            textStyle="body"
-                            minH="100vh"
-                            maxW="100vw"
-                            bg="bg"
-                            position="relative"
-                            zIndex={0}>
-                            <Box
-                                position="absolute"
-                                top="10%"
-                                left="-10%"
-                                w="50vw"
-                                h="50vw"
-                                maxW="600px"
-                                maxH="600px"
-                                borderRadius="50%"
-                                bg="cyan.focusRing/15"
-                                filter="blur(140px)"
-                                pointerEvents="none"
-                                zIndex={0}
-                            />
-
-                            <Container
-                                maxW="4xl"
-                                py={2}
-                                as="header"
-                                w="100%"
-                                position="relative"
-                                zIndex={1}>
-                                <Link
-                                    href="/"
-                                    _hover={{ textDecoration: "none" }}
-                                    w="fit"
-                                    display="flex"
-                                    flexDir="column"
-                                    alignItems="start">
-                                    <Heading
-                                        textStyle="heading"
-                                        fontSize="4xl"
-                                        textDecoration="underline"
-                                        textDecorationColor="cyan.focusRing"
-                                        textDecorationStyle="wavy"
-                                        textUnderlineOffset={6}
-                                        m={0}>
-                                        Colby Cooper
-                                    </Heading>
-                                    <Text
-                                        fontSize="lg"
-                                        color="fg.muted"
-                                        fontWeight={500}
-                                        mb={2}>
-                                        Technical Problem-Solver & Developer
-                                    </Text>
-                                </Link>
-                            </Container>
-                            <Navbar />
+                        <AccentProvider>
                             <Flex
                                 direction="column"
-                                flexGrow={1}
-                                as="main"
-                                w="100%"
-                                mb={6}
-                                overflowX="hidden"
-                                overflowY="auto">
-                                {children}
+                                textStyle="body"
+                                minH="100vh"
+                                maxW="100vw"
+                                bg="bg"
+                                position="relative"
+                                zIndex={0}>
+                                <Box
+                                    position="absolute"
+                                    top="10%"
+                                    left="-10%"
+                                    w="50vw"
+                                    h="50vw"
+                                    maxW="600px"
+                                    maxH="600px"
+                                    borderRadius="50%"
+                                    bg="primary.focusRing/15"
+                                    filter="blur(140px)"
+                                    pointerEvents="none"
+                                    zIndex={0}
+                                />
+
+                                <Container
+                                    maxW="4xl"
+                                    py={2}
+                                    as="header"
+                                    w="100%"
+                                    position="relative"
+                                    zIndex={1}>
+                                    <Link
+                                        href="/"
+                                        _hover={{ textDecoration: "none" }}
+                                        w="fit"
+                                        display="flex"
+                                        flexDir="column"
+                                        alignItems="start">
+                                        <Heading
+                                            textStyle="heading"
+                                            fontSize="4xl"
+                                            textDecoration="underline"
+                                            textDecorationColor="primary.focusRing"
+                                            textDecorationStyle="wavy"
+                                            textUnderlineOffset={6}
+                                            m={0}>
+                                            Colby Cooper
+                                        </Heading>
+                                        <Text
+                                            fontSize="lg"
+                                            color="fg.muted"
+                                            fontWeight={500}
+                                            mb={2}>
+                                            Technical Problem-Solver & Developer
+                                        </Text>
+                                    </Link>
+                                </Container>
+                                <Navbar />
+                                <Flex
+                                    direction="column"
+                                    flexGrow={1}
+                                    as="main"
+                                    w="100%"
+                                    mb={6}
+                                    overflowX="hidden"
+                                    overflowY="auto">
+                                    {children}
+                                </Flex>
+                                <Footer />
                             </Flex>
-                            <Footer />
-                        </Flex>
+                        </AccentProvider>
                     </ThemeProvider>
                 </ColorModeProvider>
                 {/* <!-- Google tag (gtag.js) --> */}

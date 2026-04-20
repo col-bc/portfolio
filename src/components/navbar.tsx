@@ -3,6 +3,7 @@
 import { logoutAdmin, verifySession } from "@/app/lib/handleAuth";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import { Tooltip } from "@/components/ui/tooltip";
+import { ClientOnly } from "@ark-ui/react";
 import {
     Box,
     Button,
@@ -13,7 +14,6 @@ import {
     Menu,
     Portal,
     Skeleton,
-    Spinner,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,6 +31,7 @@ import {
     TbSend,
     TbX,
 } from "react-icons/tb";
+import { AccentChooserButton } from "./accentProvider";
 
 /**
  * Renders the navigation links for the navbar.
@@ -56,7 +57,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/") ? "cyan.fg" : "inherit"}
+                    color={isCurrentPath("/") ? "primary.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbHome />
                     <span>Home</span>
@@ -67,7 +68,9 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/education") ? "cyan.fg" : "inherit"}
+                    color={
+                        isCurrentPath("/education") ? "primary.fg" : "inherit"
+                    }
                     w={{ base: "100%", md: "auto" }}>
                     <TbSchool />
                     <span>Education</span>
@@ -78,7 +81,9 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/employment") ? "cyan.fg" : "inherit"}
+                    color={
+                        isCurrentPath("/employment") ? "primary.fg" : "inherit"
+                    }
                     w={{ base: "100%", md: "auto" }}>
                     <TbBriefcase2 />
                     <span>Employment</span>
@@ -89,7 +94,7 @@ function NavLinks() {
                     variant="ghost"
                     spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
-                    color={isCurrentPath("/contact") ? "cyan.fg" : "inherit"}
+                    color={isCurrentPath("/contact") ? "primary.fg" : "inherit"}
                     w={{ base: "100%", md: "auto" }}>
                     <TbMessage />
                     <span>Contact</span>
@@ -105,7 +110,6 @@ function NavLinks() {
  * @returns JSX.Element
  */
 function Actions() {
-    const [mounted, setMounted] = useState(false);
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const pathname = usePathname();
     const router = useRouter();
@@ -128,7 +132,6 @@ function Actions() {
         }
 
         checkAuth();
-        setMounted(true);
 
         return () => {
             isMountedComponent = false;
@@ -150,7 +153,10 @@ function Actions() {
 
     return (
         <>
-            {mounted ? (
+            <ClientOnly
+                fallback={
+                    <Skeleton height="40px" width="40px" borderRadius="lg" />
+                }>
                 <Tooltip content="Get in touch">
                     <IconButton aria-label="Get in touch" variant="ghost">
                         <NextLink href="/contact">
@@ -158,26 +164,19 @@ function Actions() {
                         </NextLink>
                     </IconButton>
                 </Tooltip>
-            ) : (
-                <IconButton
-                    aria-label="Loading"
-                    variant="ghost"
-                    disabled
-                    opacity={0.5}>
-                    <Spinner size="xs" />
-                </IconButton>
-            )}
-            {mounted ? (
+            </ClientOnly>
+            <ClientOnly
+                fallback={
+                    <Skeleton height="40px" width="40px" borderRadius="lg" />
+                }>
                 <ColorModeButton variant="ghost" />
-            ) : (
-                <IconButton
-                    aria-label="Loading"
-                    variant="ghost"
-                    disabled
-                    opacity={0.5}>
-                    <Spinner size="xs" />
-                </IconButton>
-            )}
+            </ClientOnly>
+            <ClientOnly
+                fallback={
+                    <Skeleton height="40px" width="40px" borderRadius="lg" />
+                }>
+                <AccentChooserButton />
+            </ClientOnly>
             {isAuth && (
                 <Menu.Root>
                     <Menu.Trigger asChild>
@@ -364,6 +363,11 @@ export default function Navbar() {
                                     borderRadius="lg"
                                 />
                                 <Box flexGrow={1} />
+                                <Skeleton
+                                    height="40px"
+                                    width="40px"
+                                    borderRadius="lg"
+                                />
                                 <Skeleton
                                     height="40px"
                                     width="40px"

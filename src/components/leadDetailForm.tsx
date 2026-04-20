@@ -197,7 +197,7 @@ export function LeadDetailForm({ slug }: { slug: string }) {
                     <TbTrash size={18} />
                     Delete Lead
                 </DeleteLeadConfirmation>
-                <Button colorPalette="cyan" onClick={handleReadToggle}>
+                <Button colorPalette="primary" onClick={handleReadToggle}>
                     <TbCheck size={18} />
                     Mark as {detail.viewed ? "Not Viewed" : "Viewed"}
                 </Button>

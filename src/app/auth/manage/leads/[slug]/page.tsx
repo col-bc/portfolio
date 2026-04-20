@@ -39,7 +39,10 @@ export default async function LeadDetail({
                         </Text>
                     </Box>
                     <NextLink href="/auth/manage/leads">
-                        <Button variant="ghost" colorPalette="cyan" size="sm">
+                        <Button
+                            variant="ghost"
+                            colorPalette="primary"
+                            size="sm">
                             <TbArrowLeft size={20} />
                             Back to Leads
                         </Button>
