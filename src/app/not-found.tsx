@@ -65,7 +65,7 @@ export default function NotFound() {
                         again. If you believe this is a mistake, please{" "}
                         <Link
                             href="https://github.com/col-bc/portfolio/issues/new"
-                            color="cyan.fg">
+                            color="primary.fg">
                             report the issue <TbExternalLink size={16} />
                         </Link>
                         .
@@ -81,7 +81,7 @@ export default function NotFound() {
                             Go Back
                         </Button>
                         <Link href="/" _hover={{ textDecoration: "none" }}>
-                            <Button size="lg" colorPalette="cyan">
+                            <Button size="lg" colorPalette="primary">
                                 Go Home <TbArrowNarrowRight />
                             </Button>
                         </Link>

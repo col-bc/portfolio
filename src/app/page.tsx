@@ -130,10 +130,10 @@ export default function Home() {
                                 <ClientOnly
                                     fallback={<SkeletonCircle boxSize={60} />}>
                                     <Avatar.Root
-                                        colorPalette="cyan"
+                                        colorPalette="primary"
                                         boxSize={60}
                                         border="8px solid"
-                                        borderColor="cyan.focusRing">
+                                        borderColor="primary.focusRing">
                                         <Avatar.Image
                                             src="/headshot.jpg"
                                             alt="Colby Cooper"
@@ -150,14 +150,16 @@ export default function Home() {
                                     md: "flex-start",
                                 }}>
                                 <NextLink href="/contact">
-                                    <Button colorPalette="cyan">
+                                    <Button
+                                        colorPalette="primary"
+                                        variant="solid">
                                         <TbMessage />
                                         Get in Touch
                                     </Button>
                                 </NextLink>
                                 <NextLink href="/api/resume" target="_blank">
                                     <Button
-                                        colorPalette="cyan"
+                                        colorPalette="primary"
                                         variant="surface">
                                         <TbCloudDownload />
                                         Download Resume
@@ -252,7 +254,7 @@ export default function Home() {
                         <NextLink href="/education">
                             <Button
                                 w="full"
-                                colorPalette="cyan"
+                                colorPalette="primary"
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>
@@ -263,7 +265,7 @@ export default function Home() {
                         <NextLink href="/employment">
                             <Button
                                 w="full"
-                                colorPalette="cyan"
+                                colorPalette="primary"
                                 variant="surface"
                                 size="lg"
                                 px={{ base: 6, md: 12 }}>

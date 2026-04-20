@@ -32,7 +32,7 @@ export default function SplitFlag({ width = 100, height = 100 }) {
             position="relative"
             borderRadius="full"
             border="4px solid"
-            borderColor="cyan.border">
+            borderColor="primary.border">
             <style>{style}</style>
             <div className="flag-half flag-canada"></div>
             <div className="flag-half flag-us"></div>

@@ -18,6 +18,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { TbExternalLink } from "react-icons/tb";
 import { HighlighterGeneric } from "shiki";
+import { useAccent } from "./accentProvider";
 import { useColorMode } from "./ui/color-mode";
 
 /**
@@ -37,6 +38,8 @@ export default function CodeSamples() {
     const [currentSample, setCurrentSample] = useState("sample1");
     const [showDialog, setShowDialog] = useState(false);
     const { colorMode } = useColorMode();
+    const { color } = useAccent();
+    console.debug("[DEBUG[] Accent Color in CodeSamples:", color);
 
     /**
      * Set the component as mounted to ensure that the Shiki highlighter is only loaded on the client side, preventing hydration issues with server-side rendering.
@@ -67,7 +70,7 @@ export default function CodeSamples() {
             <Tabs.Root
                 defaultValue="sample1"
                 variant="line"
-                colorPalette="cyan"
+                colorPalette="primary"
                 orientation="horizontal"
                 value={currentSample}
                 onValueChange={(e) => setCurrentSample(e.value)}>

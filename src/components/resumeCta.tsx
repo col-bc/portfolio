@@ -19,7 +19,7 @@ export default function ResumeCTA() {
                     _hover={{
                         textDecor: "none",
                     }}>
-                    <Button size="lg" variant="outline" colorPalette="cyan">
+                    <Button size="lg" variant="outline" colorPalette="primary">
                         <TbCloudDownload /> Download My Resume
                     </Button>
                 </Link>
