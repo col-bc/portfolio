@@ -4,7 +4,14 @@
  */
 "use client";
 
-import { ColorSwatch, Grid, IconButton, Menu, Portal } from "@chakra-ui/react";
+import {
+    ColorSwatch,
+    Grid,
+    IconButton,
+    Menu,
+    Portal,
+    Text,
+} from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import * as React from "react";
 import { JSX } from "react";
