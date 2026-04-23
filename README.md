@@ -1,5 +1,7 @@
 # Colby Cooper | Technical Problem-Solver & Developer
 
+🔗 [https://www.colbyc.com/](https://www.colbyc.com)
+
 A full-stack, responsive personal portfolio built with Next.js and TypeScript. This application serves a dual purpose: it acts as a public-facing interactive resume and a secure, private administrative portal for managing inbound contact leads via a custom SQLite database.
 
 I treat every operational bottleneck, data discrepancy, and software bug like an investigation. This repository demonstrates my ability to translate corporate compliance, risk mitigation, and analytical problem-solving into secure, scalable IT infrastructure and software architecture.

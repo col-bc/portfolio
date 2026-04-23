@@ -3,6 +3,7 @@
  * @description Provides the AccentContext to its children components, allowing them to access and update the current accent color.
  */
 "use client";
+
 import { ColorSwatch, Grid, IconButton, Menu, Portal } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import * as React from "react";
@@ -67,7 +68,8 @@ export function AccentProvider({
         }
     };
 
-    const INLINE_STYLES = `
+    const INLINE_STYLES = React.useMemo(
+        () => `
         :root {
             --color-primary-50: var(--chakra-colors-${color}-50);
             --color-primary-100: var(--chakra-colors-${color}-100);
@@ -89,7 +91,9 @@ export function AccentProvider({
             --color-primary-subtle: var(--chakra-colors-${color}-subtle, var(--chakra-colors-${color}-100));
             --color-primary-emphasized: var(--chakra-colors-${color}-emphasized, var(--chakra-colors-${color}-600));
         }
-    `;
+    `,
+        [color],
+    );
 
     return (
         <AccentContext.Provider value={{ color, setColor: handleChangeColor }}>
@@ -131,7 +135,14 @@ export function AccentChooserButton() {
             <Portal>
                 <Menu.Positioner>
                     <Menu.Content>
-                        <Grid templateColumns="repeat(5, 1fr)" gap={1} mt={2}>
+                        <Text
+                            mb={2}
+                            textStyle="body"
+                            color="fg.muted"
+                            fontSize="sm">
+                            Choose an accent color
+                        </Text>
+                        <Grid templateColumns="repeat(5, 1fr)" gap={0} mt={2}>
                             {AVAILABLE_COLORS.map((c) => (
                                 <Menu.Item
                                     key={c}
@@ -142,11 +153,12 @@ export function AccentChooserButton() {
                                         aria-label={`Select ${c} accent color`}
                                         variant={
                                             isCurrentColor(c)
-                                                ? "surface"
+                                                ? "solid"
                                                 : "ghost"
                                         }
                                         onClick={() => handleSelectColor(c)}
-                                        size="sm"
+                                        colorPalette={c}
+                                        size="xs"
                                         mr={2}>
                                         <ColorSwatch value={c} />
                                     </IconButton>
