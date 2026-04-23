@@ -3,7 +3,13 @@ import { TbCloudDownload } from "react-icons/tb";
 
 export default function ResumeCTA() {
     return (
-        <Flex direction="column" gap={4} textAlign="center" align="center">
+        <Flex
+            direction="column"
+            gap={4}
+            textAlign="center"
+            align="center"
+            maxW="xl"
+            mx="auto">
             <Heading size="xl" textStyle="heading">
                 Download My Resume
             </Heading>

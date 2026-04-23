@@ -55,7 +55,9 @@ function NavLinks() {
             <NextLink href="/">
                 <Button
                     variant={isCurrentPath("/") ? "subtle" : "ghost"}
-                    colorPalette={isCurrentPath("/") ? "primary" : "whiteAlpha"}
+                    colorPalette="primary"
+                    color={isCurrentPath("/") ? "primary" : "fg"}
+                    spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbHome />
@@ -65,9 +67,9 @@ function NavLinks() {
             <NextLink href="/education">
                 <Button
                     variant={isCurrentPath("/education") ? "subtle" : "ghost"}
-                    colorPalette={
-                        isCurrentPath("/education") ? "primary" : "whiteAlpha"
-                    }
+                    colorPalette="primary"
+                    color={isCurrentPath("/education") ? "primary" : "fg"}
+                    spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbSchool />
@@ -77,9 +79,9 @@ function NavLinks() {
             <NextLink href="/employment">
                 <Button
                     variant={isCurrentPath("/employment") ? "subtle" : "ghost"}
-                    colorPalette={
-                        isCurrentPath("/employment") ? "primary" : "whiteAlpha"
-                    }
+                    colorPalette="primary"
+                    color={isCurrentPath("/employment") ? "primary" : "fg"}
+                    spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbBriefcase2 />
@@ -89,9 +91,9 @@ function NavLinks() {
             <NextLink href="/contact">
                 <Button
                     variant={isCurrentPath("/contact") ? "subtle" : "ghost"}
-                    colorPalette={
-                        isCurrentPath("/contact") ? "primary" : "whiteAlpha"
-                    }
+                    colorPalette="primary"
+                    color={isCurrentPath("/contact") ? "primary" : "fg"}
+                    spaceX={2}
                     justifyContent={{ base: "left", md: "center" }}
                     w={{ base: "100%", md: "auto" }}>
                     <TbMessage />

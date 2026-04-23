@@ -79,7 +79,8 @@ export default function Contact() {
                                     rel="noopener noreferrer">
                                     <IconButton
                                         colorPalette="primary"
-                                        size="lg">
+                                        variant="subtle"
+                                        size="xl">
                                         <TbBrandLinkedin />
                                     </IconButton>
                                 </NextLink>
@@ -88,8 +89,9 @@ export default function Contact() {
                                     target="_blank"
                                     rel="noopener noreferrer">
                                     <IconButton
+                                        variant="subtle"
                                         colorPalette="primary"
-                                        size="lg">
+                                        size="xl">
                                         <TbBrandGithub />
                                     </IconButton>
                                 </NextLink>
@@ -99,8 +101,9 @@ export default function Contact() {
                                     rel="noopener noreferrer">
                                     <IconButton
                                         colorPalette="primary"
-                                        size="lg">
-                                        <TbBrandUpwork />
+                                        variant="subtle"
+                                        size="xl">
+                                        <TbBrandUpwork size={24} />
                                     </IconButton>
                                 </NextLink>
                             </Flex>

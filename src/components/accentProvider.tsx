@@ -3,15 +3,11 @@
  * @description Provides the AccentContext to its children components, allowing them to access and update the current accent color.
  */
 "use client";
-import {
-    ColorSwatch,
-    Grid,
-    IconButton,
-    Menu,
-    Portal,
-    Text,
-} from "@chakra-ui/react";
+
+import { ColorSwatch, Grid, IconButton, Menu, Portal } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import * as React from "react";
+import { JSX } from "react";
 import { TbPalette } from "react-icons/tb";
 
 // List of available colors that can be used as accent colors. This is used to validate the color input when updating the accent color.
@@ -50,14 +46,19 @@ const AccentContext = React.createContext<AccentContextType | undefined>(
  * @param {React.ReactNode} props.children - The child components that will have access to the AccentContext.
  * @return {JSX.Element} The AccentProvider component.
  */
-export const AccentProvider: React.FC<{ children: React.ReactNode }> = ({
+export function AccentProvider({
+    initialColor = "cyan",
     children,
-}) => {
-    const [color, setColor] = React.useState<string>("cyan");
+}: {
+    children: React.ReactNode;
+    initialColor?: string;
+}): JSX.Element {
+    const [color, setColor] = React.useState<string>(initialColor);
 
     const handleChangeColor = (newColor: string) => {
         if (AVAILABLE_COLORS.includes(newColor)) {
             setColor(newColor);
+            Cookies.set("accentColor", newColor, { expires: 365 });
         } else {
             console.warn(
                 `Invalid color: ${newColor}. Available colors are: ${AVAILABLE_COLORS.join(
@@ -100,7 +101,7 @@ export const AccentProvider: React.FC<{ children: React.ReactNode }> = ({
             {children}
         </AccentContext.Provider>
     );
-};
+}
 
 /**
  * Custom hook to access the AccentContext. Must be used within an AccentProvider.
@@ -118,18 +119,7 @@ export const useAccent = (): AccentContextType => {
 export function AccentChooserButton() {
     const { color, setColor } = useAccent();
 
-    React.useEffect(() => {
-        const storedColor = localStorage.getItem("accentColor");
-        if (storedColor && AVAILABLE_COLORS.includes(storedColor)) {
-            setColor(storedColor);
-        }
-    }, [setColor]);
-
-    const handleSelectColor = (color: string) => {
-        setColor(color);
-        localStorage.setItem("accentColor", color);
-    };
-
+    const handleSelectColor = (color: string) => setColor(color);
     const isCurrentColor = (c: string) => c === color;
 
     return (
