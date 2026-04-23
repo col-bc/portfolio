@@ -5,7 +5,8 @@ import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ThemeProvider } from "@/theme";
 import { Box, Container, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import { Fira_Code, Geist, Roboto_Flex } from "next/font/google";
+import { Geist, Roboto_Flex, Roboto_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import Script from "next/script";
 
 const headingFont = Geist({
@@ -21,7 +22,7 @@ const bodyFont = Roboto_Flex({
     display: "swap",
 });
 
-const monoFont = Fira_Code({
+const monoFont = Roboto_Mono({
     subsets: ["latin"],
     weight: ["400"],
     variable: "--font-mono",
@@ -37,7 +38,10 @@ export const metadata: Metadata = {
     metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+    const cookieStore = await cookies();
+    const savedColor = cookieStore.get("accentColor")?.value || "cyan";
+
     const { children } = props;
     return (
         <html
@@ -64,7 +68,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <body>
                 <ColorModeProvider>
                     <ThemeProvider>
-                        <AccentProvider>
+                        <AccentProvider initialColor={savedColor}>
                             <Flex
                                 direction="column"
                                 textStyle="body"

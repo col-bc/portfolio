@@ -302,6 +302,7 @@ export default function ContactForm() {
                         <Button
                             colorPalette="primary"
                             type="submit"
+                            size="lg"
                             loading={isSubmitting}
                             disabled={!turnstileToken || isSubmitting}>
                             Send Message
