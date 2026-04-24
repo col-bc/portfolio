@@ -60,7 +60,7 @@ export function AccentProvider({
     children: React.ReactNode;
     initialColor?: string;
 }): JSX.Element {
-    const [color, setColor] = React.useState<string>(initialColor);
+    const [color, setColor] = React.useState<string>(initialColor || "cyan");
 
     const handleChangeColor = (newColor: string) => {
         if (AVAILABLE_COLORS.includes(newColor)) {
