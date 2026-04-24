@@ -14,8 +14,7 @@ import { NextResponse } from "next/server";
 async function verifySessionToken(token: string) {
     try {
         const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
-        const result = await jwtVerify(token, secret);
-        console.log("[DEBUG] JWT verified successfully:", result);
+        await jwtVerify(token, secret);
         return true;
     } catch (e) {
         console.error("JWT verification failed:", e);
@@ -25,21 +24,16 @@ async function verifySessionToken(token: string) {
 
 export async function middleware(request: NextRequest) {
     const session = request.cookies.get("admin_session")?.value;
-    console.debug("[DEBUG] Incoming request to:", request.nextUrl.pathname);
 
     if (request.nextUrl.pathname === "/auth") {
         // Bypass authentication for the login page if the user is already authenticated
         if (session && (await verifySessionToken(session))) {
-            console.debug(
-                "[DEBUG] User already authenticated, redirecting to manage page.",
-            );
             return NextResponse.redirect(new URL("/auth/manage", request.url));
         }
         return NextResponse.next();
     }
     // Protect all routes under /auth/manage
     else if (request.nextUrl.pathname.startsWith("/auth/manage")) {
-        console.debug("[DEBUG] Session cookie value:", session);
 
         // Redirect to login if no session cookie is found
         if (!session) {
@@ -48,8 +42,7 @@ export async function middleware(request: NextRequest) {
 
         try {
             const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
-            const result = await jwtVerify(session, secret);
-            console.debug("[DEBUG] JWT verified successfully:", result);
+            await jwtVerify(session, secret);
             return NextResponse.next();
         } catch (e) {
             console.error("JWT verification failed:", e);

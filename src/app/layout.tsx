@@ -41,6 +41,7 @@ export const metadata: Metadata = {
 export default async function RootLayout(props: { children: React.ReactNode }) {
     const cookieStore = await cookies();
     const savedColor = cookieStore.get("accentColor")?.value || "cyan";
+    const savedTheme = cookieStore.get("themePreference")?.value || "light";
 
     const { children } = props;
     return (
@@ -66,7 +67,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <link rel="icon" href="/favicon.ico" />
             </head>
             <body>
-                <ColorModeProvider>
+                <ColorModeProvider
+                    themes={["light", "dark", "system"]}
+                    defaultTheme={savedTheme}>
                     <ThemeProvider>
                         <AccentProvider initialColor={savedColor}>
                             <Flex
