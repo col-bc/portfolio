@@ -50,7 +50,8 @@ export default function Navigation({ user }: { user: User | null }) {
             href="/"
             className="text-2xl font-bold tracking-tighter whitespace-nowrap underline decoration-primary! decoration-dashed decoration-2"
           >
-            Colby Cooper
+            Colby <span className="hidden md:inline">Cooper</span>
+            <span className="md:hidden">C.</span>
           </Link>
           <div className="hidden w-full gap-4 md:flex">
             <LinkList />
@@ -62,7 +63,7 @@ export default function Navigation({ user }: { user: User | null }) {
             <Link
               href="/auth/manage"
               className={cn(
-                buttonVariants({ variant: 'ghost', size: 'icon' }),
+                buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
                 'hidden md:flex'
               )}
             >

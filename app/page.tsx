@@ -189,7 +189,7 @@ export default function Page() {
               investigation.
             </h3>
           </div>
-          <Avatar className="size-30">
+          <Avatar className="size-30 border-4 border-primary">
             <AvatarImage src="/avatar.jpg" alt="Colby Cooper" />
             <AvatarFallback className="text-4xl font-black">CC</AvatarFallback>
           </Avatar>
@@ -235,10 +235,21 @@ export default function Page() {
         </div>
       </div>
 
-      <CodeSamples />
+      <div className="flex w-full min-w-0 flex-col items-start gap-6">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
+          Code Samples
+        </h2>
+        <p className="text-base leading-relaxed text-foreground">
+          Explore various code samples demonstrating the capabilities of our
+          application. Click on the tabs to view different examples and see how
+          you can implement similar functionality in your projects.
+        </p>
+
+        <CodeSamples />
+      </div>
 
       <div className="flex flex-col gap-6">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
           Skills Overview
         </h2>
         <p className="text-base leading-relaxed text-foreground">

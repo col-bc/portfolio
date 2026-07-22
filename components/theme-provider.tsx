@@ -44,7 +44,7 @@ function ThemeToggleButton() {
 
   return (
     <React.Suspense fallback={<Skeleton className="size=6" />}>
-      <Button variant="ghost" size="icon" onClick={() => toggleTheme()}>
+      <Button variant="ghost" size="icon-sm" onClick={() => toggleTheme()}>
         {ColorModeIcon}
       </Button>
     </React.Suspense>

@@ -1,26 +1,35 @@
 'use client';
 
-import codeSamples, { Sample } from '@/lib/codeSamples';
+import codeSamples, { CodeSample } from '@/lib/codeSamples';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import React from 'react';
+import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { cn } from '@/lib/util/utils';
 import {
   oneDark,
   oneLight,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
 
-interface CodeHighlighterProps {
-  language: string;
-  code: string;
-}
+const AsyncSyntaxHighlighter = dynamic(
+  () => import('react-syntax-highlighter').then((mod) => mod.Prism),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 w-full flex-col gap-3 p-4">
+        <div className="h-4 w-3/4 animate-pulse rounded-md bg-muted/60" />
+        <div className="h-4 w-1/2 animate-pulse rounded-md bg-muted/60" />
+        <div className="h-4 w-5/6 animate-pulse rounded-md bg-muted/60" />
+        <div className="h-4 w-2/3 animate-pulse rounded-md bg-muted/60" />
+        <div className="h-4 w-1/3 animate-pulse rounded-md bg-muted/60" />
+      </div>
+    ),
+  }
+);
 
-const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
-  language,
-  code,
-}) => {
+const CodeHighlighter = React.memo((sample: CodeSample) => {
   const { resolvedTheme } = useTheme();
   const style = React.useMemo(
     () => (resolvedTheme === 'dark' ? oneDark : oneLight),
@@ -29,72 +38,93 @@ const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
 
   return (
     <div className="flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background">
-      {language && (
-        <div className="flex items-center rounded-t-lg border-b border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground">
-          <span className="capitalize">{language}</span>
-        </div>
-      )}
-      <SyntaxHighlighter
-        language={language}
-        style={style}
-        className="rounded-0! m-0! h-full max-h-150 w-full"
-      >
-        {code}
-      </SyntaxHighlighter>
+      <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground">
+        {sample.icon && (sample.icon as React.ReactNode)}
+        <span className="font-mono">{sample.fileName}</span>
+      </div>
+
+      <div className="overflow-hidden">
+        <AsyncSyntaxHighlighter
+          language={sample.language}
+          style={style}
+          className="rounded-0! m-0! h-full max-h-150 w-full"
+        >
+          {sample.code}
+        </AsyncSyntaxHighlighter>
+      </div>
     </div>
   );
-};
+});
+CodeHighlighter.displayName = 'CodeHighlighter';
 
 function CodeSamples() {
-  return (
-    <div className="flex w-full min-w-0 flex-col items-start gap-6">
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        Code Samples
-      </h2>
-      <p className="text-base leading-relaxed text-foreground">
-        Explore various code samples demonstrating the capabilities of our
-        application. Click on the tabs to view different examples and see how
-        you can implement similar functionality in your projects.
-      </p>
+  const sampleKeys = Object.keys(codeSamples);
+  const defaultTab = sampleKeys[0];
+  const [activeTab, setActiveTab] = useState(defaultTab);
 
-      <Tabs className="w-full">
-        <TabsList
-          variant="default"
-          className="mb-0 flex items-center justify-start rounded-full border border-border"
+  const activeIndex = sampleKeys.indexOf(activeTab);
+
+  return (
+    <Tabs
+      value={activeTab}
+      onValueChange={setActiveTab}
+      className="flex w-full flex-col"
+    >
+      <TabsList
+        variant="default"
+        className="mb-0 flex w-full scrollbar-none flex-nowrap items-center justify-start overflow-x-auto rounded-full border border-border p-1 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {Object.entries(codeSamples).map(
+          ([key, sample]: [string, CodeSample]) => {
+            const isActive = activeTab === key;
+
+            return (
+              <TabsTrigger
+                key={key}
+                value={key}
+                className={cn(
+                  'relative shrink-0 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+                  'data-[state=active]:bg-transparent data-[state=active]:shadow-none',
+                  isActive
+                    ? 'text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="active-tab-indicator"
+                    className="absolute inset-0 z-0 rounded-full bg-primary"
+                    transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+                  />
+                )}
+                <span className="relative z-10">{sample.title}</span>
+              </TabsTrigger>
+            );
+          }
+        )}
+      </TabsList>
+
+      <div className="relative w-full overflow-hidden pt-4">
+        <motion.div
+          className="flex w-full"
+          initial={false}
+          animate={{ x: `-${activeIndex * 100}%` }}
+          transition={{ type: 'spring', bounce: 0, duration: 0.5 }}
         >
           {Object.entries(codeSamples).map(
-            ([key, sample]: [string, Sample]) => (
-              <TabsTrigger key={key} value={key} className="rounded-full">
-                {sample.title}
-              </TabsTrigger>
+            ([key, sample]: [string, CodeSample]) => (
+              <div key={key} className="w-full shrink-0 px-1">
+                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                  {sample.description}
+                </p>
+
+                <CodeHighlighter {...sample} />
+              </div>
             )
           )}
-        </TabsList>
-
-        <div className="h-full w-full overflow-auto">
-          {Object.entries(codeSamples).map(
-            ([key, sample]: [string, Sample]) => (
-              <TabsContent key={key} value={key}>
-                <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: 'easeInOut' }}
-                >
-                  <p className="my-4 text-sm leading-relaxed text-muted-foreground">
-                    {sample.description}
-                  </p>
-
-                  <CodeHighlighter
-                    code={sample.code}
-                    language={sample.language}
-                  />
-                </motion.div>
-              </TabsContent>
-            )
-          )}
-        </div>
-      </Tabs>
-    </div>
+        </motion.div>
+      </div>
+    </Tabs>
   );
 }
 

@@ -62,16 +62,17 @@ export default async function AboutPage() {
 
       {/* Education */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
           Education
         </h2>
 
         <Card className="shadow">
-          <CardHeader className="relative flex items-start gap-2">
+          <CardHeader className="relative flex flex-col items-start gap-2 md:flex-col">
             <Avatar className="size-12 border-2 border-muted">
               <AvatarImage
                 src="/ksu.svg"
                 alt="Kennesaw State University Logo"
+                className="object-contain object-center"
               />
               <AvatarFallback>KSU</AvatarFallback>
             </Avatar>
@@ -141,7 +142,7 @@ export default async function AboutPage() {
               href="https://www.kennesaw.edu/degrees-programs/bachelor-degrees/software-engineering.php?major=Bachelor+of+Science+in+Software+Engineering+&url=https%3A%2F%2Fwww.kennesaw.edu%2Fdegrees-programs%2Fbachelor-degrees%2Fsoftware-engineering.php"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'outline' }))}
+              className={cn(buttonVariants({ variant: 'default' }))}
             >
               <TbCertificate /> View Program Details
             </Link>
@@ -151,7 +152,7 @@ export default async function AboutPage() {
               rel="noopener noreferrer"
               aria-disabled="true"
               className={cn(
-                buttonVariants({ variant: 'outline' }),
+                buttonVariants({ variant: 'link' }),
                 'pointer-events-none opacity-50'
               )}
             >
@@ -164,43 +165,43 @@ export default async function AboutPage() {
 
       {/* Employment */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
           Employment
         </h2>
 
         {sortedJobs.map((job, index) => (
           <Card key={index} className="shadow">
-            <CardHeader>
-              <CardDescription className="flex items-start gap-2">
-                <Avatar className="size-12">
-                  <AvatarImage src={job.imageUrl!} alt={job.imageAlt!} />
-                  <AvatarFallback>
-                    {job.company
-                      .split(' ')
-                      .map((word) => word[0])
-                      .join('')
-                      .toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <CardDescription className="flex flex-1 flex-col">
-                  <CardTitle className="text-lg font-semibold tracking-tight text-foreground">
-                    {job.title}
-                  </CardTitle>
+            <CardHeader className="relative flex flex-col items-start gap-2 md:flex-col">
+              <Avatar className="size-12 border-2 border-muted">
+                <AvatarImage src={job.imageUrl!} alt={job.imageAlt!} />
+                <AvatarFallback>
+                  {job.company
+                    .split(' ')
+                    .map((word) => word[0])
+                    .join('')
+                    .toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-1 flex-col">
+                <CardTitle className="text-lg font-semibold tracking-tight">
+                  {job.title}
+                </CardTitle>
+                <CardDescription>
                   <p className="text-base text-foreground">
                     {job.company},{' '}
                     <em className="text-muted-foreground">{job.location}</em>
                   </p>
+                  <div className="flex flex-col">
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(job.startDate)} -{' '}
+                      {job.endDate ? formatDate(job.endDate) : 'Present'}
+                    </p>
+                    <span className="text-xs text-muted-foreground md:text-right">
+                      ({duration(job.startDate, job.endDate || undefined)})
+                    </span>
+                  </div>
                 </CardDescription>
-                <div className="flex flex-col">
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(job.startDate)} -{' '}
-                    {job.endDate ? formatDate(job.endDate) : 'Present'}
-                  </p>
-                  <span className="text-right text-xs text-muted-foreground">
-                    ({duration(job.startDate, job.endDate || undefined)})
-                  </span>
-                </div>
-              </CardDescription>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-relaxed">{job.description}</p>
@@ -219,7 +220,7 @@ export default async function AboutPage() {
 
       {/* Certifications */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
           Certifications
         </h2>
 
@@ -230,7 +231,7 @@ export default async function AboutPage() {
               <AvatarFallback>WZ</AvatarFallback>
             </Avatar>
             <div className="flex flex-1 flex-col">
-              <CardTitle className="text-lg font-semibold tracking-tight">
+              <CardTitle className="text-lg leading-tight font-semibold tracking-tight text-foreground">
                 Non-Confrontational Interview amd Interrogation Techniques
               </CardTitle>
               <CardDescription>
@@ -265,7 +266,7 @@ export default async function AboutPage() {
               href="https://www.w-z.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'outline' }))}
+              className={cn(buttonVariants({ variant: 'default' }))}
             >
               <TbCertificate /> Course Details
             </Link>
@@ -273,7 +274,7 @@ export default async function AboutPage() {
               href="/certifications/wx-non-confrontational-interview-and-interrogation-techniques.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'outline' }))}
+              className={cn(buttonVariants({ variant: 'link' }))}
             >
               <TbDownload />
               View Certification
@@ -288,7 +289,7 @@ export default async function AboutPage() {
               <AvatarFallback>AV</AvatarFallback>
             </Avatar>
             <div className="flex flex-1 flex-col">
-              <CardTitle className="text-lg font-semibold tracking-tight">
+              <CardTitle className="text-lg leading-tight font-semibold tracking-tight text-foreground">
                 AVADE® Retail Loss Prevention™
               </CardTitle>
               <CardDescription>
@@ -322,7 +323,7 @@ export default async function AboutPage() {
               href="https://avadetraining.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'outline' }))}
+              className={cn(buttonVariants({ variant: 'default' }))}
             >
               <TbCertificate /> Course Details
             </Link>
@@ -330,7 +331,7 @@ export default async function AboutPage() {
               href="/certifications/wx-non-confrontational-interview-and-interrogation-techniques.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: 'outline' }))}
+              className={cn(buttonVariants({ variant: 'link' }))}
             >
               <TbDownload />
               View Certification
@@ -341,7 +342,7 @@ export default async function AboutPage() {
 
       {/* Summary */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
           Summary
         </h2>
         <p className="text-base leading-relaxed text-foreground">

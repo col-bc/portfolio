@@ -13,7 +13,12 @@ export default function LogoutButton({
 }: LogoutButtonProps) {
   return (
     <form action={destroySession} className={className} {...props}>
-      <Button type="submit" variant="destructive" className={buttonClassName}>
+      <Button
+        type="submit"
+        variant="destructive"
+        size="sm"
+        className={buttonClassName}
+      >
         <TbLogout className="mr-2" />
         Log Out
       </Button>

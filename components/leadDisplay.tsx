@@ -1,10 +1,18 @@
 'use client';
 
 import { handleDeleteLead, handleUpdateLead } from '@/lib/lead/leadActions';
+import { cn } from '@/lib/util/utils';
 import { Lead } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { TbDeviceFloppy, TbMail, TbPhone, TbTrash, TbX } from 'react-icons/tb';
+import {
+  TbCircleCheck,
+  TbDeviceFloppy,
+  TbMail,
+  TbPhone,
+  TbTrash,
+  TbX,
+} from 'react-icons/tb';
 import { toast } from 'sonner';
 import ConfirmDelete from './confirmDelete';
 import {
@@ -46,6 +54,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
   const deleteLead = async () => {
     await handleDeleteLead(lead.id);
     toast.success('Lead deleted successfully');
+    router.push('/auth/manage/leads');
   };
 
   const saveLead = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -86,9 +95,23 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
           {lead.subject} - {lead.createdAt.toLocaleDateString()} at{' '}
           {lead.createdAt.toLocaleTimeString()}
         </h1>
-        <Badge className="p-3! text-lg! text-primary capitalize">
-          {leadStatus}
-        </Badge>
+        <div
+          className={cn(
+            'flex flex-col gap-1 rounded-md border bg-muted px-4 py-1',
+            lead.status === 'Closed' &&
+              'border-primary bg-primary/10 text-primary'
+          )}
+        >
+          <div className="flex w-full flex-row items-center justify-center gap-1 uppercase">
+            {lead.status === 'Closed' && (
+              <TbCircleCheck className="mr-2 h-4 w-4" />
+            )}
+            {leadStatus}
+          </div>
+          <h5 className="text-center text-xs font-semibold tracking-tight">
+            LEAD STATUS
+          </h5>
+        </div>
       </div>
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
         <div className="flex flex-col gap-6">
@@ -117,9 +140,9 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
             >
               Actions
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-52">
               {lead.phone && (
-                <DropdownMenuItem>
+                <DropdownMenuItem className="truncate">
                   <TbPhone />
                   Call {lead.phone}
                 </DropdownMenuItem>
