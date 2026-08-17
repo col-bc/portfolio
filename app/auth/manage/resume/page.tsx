@@ -34,7 +34,7 @@ export default async function ResumePage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <section className="flex flex-col items-start gap-8 px-4 py-8 md:gap-12">
+      <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             Manage Resume
@@ -48,7 +48,7 @@ export default async function ResumePage() {
         </div>
 
         <div className="flex w-full flex-col gap-4">
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 md:text-3xl">
             Current Resume
           </h2>
           <ResumeViewer resumeFile={resumeFile} />

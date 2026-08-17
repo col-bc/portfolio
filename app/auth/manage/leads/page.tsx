@@ -33,7 +33,7 @@ export default async function LeadsPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <section className="flex flex-col items-start gap-8 px-4 py-8 md:gap-12">
+      <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
         <div className="flex w-full flex-col justify-between gap-2 md:flex-row md:items-center">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             Manage Leads

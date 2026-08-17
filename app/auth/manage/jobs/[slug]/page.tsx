@@ -48,7 +48,7 @@ export default async function ManageJobDetail({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <section className="flex flex-col items-start gap-8 px-4 py-8 md:gap-12">
+      <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
         <h1 className="flex-1 text-3xl font-bold tracking-tight md:text-4xl">
           {job.title} at {job.company}
         </h1>

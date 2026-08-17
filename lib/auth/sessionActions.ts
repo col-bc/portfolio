@@ -2,11 +2,13 @@
 
 import { User } from '@/prisma/generated/client';
 import { ActionState } from '@/types';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import * as OTPAuth from 'otpauth';
 import { cache } from 'react';
+import { UAParser } from 'ua-parser-js';
 import { getUser } from '../user.DAL';
+import { logAuthAttempt } from './loginAttemptDAL';
 import {
   AuthAttempt,
   authenticate,
@@ -74,6 +76,26 @@ export async function login(data: AuthAttempt): Promise<ActionState<void>> {
   // Authenticate the user credentials
   const user = await authenticate(data);
   if (user) {
+    const headerContent = await headers();
+    const rawUserAgent = headerContent.get('user-agent') || '';
+    const ipAddress = headerContent.get('x-forwarded-for') || '';
+
+    // 2. Parse the raw user agent string
+    const parser = new UAParser(rawUserAgent);
+    const parsedUA = parser.getResult();
+
+    await logAuthAttempt({
+      user,
+      success: true,
+      ipAddress: ipAddress,
+      userAgent: {
+        browser:
+          `${parsedUA.browser.name || 'Unknown'} ${parsedUA.browser.version || ''}`.trim(),
+        device: parsedUA.device.model || parsedUA.device.type || 'Desktop',
+        os: `${parsedUA.os.name || 'Unknown'} ${parsedUA.os.version || ''}`.trim(),
+      },
+    });
+
     // Issue JWT for the TOTP session
     const jwt = await issueJWT(user, '3m');
     (await cookies()).set('totp_session', jwt, {

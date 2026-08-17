@@ -1,4 +1,4 @@
-import { Fira_Code, Inter, Space_Grotesk } from 'next/font/google';
+import { Fira_Code, Geist, Space_Grotesk } from 'next/font/google';
 
 import Footer from '@/components/footer';
 import Navigation from '@/components/navigation';
@@ -7,12 +7,12 @@ import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { cn } from '@/lib/util/utils';
 import './globals.css';
 
-const headingFont = Inter({
+const headingFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-heading',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const bodyFont = Geist({
   subsets: ['latin'],
   variable: '--font-sans',
 });
@@ -36,16 +36,18 @@ export default async function RootLayout({
       className={cn(
         'antialiased',
         monoFont.variable,
-        'font-heading',
         headingFont.variable,
-        'font-sans',
-        spaceGrotesk.variable
+        bodyFont.variable,
+        'font-mono',
+        'font-heading',
+        'font-body'
       )}
     >
       <body>
         <ThemeProvider>
           <main className="flex min-h-screen max-w-screen flex-col bg-background text-foreground antialiased">
             <Navigation user={user} />
+
             <div className="container mx-auto flex max-w-5xl flex-1 flex-col">
               {children}
             </div>

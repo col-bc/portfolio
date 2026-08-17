@@ -6,3 +6,11 @@ export type ActionState<T> =
       type:
         'UNAUTHORIZED' | 'VALIDATION' | 'UNKNOWN' | 'NOT_FOUND' | 'RATE_LIMIT';
     };
+
+export type Message = {
+  id: string;
+  role: 'assistant' | 'system' | 'user';
+  parts: Array<
+    { type: 'text'; text: string } | { type: 'data-timestamp'; data: string }
+  >;
+};

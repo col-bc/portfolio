@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
 import { cn } from '@/lib/util/utils';
 import Link from 'next/link';
@@ -39,11 +40,12 @@ export default async function AboutPage() {
   const sortedJobs = jobs.sort(
     (a, b) => b.startDate.getTime() - a.startDate.getTime()
   );
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
-    <section className="flex flex-col items-start gap-8 px-4 py-8 md:gap-12">
-      <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+    <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
+      <Heading className="text-3xl font-bold tracking-tight md:text-4xl">
         About Me
-      </h1>
+      </Heading>
 
       <div className="flex flex-col gap-4 text-sm leading-relaxed">
         <p className="text-base leading-relaxed text-foreground">
@@ -62,9 +64,7 @@ export default async function AboutPage() {
 
       {/* Education */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
-          Education
-        </h2>
+        <Heading size="sub">Education</Heading>
 
         <Card className="shadow">
           <CardHeader className="relative flex flex-col items-start gap-2 md:flex-col">
@@ -165,9 +165,7 @@ export default async function AboutPage() {
 
       {/* Employment */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
-          Employment
-        </h2>
+        <Heading size="sub">Employment</Heading>
 
         {sortedJobs.map((job, index) => (
           <Card key={index} className="shadow">
@@ -196,7 +194,7 @@ export default async function AboutPage() {
                       {formatDate(job.startDate)} -{' '}
                       {job.endDate ? formatDate(job.endDate) : 'Present'}
                     </p>
-                    <span className="text-xs text-muted-foreground md:text-right">
+                    <span className="text-xs text-muted-foreground">
                       ({duration(job.startDate, job.endDate || undefined)})
                     </span>
                   </div>
@@ -220,7 +218,7 @@ export default async function AboutPage() {
 
       {/* Certifications */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 underline-offset-4 md:text-3xl">
           Certifications
         </h2>
 
@@ -342,9 +340,7 @@ export default async function AboutPage() {
 
       {/* Summary */}
       <div className="flex flex-col gap-6 md:gap-8">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
-          Summary
-        </h2>
+        <Heading size="sub">Summary</Heading>
         <p className="text-base leading-relaxed text-foreground">
           I am a dedicated and results-driven software engineer with a strong
           foundation in full-stack development, cloud computing, and AI

@@ -18,6 +18,8 @@ export default async function createJob(
 }
 
 export async function getJobs(): Promise<Job[]> {
+  // 'use cache';
+  // cacheLife('hours');
   const jobs = await prisma.job.findMany({
     orderBy: {
       startDate: 'desc',

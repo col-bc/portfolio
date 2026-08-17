@@ -20,7 +20,7 @@ function LinkList() {
 
   const linkClasses = (path: string) => {
     const baseClasses =
-      'text-sm px-2 py-1 rounded-full transition-colors duration-200 hover:text-foreground';
+      'text-base px-2 py-1 rounded-full transition-colors duration-200 hover:text-foreground';
     return pathname === path
       ? `${baseClasses} text-foreground font-medium bg-muted`
       : `${baseClasses} text-muted-foreground font-base`;
@@ -30,6 +30,9 @@ function LinkList() {
     <>
       <Link href="/about" className={linkClasses('/about')}>
         About Me
+      </Link>
+      <Link href="/resume" className={linkClasses('/resume')}>
+        Resume
       </Link>
       <Link href="/projects" className={linkClasses('/projects')}>
         Projects
@@ -48,7 +51,7 @@ export default function Navigation({ user }: { user: User | null }) {
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="text-2xl font-bold tracking-tighter whitespace-nowrap underline decoration-primary! decoration-dashed decoration-2"
+            className="text-3xl font-semibold tracking-tighter whitespace-nowrap underline decoration-chart-1! decoration-dashed decoration-2"
           >
             Colby <span className="hidden md:inline">Cooper</span>
             <span className="md:hidden">C.</span>
@@ -63,7 +66,7 @@ export default function Navigation({ user }: { user: User | null }) {
             <Link
               href="/auth/manage"
               className={cn(
-                buttonVariants({ variant: 'ghost', size: 'icon-sm' }),
+                buttonVariants({ variant: 'ghost', size: 'icon' }),
                 'hidden md:flex'
               )}
             >
@@ -82,7 +85,7 @@ export default function Navigation({ user }: { user: User | null }) {
           </CollapsibleTrigger>
           <Link
             href="/contact"
-            className={buttonVariants({ variant: 'default', size: 'sm' })}
+            className={buttonVariants({ variant: 'default' })}
           >
             <TbMessages />
             Get in Touch
@@ -97,7 +100,7 @@ export default function Navigation({ user }: { user: User | null }) {
               <Separator className="my-2" />
               <Link
                 href="/auth/manage"
-                className="font-base rounded-full px-2 py-1 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                className={buttonVariants({ variant: 'ghost', size: 'icon' })}
               >
                 Manage Site
               </Link>

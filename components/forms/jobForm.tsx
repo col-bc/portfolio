@@ -13,7 +13,7 @@ import React from 'react';
 import {
   TbCalendarPlus,
   TbDeviceFloppy,
-  TbExclamationCircle,
+  TbExclamationCircleFilled,
   TbFileCode,
   TbHash,
   TbTrash,
@@ -22,7 +22,7 @@ import {
 import { toast } from 'sonner';
 import ConfirmDelete from '../confirmDelete';
 import { DatePickerField } from '../datePickerField';
-import { Alert } from '../ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import {
   Attachment,
   AttachmentAction,
@@ -43,6 +43,10 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
+
+const formatDateTime = (date: Date) => {
+  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+};
 
 export default function JobForm({ job }: { job: Job | null }) {
   const router = useRouter();
@@ -144,9 +148,10 @@ export default function JobForm({ job }: { job: Job | null }) {
       className="flex w-full max-w-lg flex-col gap-6"
     >
       {error && (
-        <Alert variant="destructive">
-          <TbExclamationCircle className="h-4 w-4" />
-          <span>{error}</span>
+        <Alert>
+          <TbExclamationCircleFilled className="size-4 shrink-0" />
+          <AlertTitle>Error Saving Job</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
@@ -205,10 +210,14 @@ export default function JobForm({ job }: { job: Job | null }) {
         />
       </div>
 
-      <FieldLabel htmlFor="is-current-role" className="mt-2">
+      <FieldLabel htmlFor="is-current-role">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>Current Role</FieldTitle>
+            <FieldDescription>
+              Indicate if this is your current role. If checked, the end date is
+              not required.
+            </FieldDescription>
           </FieldContent>
           <Switch
             id="is-current-role"
@@ -309,27 +318,29 @@ export default function JobForm({ job }: { job: Job | null }) {
         </FieldLabel>
       )}
       {isEditMode && (
-        <div className="gap-1 divide-y divide-border rounded-lg border border-border bg-muted text-sm text-muted-foreground">
-          <div className="flex items-center gap-1 px-2 py-1">
+        <div className="gap-1 divide-y divide-border rounded-lg border border-border bg-background text-sm text-muted-foreground">
+          <div className="flex items-center gap-1 p-2">
             <TbHash className="h-4 w-4" />
-            <span className="text-muted-foreground">ID: {job.id}</span>
-          </div>
-          <div className="flex items-center gap-1 px-2 py-1">
-            <TbCalendarPlus className="h-4 w-4" />
-            <span className="text-muted-foreground">
-              Created on {new Date(job.createdAt).toLocaleDateString()}
+            <span className="flex gap-1 font-mono text-muted-foreground">
+              {job.id}
             </span>
           </div>
-          <div className="flex items-center gap-1 px-2 py-1">
+          <div className="flex items-center gap-1 p-2">
+            <TbCalendarPlus className="h-4 w-4" />
+            <span className="text-muted-foreground">
+              Created {formatDateTime(new Date(job.createdAt))}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 p-2">
             <TbDeviceFloppy className="h-4 w-4" />
             <span className="text-muted-foreground">
-              Last updated on {new Date(job.updatedAt).toLocaleDateString()}
+              Updated {formatDateTime(new Date(job.updatedAt))}
             </span>
           </div>
         </div>
       )}
 
-      <div className="mt-2 flex flex-col gap-4 md:flex-row">
+      <div className="mt-2 flex flex-col gap-4 sm:flex-row">
         <Button type="submit" className="px-4">
           <TbDeviceFloppy className="h-4 w-4" />
           Save {isEditMode ? 'Changes' : 'Job'}
@@ -337,7 +348,7 @@ export default function JobForm({ job }: { job: Job | null }) {
         <Button
           variant="secondary"
           onClick={() => router.back()}
-          className="px-4 md:mr-auto"
+          className="px-4 sm:mr-auto"
         >
           <TbX className="h-4 w-4" />
           Cancel

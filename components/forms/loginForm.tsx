@@ -12,12 +12,12 @@ import React from 'react';
 import {
   TbArrowLeft,
   TbArrowRight,
-  TbExclamationCircleFilled,
+  TbCircleXFilled,
   TbEye,
   TbEyeOff,
-  TbPasswordFingerprint,
-  TbPasswordUser,
+  TbRotate,
 } from 'react-icons/tb';
+import { Alert, AlertAction, AlertDescription, AlertTitle } from '../ui/alert';
 import { Button } from '../ui/button';
 import { Field, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
@@ -26,10 +26,9 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '../ui/input-group';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
-export default function LoginForm(
-  props: React.FormHTMLAttributes<HTMLFormElement>
-) {
+export default function LoginForm() {
   const router = useRouter();
 
   const turnstileRef = React.useRef<TurnstileInstance | null>(null);
@@ -105,139 +104,140 @@ export default function LoginForm(
     }
   };
 
-  return (
-    <div className="flex w-full flex-col-reverse items-center gap-8 md:flex-row md:gap-12">
-      <form
-        onSubmit={handleSubmit}
-        className="grid w-full max-w-sm items-center gap-4"
-        {...props}
-      >
-        <h4 className="text-lg leading-none font-semibold tracking-tight">
-          {step === 'password'
-            ? 'Please login to Continue'
-            : 'Verify One Time Password'}
-        </h4>
-        {error && (
-          <div
-            className="flex w-full items-start gap-2 text-sm text-destructive"
-            role="alert"
-            aria-live="assertive"
-          >
-            <TbExclamationCircleFilled className="h-5 w-5 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {step === 'password' && (
-          <>
-            <Field>
-              <FieldLabel htmlFor="email">
-                Email <span className="text-xs text-destructive">*</span>
-              </FieldLabel>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="Enter your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="password">
-                Password <span className="text-xs text-destructive">*</span>
-              </FieldLabel>
-              <InputGroup>
-                <InputGroupInput
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                />
-                <InputGroupButton onClick={toggleShowPassword}>
-                  {showPassword ? (
-                    <TbEye className="h-5 w-5" />
-                  ) : (
-                    <TbEyeOff className="h-5 w-5" />
-                  )}
-                </InputGroupButton>
-              </InputGroup>
-            </Field>
-          </>
-        )}
-        {step === 'otp' && (
-          <Field>
-            <FieldLabel htmlFor="otp">
-              One Time Password{' '}
-              <span className="text-xs text-destructive">*</span>
-            </FieldLabel>
-            <InputOTP
-              maxLength={6}
-              value={otp}
-              onChange={(val) => setOtp(val)}
-              autoComplete="one-time-code"
-              autoFocus
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </Field>
-        )}
-        {step === 'password' && (
-          <Turnstile
-            ref={turnstileRef}
-            siteKey="0x4AAAAAACrt5VbunM62aYIZ"
-            options={{
-              theme: 'auto',
-              size: 'flexible',
-              feedbackEnabled: true,
-              appearance: 'interaction-only',
-            }}
-            onSuccess={(token) => {
-              setTsToken(token);
-            }}
-          />
-        )}
+  const reset = () => {
+    setEmail('');
+    setPassword('');
+    setOtp('');
+    setError(null);
+    setStep('password');
+    turnstileRef.current?.reset();
+  };
 
-        <div className="mt-2 flex items-center gap-2">
-          {step === 'otp' && (
-            <Button
-              variant="secondary"
-              size="icon"
-              onClick={() => setStep('password')}
-            >
-              <TbArrowLeft className="h-5 w-5" />
-            </Button>
-          )}
-          <Button
-            type="submit"
-            className="max-w-52 flex-1"
-            disabled={step === 'password' && !tsToken}
+  return (
+    <form onSubmit={handleSubmit} className="grid w-full items-center gap-6">
+      <FieldLabel>
+        {step === 'password' ? 'Login with Password' : 'Enter OTP'}
+      </FieldLabel>
+      {error && (
+        <Alert>
+          <TbCircleXFilled className="size-4 shrink-0 text-destructive!" />
+          <AlertTitle>Login Failed</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+          <AlertAction>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="secondary"
+                  size="icon-sm"
+                  onClick={() => reset()}
+                >
+                  <TbRotate />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Reset form</TooltipContent>
+            </Tooltip>
+          </AlertAction>
+        </Alert>
+      )}
+      {step === 'password' && (
+        <>
+          <Field>
+            <FieldLabel htmlFor="email">
+              Email <span className="text-xs text-destructive">*</span>
+            </FieldLabel>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="password">
+              Password <span className="text-xs text-destructive">*</span>
+            </FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+              />
+              <InputGroupButton onClick={toggleShowPassword}>
+                {showPassword ? (
+                  <TbEye className="h-5 w-5" />
+                ) : (
+                  <TbEyeOff className="h-5 w-5" />
+                )}
+              </InputGroupButton>
+            </InputGroup>
+          </Field>
+        </>
+      )}
+      {step === 'otp' && (
+        <Field>
+          <FieldLabel htmlFor="otp">
+            One Time Password{' '}
+            <span className="text-xs text-destructive">*</span>
+          </FieldLabel>
+          <InputOTP
+            maxLength={6}
+            value={otp}
+            onChange={(val) => setOtp(val)}
+            autoComplete="one-time-code"
+            autoFocus
           >
-            {step === 'password' ? 'Login' : 'Verify'}
-            <TbArrowRight className="ml-2 h-5 w-5" />
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
+        </Field>
+      )}
+      {step === 'password' && (
+        <Turnstile
+          ref={turnstileRef}
+          siteKey="0x4AAAAAACrt5VbunM62aYIZ"
+          options={{
+            theme: 'auto',
+            size: 'flexible',
+            feedbackEnabled: true,
+            appearance: 'interaction-only',
+          }}
+          onSuccess={(token) => {
+            setTsToken(token);
+          }}
+        />
+      )}
+      <div className="flex items-center gap-4">
+        {step === 'otp' && (
+          <Button
+            variant="secondary"
+            size="icon"
+            onClick={() => setStep('password')}
+          >
+            <TbArrowLeft className="h-5 w-5" />
           </Button>
-        </div>
-      </form>
-      <div className="hidden flex-1 items-center justify-center md:flex">
-        <div className="relative flex h-64 w-64 items-center justify-center text-primary">
-          <div className="absolute inset-0 rounded-full bg-primary/30 blur-3xl"></div>
-          {step === 'password' ? (
-            <TbPasswordUser className="relative z-10 h-48 w-48" />
-          ) : (
-            <TbPasswordFingerprint className="relative z-10 h-48 w-48" />
-          )}
-        </div>
+        )}
+        <Button
+          type="submit"
+          className="max-w-52 flex-1 px-6"
+          disabled={step === 'password' && !tsToken}
+        >
+          {step === 'password' ? 'Login' : 'Verify'}
+          <TbArrowRight className="ml-2 h-5 w-5" />
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }

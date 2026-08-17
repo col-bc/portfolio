@@ -1,19 +1,15 @@
+import { Heading } from '@/components/ui/heading';
 import Link from 'next/link';
 
 export default function PrivacyPolicy() {
   return (
     <section className="flex flex-col items-start gap-8 px-4 py-8">
-      <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-        Privacy Policy
-      </h1>
+      <Heading>Privacy Policy</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
-        <strong className="font-bold">Effective Date:</strong>{' '}
-        {new Date().toDateString()}
+        <strong className="font-bold">Effective Date:</strong> August 13, 2026
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        1. Introduction
-      </h2>
+      <Heading size="sub">1. Introduction</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         Welcome to{' '}
         <code className="rounded-sm bg-muted/50 p-0.5 font-mono">
@@ -25,18 +21,14 @@ export default function PrivacyPolicy() {
         your information when you visit our website.
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        2. Information We Collect
-      </h2>
+      <Heading size="sub">2. Information We Collect</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We collect information that you voluntarily provide to us, as well as
         information that is automatically collected when you interact with the
         site.
       </p>
 
-      <h3 className="text-xl font-bold tracking-tight md:text-2xl">
-        Information You Provide to Us
-      </h3>
+      <Heading size="subSub">Information You Provide to Us</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         When you fill out the contact form on our website to get in touch, we
         collect the following personal information:
@@ -59,9 +51,7 @@ export default function PrivacyPolicy() {
         </li>
       </ul>
 
-      <h3 className="text-xl font-bold tracking-tight md:text-2xl">
-        Information Automatically Collected
-      </h3>
+      <Heading size="subSub">Information Automatically Collected</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         When you access our website, certain data is automatically collected to
         ensure the site runs securely and efficiently:
@@ -89,9 +79,7 @@ export default function PrivacyPolicy() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        3. How We Use Your Information
-      </h2>
+      <Heading size="sub">3. How We Use Your Information</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We use the information we collect for the following purposes:
       </p>
@@ -119,9 +107,7 @@ export default function PrivacyPolicy() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        4. How We Share Your Information
-      </h2>
+      <Heading size="sub">4. How We Share Your Information</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We do not sell, rent, or trade your personal information. However, we do
         share data with trusted third-party service providers who help us
@@ -146,9 +132,7 @@ export default function PrivacyPolicy() {
         </li>
       </ul>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        5. Cookies and Tracking Technologies
-      </h2>
+      <Heading size="sub">5. Cookies and Tracking Technologies</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We use cookies and similar tracking technologies, primarily through
         Google Analytics and Cloudflare, to track activity on our website and
@@ -158,9 +142,7 @@ export default function PrivacyPolicy() {
         impacted.
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        6. Data Security
-      </h2>
+      <Heading size="sub">6. Data Security</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We implement reasonable administrative, technical, and physical security
         measures to protect your personal information. While our infrastructure
@@ -169,35 +151,23 @@ export default function PrivacyPolicy() {
         the internet or method of electronic storage is 100% secure.
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        7. Your Privacy Rights
-      </h2>
+      <Heading size="sub">7. Your Privacy Rights</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         Depending on your location, you may have certain rights regarding your
         personal information, including the right to:
       </p>
-      <ul className="list-disc space-y-4 pl-6">
-        <li className="leading-relaxed text-pretty text-foreground">
-          Request access to the personal data we hold about you.
-        </li>
-        <li className="leading-relaxed text-pretty text-foreground">
-          Request that we correct or update your personal data.
-        </li>
-        <li className="leading-relaxed text-pretty text-foreground">
-          Request the deletion of your personal data.
-        </li>
-        <li className="leading-relaxed text-pretty text-foreground">
-          Opt-out of future communications.
-        </li>
+      <ul className="list-disc space-y-4 pl-6 leading-relaxed text-pretty text-foreground">
+        <li>Request access to the personal data we hold about you.</li>
+        <li>Request that we correct or update your personal data.</li>
+        <li>Request the deletion of your personal data.</li>
+        <li>Opt-out of future communications.</li>
       </ul>
       <p className="leading-relaxed text-pretty text-foreground">
         To exercise any of these rights, please contact us using the information
         provided below.
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        8. Changes to This Privacy Policy
-      </h2>
+      <Heading size="sub">8. Changes to This Privacy Policy</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         We may update this Privacy Policy from time to time to reflect changes
         in our practices or for other operational, legal, or regulatory reasons.
@@ -205,15 +175,13 @@ export default function PrivacyPolicy() {
         this page and updating the &quot;Effective Date.&quot;
       </p>
 
-      <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 md:text-3xl">
-        9. Contact Us
-      </h2>
+      <Heading size="sub">9. Contact Us</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         If you have any questions or concerns about this Privacy Policy or our
         data practices, please contact us at:
       </p>
-      <ul className="list-disc space-y-4 pl-6">
-        <li className="leading-relaxed text-pretty text-foreground">
+      <ul className="list-disc space-y-4 pl-6 leading-relaxed text-pretty text-foreground">
+        <li>
           <strong className="font-bold">Email:</strong>{' '}
           <Link
             href="mailto:contact@colbyc.com"
@@ -222,7 +190,7 @@ export default function PrivacyPolicy() {
             contact@colbyc.com
           </Link>
         </li>
-        <li className="leading-relaxed text-pretty text-foreground">
+        <li>
           <strong className="font-bold">Website:</strong>{' '}
           <Link
             href="https://colbyc.com/contact"

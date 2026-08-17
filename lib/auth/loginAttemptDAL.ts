@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
-import { User } from '@/prisma/generated/client';
+import { LoginAttempt, User } from '@/prisma/generated/client';
 
 import 'server-only';
+import { getCurrentUser } from './sessionActions';
 
 interface UserAgentInterface {
   browser: string;
@@ -42,5 +43,32 @@ export async function logAuthAttempt({
       '[LoginAttemptDAL] Failed to log authentication attempt:',
       error
     );
+  }
+}
+
+/**
+ * Retrieves all authentication attempts for a specific user.
+ * @param userId - The ID of the user whose authentication attempts are to be retrieved.
+ * @returns An array of LoginAttempt objects associated with the user.
+ */
+export async function getAuthAttemptsForUser(): Promise<LoginAttempt[]> {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    console.warn('[LoginAttemptDAL] No current user found.');
+    return [];
+  }
+  const userId = currentUser.id;
+  try {
+    const attempts = await prisma.loginAttempt.findMany({
+      where: { userId },
+      orderBy: { timestamp: 'desc' },
+    });
+    return attempts;
+  } catch (error) {
+    console.warn(
+      '[LoginAttemptDAL] Failed to retrieve authentication attempts for user:',
+      error
+    );
+    return [];
   }
 }

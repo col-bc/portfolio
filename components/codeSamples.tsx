@@ -6,7 +6,6 @@ import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
-import { cn } from '@/lib/util/utils';
 import {
   oneDark,
   oneLight,
@@ -38,7 +37,7 @@ const CodeHighlighter = React.memo((sample: CodeSample) => {
 
   return (
     <div className="flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background">
-      <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground">
+      <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 text-sm! font-semibold text-foreground">
         {sample.icon && (sample.icon as React.ReactNode)}
         <span className="font-mono">{sample.fileName}</span>
       </div>
@@ -70,30 +69,16 @@ function CodeSamples() {
       onValueChange={setActiveTab}
       className="flex w-full flex-col"
     >
-      <TabsList
-        variant="default"
-        className="mb-0 flex w-full scrollbar-none flex-nowrap items-center justify-start overflow-x-auto rounded-full border border-border p-1 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <TabsList>
         {Object.entries(codeSamples).map(
           ([key, sample]: [string, CodeSample]) => {
             const isActive = activeTab === key;
 
             return (
-              <TabsTrigger
-                key={key}
-                value={key}
-                className={cn(
-                  'relative shrink-0 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors',
-                  'data-[state=active]:bg-transparent data-[state=active]:shadow-none',
-                  isActive
-                    ? 'text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                )}
-              >
+              <TabsTrigger key={key} value={key} className="py-1.4 px-6">
                 {isActive && (
                   <motion.div
                     layoutId="active-tab-indicator"
-                    className="absolute inset-0 z-0 rounded-full bg-primary"
                     transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
                   />
                 )}
@@ -113,8 +98,8 @@ function CodeSamples() {
         >
           {Object.entries(codeSamples).map(
             ([key, sample]: [string, CodeSample]) => (
-              <div key={key} className="w-full shrink-0 px-1">
-                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+              <div key={key} className="w-full shrink-0 px-1 text-sm">
+                <p className="text-sn mb-4 leading-relaxed text-muted-foreground">
                   {sample.description}
                 </p>
 

@@ -236,7 +236,7 @@ export default function Page() {
       </div>
 
       <div className="flex w-full min-w-0 flex-col items-start gap-6">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 underline-offset-4 md:text-3xl">
           Code Samples
         </h2>
         <p className="text-base leading-relaxed text-foreground">
@@ -248,8 +248,8 @@ export default function Page() {
         <CodeSamples />
       </div>
 
-      <div className="flex flex-col gap-6">
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-primary decoration-2 underline-offset-4 md:text-3xl">
+      <div className="mb-8 flex flex-col gap-6">
+        <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 underline-offset-4 md:text-3xl">
           Skills Overview
         </h2>
         <p className="text-base leading-relaxed text-foreground">
