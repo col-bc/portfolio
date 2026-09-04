@@ -32,10 +32,10 @@ export type LeadMinAggregateOutputType = {
   phone: string | null
   subject: string | null
   message: string | null
-  notes: string | null
   source: string | null
   createdAt: Date | null
   status: string | null
+  notes: string | null
 }
 
 export type LeadMaxAggregateOutputType = {
@@ -46,10 +46,10 @@ export type LeadMaxAggregateOutputType = {
   phone: string | null
   subject: string | null
   message: string | null
-  notes: string | null
   source: string | null
   createdAt: Date | null
   status: string | null
+  notes: string | null
 }
 
 export type LeadCountAggregateOutputType = {
@@ -60,10 +60,10 @@ export type LeadCountAggregateOutputType = {
   phone: number
   subject: number
   message: number
-  notes: number
   source: number
   createdAt: number
   status: number
+  notes: number
   _all: number
 }
 
@@ -76,10 +76,10 @@ export type LeadMinAggregateInputType = {
   phone?: true
   subject?: true
   message?: true
-  notes?: true
   source?: true
   createdAt?: true
   status?: true
+  notes?: true
 }
 
 export type LeadMaxAggregateInputType = {
@@ -90,10 +90,10 @@ export type LeadMaxAggregateInputType = {
   phone?: true
   subject?: true
   message?: true
-  notes?: true
   source?: true
   createdAt?: true
   status?: true
+  notes?: true
 }
 
 export type LeadCountAggregateInputType = {
@@ -104,10 +104,10 @@ export type LeadCountAggregateInputType = {
   phone?: true
   subject?: true
   message?: true
-  notes?: true
   source?: true
   createdAt?: true
   status?: true
+  notes?: true
   _all?: true
 }
 
@@ -191,10 +191,10 @@ export type LeadGroupByOutputType = {
   phone: string | null
   subject: string
   message: string
-  notes: string | null
   source: string | null
   createdAt: Date
   status: string
+  notes: string | null
   _count: LeadCountAggregateOutputType | null
   _min: LeadMinAggregateOutputType | null
   _max: LeadMaxAggregateOutputType | null
@@ -226,10 +226,10 @@ export type LeadWhereInput = {
   phone?: Prisma.StringNullableFilter<"Lead"> | string | null
   subject?: Prisma.StringFilter<"Lead"> | string
   message?: Prisma.StringFilter<"Lead"> | string
-  notes?: Prisma.StringNullableFilter<"Lead"> | string | null
   source?: Prisma.StringNullableFilter<"Lead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
   status?: Prisma.StringFilter<"Lead"> | string
+  notes?: Prisma.StringNullableFilter<"Lead"> | string | null
 }
 
 export type LeadOrderByWithRelationInput = {
@@ -240,10 +240,10 @@ export type LeadOrderByWithRelationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -257,10 +257,10 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.StringNullableFilter<"Lead"> | string | null
   subject?: Prisma.StringFilter<"Lead"> | string
   message?: Prisma.StringFilter<"Lead"> | string
-  notes?: Prisma.StringNullableFilter<"Lead"> | string | null
   source?: Prisma.StringNullableFilter<"Lead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
   status?: Prisma.StringFilter<"Lead"> | string
+  notes?: Prisma.StringNullableFilter<"Lead"> | string | null
 }, "id">
 
 export type LeadOrderByWithAggregationInput = {
@@ -271,10 +271,10 @@ export type LeadOrderByWithAggregationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LeadCountOrderByAggregateInput
   _max?: Prisma.LeadMaxOrderByAggregateInput
   _min?: Prisma.LeadMinOrderByAggregateInput
@@ -291,10 +291,10 @@ export type LeadScalarWhereWithAggregatesInput = {
   phone?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   subject?: Prisma.StringWithAggregatesFilter<"Lead"> | string
   message?: Prisma.StringWithAggregatesFilter<"Lead"> | string
-  notes?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   source?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Lead"> | Date | string
   status?: Prisma.StringWithAggregatesFilter<"Lead"> | string
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
 }
 
 export type LeadCreateInput = {
@@ -305,10 +305,10 @@ export type LeadCreateInput = {
   phone?: string | null
   subject: string
   message: string
-  notes?: string | null
   source?: string | null
   createdAt?: Date | string
   status?: string
+  notes?: string | null
 }
 
 export type LeadUncheckedCreateInput = {
@@ -319,10 +319,10 @@ export type LeadUncheckedCreateInput = {
   phone?: string | null
   subject: string
   message: string
-  notes?: string | null
   source?: string | null
   createdAt?: Date | string
   status?: string
+  notes?: string | null
 }
 
 export type LeadUpdateInput = {
@@ -333,10 +333,10 @@ export type LeadUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LeadUncheckedUpdateInput = {
@@ -347,10 +347,10 @@ export type LeadUncheckedUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LeadCreateManyInput = {
@@ -361,10 +361,10 @@ export type LeadCreateManyInput = {
   phone?: string | null
   subject: string
   message: string
-  notes?: string | null
   source?: string | null
   createdAt?: Date | string
   status?: string
+  notes?: string | null
 }
 
 export type LeadUpdateManyMutationInput = {
@@ -375,10 +375,10 @@ export type LeadUpdateManyMutationInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LeadUncheckedUpdateManyInput = {
@@ -389,10 +389,10 @@ export type LeadUncheckedUpdateManyInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subject?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LeadCountOrderByAggregateInput = {
@@ -403,10 +403,10 @@ export type LeadCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type LeadMaxOrderByAggregateInput = {
@@ -417,10 +417,10 @@ export type LeadMaxOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type LeadMinOrderByAggregateInput = {
@@ -431,10 +431,10 @@ export type LeadMinOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   subject?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   source?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 
@@ -447,10 +447,10 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phone?: boolean
   subject?: boolean
   message?: boolean
-  notes?: boolean
   source?: boolean
   createdAt?: boolean
   status?: boolean
+  notes?: boolean
 }, ExtArgs["result"]["lead"]>
 
 export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -461,10 +461,10 @@ export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   subject?: boolean
   message?: boolean
-  notes?: boolean
   source?: boolean
   createdAt?: boolean
   status?: boolean
+  notes?: boolean
 }, ExtArgs["result"]["lead"]>
 
 export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -475,10 +475,10 @@ export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   subject?: boolean
   message?: boolean
-  notes?: boolean
   source?: boolean
   createdAt?: boolean
   status?: boolean
+  notes?: boolean
 }, ExtArgs["result"]["lead"]>
 
 export type LeadSelectScalar = {
@@ -489,13 +489,13 @@ export type LeadSelectScalar = {
   phone?: boolean
   subject?: boolean
   message?: boolean
-  notes?: boolean
   source?: boolean
   createdAt?: boolean
   status?: boolean
+  notes?: boolean
 }
 
-export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "company" | "email" | "phone" | "subject" | "message" | "notes" | "source" | "createdAt" | "status", ExtArgs["result"]["lead"]>
+export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "company" | "email" | "phone" | "subject" | "message" | "source" | "createdAt" | "status" | "notes", ExtArgs["result"]["lead"]>
 
 export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Lead"
@@ -508,10 +508,10 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     phone: string | null
     subject: string
     message: string
-    notes: string | null
     source: string | null
     createdAt: Date
     status: string
+    notes: string | null
   }, ExtArgs["result"]["lead"]>
   composites: {}
 }
@@ -942,10 +942,10 @@ export interface LeadFieldRefs {
   readonly phone: Prisma.FieldRef<"Lead", 'String'>
   readonly subject: Prisma.FieldRef<"Lead", 'String'>
   readonly message: Prisma.FieldRef<"Lead", 'String'>
-  readonly notes: Prisma.FieldRef<"Lead", 'String'>
   readonly source: Prisma.FieldRef<"Lead", 'String'>
   readonly createdAt: Prisma.FieldRef<"Lead", 'DateTime'>
   readonly status: Prisma.FieldRef<"Lead", 'String'>
+  readonly notes: Prisma.FieldRef<"Lead", 'String'>
 }
     
 

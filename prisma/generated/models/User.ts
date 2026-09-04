@@ -31,6 +31,8 @@ export type UserMinAggregateOutputType = {
   enabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  twoFactorEnabled: boolean | null
+  backupCodes: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -40,6 +42,8 @@ export type UserMaxAggregateOutputType = {
   enabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  twoFactorEnabled: boolean | null
+  backupCodes: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -49,6 +53,8 @@ export type UserCountAggregateOutputType = {
   enabled: number
   createdAt: number
   updatedAt: number
+  twoFactorEnabled: number
+  backupCodes: number
   _all: number
 }
 
@@ -60,6 +66,8 @@ export type UserMinAggregateInputType = {
   enabled?: true
   createdAt?: true
   updatedAt?: true
+  twoFactorEnabled?: true
+  backupCodes?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -69,6 +77,8 @@ export type UserMaxAggregateInputType = {
   enabled?: true
   createdAt?: true
   updatedAt?: true
+  twoFactorEnabled?: true
+  backupCodes?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -78,6 +88,8 @@ export type UserCountAggregateInputType = {
   enabled?: true
   createdAt?: true
   updatedAt?: true
+  twoFactorEnabled?: true
+  backupCodes?: true
   _all?: true
 }
 
@@ -160,6 +172,8 @@ export type UserGroupByOutputType = {
   enabled: boolean
   createdAt: Date
   updatedAt: Date
+  twoFactorEnabled: boolean
+  backupCodes: string
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -190,6 +204,8 @@ export type UserWhereInput = {
   enabled?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
+  backupCodes?: Prisma.StringFilter<"User"> | string
   loginAttempts?: Prisma.LoginAttemptListRelationFilter
 }
 
@@ -200,6 +216,8 @@ export type UserOrderByWithRelationInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  twoFactorEnabled?: Prisma.SortOrder
+  backupCodes?: Prisma.SortOrder
   loginAttempts?: Prisma.LoginAttemptOrderByRelationAggregateInput
 }
 
@@ -213,6 +231,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   enabled?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
+  backupCodes?: Prisma.StringFilter<"User"> | string
   loginAttempts?: Prisma.LoginAttemptListRelationFilter
 }, "id" | "username">
 
@@ -223,6 +243,8 @@ export type UserOrderByWithAggregationInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  twoFactorEnabled?: Prisma.SortOrder
+  backupCodes?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -238,6 +260,8 @@ export type UserScalarWhereWithAggregatesInput = {
   enabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  twoFactorEnabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  backupCodes?: Prisma.StringWithAggregatesFilter<"User"> | string
 }
 
 export type UserCreateInput = {
@@ -247,6 +271,8 @@ export type UserCreateInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
   loginAttempts?: Prisma.LoginAttemptCreateNestedManyWithoutUserInput
 }
 
@@ -257,6 +283,8 @@ export type UserUncheckedCreateInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
   loginAttempts?: Prisma.LoginAttemptUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -267,6 +295,8 @@ export type UserUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
   loginAttempts?: Prisma.LoginAttemptUpdateManyWithoutUserNestedInput
 }
 
@@ -277,6 +307,8 @@ export type UserUncheckedUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
   loginAttempts?: Prisma.LoginAttemptUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -287,6 +319,8 @@ export type UserCreateManyInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -296,6 +330,8 @@ export type UserUpdateManyMutationInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -305,6 +341,8 @@ export type UserUncheckedUpdateManyInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -314,6 +352,8 @@ export type UserCountOrderByAggregateInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  twoFactorEnabled?: Prisma.SortOrder
+  backupCodes?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -323,6 +363,8 @@ export type UserMaxOrderByAggregateInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  twoFactorEnabled?: Prisma.SortOrder
+  backupCodes?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -332,6 +374,8 @@ export type UserMinOrderByAggregateInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  twoFactorEnabled?: Prisma.SortOrder
+  backupCodes?: Prisma.SortOrder
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -374,6 +418,8 @@ export type UserCreateWithoutLoginAttemptsInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
 }
 
 export type UserUncheckedCreateWithoutLoginAttemptsInput = {
@@ -383,6 +429,8 @@ export type UserUncheckedCreateWithoutLoginAttemptsInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
 }
 
 export type UserCreateOrConnectWithoutLoginAttemptsInput = {
@@ -408,6 +456,8 @@ export type UserUpdateWithoutLoginAttemptsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserUncheckedUpdateWithoutLoginAttemptsInput = {
@@ -417,6 +467,8 @@ export type UserUncheckedUpdateWithoutLoginAttemptsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -457,6 +509,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  twoFactorEnabled?: boolean
+  backupCodes?: boolean
   loginAttempts?: boolean | Prisma.User$loginAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -468,6 +522,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  twoFactorEnabled?: boolean
+  backupCodes?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -477,6 +533,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  twoFactorEnabled?: boolean
+  backupCodes?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -486,9 +544,11 @@ export type UserSelectScalar = {
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  twoFactorEnabled?: boolean
+  backupCodes?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "passwordHash" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "passwordHash" | "enabled" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "backupCodes", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loginAttempts?: boolean | Prisma.User$loginAttemptsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -508,6 +568,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     enabled: boolean
     createdAt: Date
     updatedAt: Date
+    twoFactorEnabled: boolean
+    backupCodes: string
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -938,6 +1000,8 @@ export interface UserFieldRefs {
   readonly enabled: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly twoFactorEnabled: Prisma.FieldRef<"User", 'Boolean'>
+  readonly backupCodes: Prisma.FieldRef<"User", 'String'>
 }
     
 

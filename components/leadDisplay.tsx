@@ -1,54 +1,57 @@
 'use client';
 
 import { handleDeleteLead, handleUpdateLead } from '@/lib/lead/leadActions';
-import { cn } from '@/lib/util/utils';
 import { Lead } from '@/prisma/generated/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
-  TbCircleCheck,
-  TbDeviceFloppy,
-  TbMail,
-  TbPhone,
-  TbTrash,
-  TbX,
+    TbBuildingSkyscraper,
+    TbDeviceFloppy,
+    TbDotsVertical,
+    TbIdBadge2,
+    TbList,
+    TbMail,
+    TbPhone,
+    TbTrash,
+    TbX,
 } from 'react-icons/tb';
 import { toast } from 'sonner';
 import ConfirmDelete from './confirmDelete';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from './ui/alert-dialog';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button, buttonVariants } from './ui/button';
+import { Card, CardContent } from './ui/card';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Field, FieldLabel } from './ui/field';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupInput,
+    InputGroupText,
+} from './ui/input-group';
+import { Label } from './ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from './ui/select';
-import { Textarea } from './ui/textarea';
 
 export default function LeadDisplay({ lead }: { lead: Lead }) {
   const router = useRouter();
 
-  const [leadStatus, setLeadStatus] = useState(lead.status);
+  const [leadStatus, setLeadStatus] = useState(lead.status || '');
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [leadCompany, setLeadCompany] = useState(lead.company || '');
+  const [leadName, setLeadName] = useState(lead.name || '');
+  const [leadEmail, setLeadEmail] = useState(lead.email || '');
+  const [leadPhone, setLeadPhone] = useState(lead.phone || '');
   const [leadNotes, setLeadNotes] = useState(lead.notes || '');
 
   const deleteLead = async () => {
@@ -71,113 +74,172 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
     }
   };
 
-  const handleStatusSave = async (newStatus: string) => {
-    setLeadStatus(newStatus);
-
-    const result = await handleUpdateLead(lead.id, {
-      status: newStatus,
-      notes: leadNotes,
-    });
-
-    if (result.success) {
-      toast.success('Status updated successfully');
-      router.refresh();
-    } else {
-      toast.error('Failed to update status');
-      setLeadStatus(lead.status);
-    }
-  };
-
   return (
     <div className="flex w-full flex-col gap-8 md:gap-12">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-        <h1 className="flex-1 text-3xl font-bold tracking-tight capitalize md:text-4xl">
-          {lead.subject} - {lead.createdAt.toLocaleDateString()} at{' '}
-          {lead.createdAt.toLocaleTimeString()}
-        </h1>
-        <div
-          className={cn(
-            'flex flex-col gap-1 rounded-md border bg-muted px-4 py-1',
-            lead.status === 'Closed' &&
-              'border-primary bg-primary/10 text-primary'
-          )}
-        >
-          <div className="flex w-full flex-row items-center justify-center gap-1 uppercase">
-            {lead.status === 'Closed' && (
-              <TbCircleCheck className="mr-2 h-4 w-4" />
-            )}
-            {leadStatus}
-          </div>
-          <h5 className="text-center text-xs font-semibold tracking-tight">
-            LEAD STATUS
-          </h5>
+        <div className="flex flex-col">
+          <h1 className="mb-2 flex-1 text-3xl font-bold tracking-tight capitalize md:text-4xl">
+            {lead.subject}: From {lead.name}
+          </h1>
+          <p className="text-muted-foreground">
+            Received on {lead.createdAt.toLocaleDateString()} at{' '}
+            {lead.createdAt.toLocaleTimeString()}.
+          </p>
         </div>
-      </div>
-      <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16">
-              <AvatarFallback>
-                {lead.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <p className="text-xl font-semibold">{lead.name}</p>
-              <Badge variant="secondary">
-                {lead.subject.charAt(0).toUpperCase() + lead.subject.slice(1)}
-              </Badge>
-            </div>
-          </div>
-        </div>
-
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger
-              className={buttonVariants({ variant: 'outline' })}
+              className={buttonVariants({ variant: 'secondary' })}
             >
+              <TbDotsVertical />
               Actions
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               {lead.phone && (
                 <DropdownMenuItem className="truncate">
-                  <TbPhone />
-                  Call {lead.phone}
+                  <Link
+                    href={`tel:${lead.phone}`}
+                    className="flex items-center gap-2"
+                  >
+                    <TbPhone />
+                    Call Phone
+                  </Link>
                 </DropdownMenuItem>
               )}
               {lead.email && (
                 <DropdownMenuItem className="truncate">
-                  <TbMail />
-                  Email {lead.email}
+                  <Link
+                    href={`mailto:${lead.email}`}
+                    className="flex items-center gap-2"
+                  >
+                    <TbMail />
+                    Send Email
+                  </Link>
                 </DropdownMenuItem>
               )}
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => setShowDeleteDialog(true)}
+              >
+                <TbTrash />
+                Delete Lead
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ProgressDialog value={leadStatus} onSave={handleStatusSave}>
-            Update Status
-          </ProgressDialog>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Field>
-          <FieldLabel>Message</FieldLabel>
-          <Textarea value={lead.message} readOnly disabled className="h-48" />
-        </Field>
-        <Field>
-          <FieldLabel>Notes</FieldLabel>
-          <Textarea
-            value={leadNotes}
-            onChange={(e) => setLeadNotes(e.target.value)}
-            className="h-48"
-            placeholder="Add notes about this lead..."
-          />
-        </Field>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-5">
+        <div className="flex flex-col gap-4 lg:col-span-3">
+          <Label className="mb-4">Message</Label>
+          <p className="text-muted-foreground">{lead.message}</p>
+        </div>
+        <Card className="w-full max-w-lg shadow lg:col-span-2">
+          <CardContent>
+            <div className="mb-6 flex items-center gap-4">
+              <Avatar className="h-14 w-14">
+                <AvatarFallback className="text-xl">
+                  {lead.name
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <h3 className="text-xl font-semibold">{lead.name}</h3>
+                <p className="text-muted-foreground">
+                  <TbBuildingSkyscraper className="mr-2 inline" />
+                  {lead.company || 'Unknown Org'}
+                </p>
+              </div>
+              <Badge
+                variant="default"
+                className="ml-auto self-start tracking-tight uppercase"
+              >
+                {leadStatus}
+              </Badge>
+            </div>
+
+            <div className="mb-6 flex flex-col gap-4">
+              <InputGroup className="shadow-none">
+                <InputGroupAddon>
+                  <TbBuildingSkyscraper className="size-4" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={lead.company || ''}
+                  onChange={(e) => setLeadCompany(e.target.value)}
+                  placeholder="Company Name"
+                />
+              </InputGroup>
+              <InputGroup className="shadow-none">
+                <InputGroupAddon>
+                  <TbIdBadge2 className="size-4" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={leadName}
+                  onChange={(e) => setLeadName(e.target.value)}
+                  placeholder="Full Name"
+                />
+              </InputGroup>
+              <InputGroup className="shadow-none">
+                <InputGroupAddon>
+                  <TbMail className="size-4" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={leadEmail}
+                  onChange={(e) => setLeadEmail(e.target.value)}
+                  placeholder="Email Address"
+                />
+                <InputGroupText>
+                  <Link
+                    href={`mailto:${leadEmail}`}
+                    className={buttonVariants({ variant: 'outline' })}
+                  >
+                    Email
+                  </Link>
+                </InputGroupText>
+              </InputGroup>
+              <InputGroup className="shadow-none">
+                <InputGroupAddon>
+                  <TbPhone className="size-4" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  value={leadPhone}
+                  onChange={(e) => setLeadPhone(e.target.value)}
+                  placeholder="Phone Number"
+                />
+                <InputGroupText>
+                  <Link
+                    href={`tel:${leadPhone}`}
+                    className={buttonVariants({ variant: 'outline' })}
+                  >
+                    Call
+                  </Link>
+                </InputGroupText>
+              </InputGroup>
+
+              <Select
+                value={leadStatus}
+                onValueChange={(val) => setLeadStatus(val as string)}
+              >
+                <SelectTrigger className="w-full shadow-none">
+                  <TbList className="mr-2 h-4 w-4 text-muted-foreground" />
+                  <SelectValue placeholder="Select a status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Unread">Unread</SelectItem>
+                  <SelectItem value="Read">Read</SelectItem>
+                  <SelectItem value="In Progress">In Progress</SelectItem>
+                  <SelectItem value="Follow Up">Follow Up</SelectItem>
+                  <SelectItem value="Closed">Closed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="flex flex-col gap-4 md:flex-row">
+      <div className="flex w-full flex-col gap-4 md:flex-row ">
         <Button variant="default" onClick={saveLead}>
           <TbDeviceFloppy className="h-4 w-4" />
           Save Changes
@@ -190,86 +252,15 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
           <TbX className="h-4 w-4" />
           Cancel
         </Button>
-        <ConfirmDelete
-          onConfirm={deleteLead}
-          title="Delete this Lead?"
-          description="You cannot recover deleted leads. Are you sure you want to continue?"
-        >
-          <TbTrash className="h-4 w-4" />
-          Delete Lead
-        </ConfirmDelete>
       </div>
+
+      <ConfirmDelete
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        onConfirm={deleteLead}
+        title="Delete Lead?"
+        description="You cannot recover deleted leads. Are you sure you want to continue?"
+      />
     </div>
-  );
-}
-
-function ProgressDialog({
-  value,
-  onSave,
-  children,
-}: {
-  value: string;
-  onSave: (value: string) => void;
-  children: React.ReactNode;
-}) {
-  const [localStatus, setLocalStatus] = React.useState(value);
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  return (
-    <AlertDialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        setIsOpen(open);
-        if (!open) setLocalStatus(value);
-      }}
-    >
-      <AlertDialogTrigger
-        className={buttonVariants({ variant: 'outline' })}
-        onClick={() => setIsOpen(true)}
-      >
-        {children}
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Update Lead Status</AlertDialogTitle>
-          <AlertDialogDescription>
-            What is the new status of this lead? This will update the
-            lead&apos;s status. You can change this anytime.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <Field className="w-52">
-          <Select
-            value={localStatus}
-            onValueChange={(val) => setLocalStatus(val as string)}
-          >
-            <SelectTrigger className="w-52">
-              <SelectValue placeholder="Select a status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Unread">Unread</SelectItem>
-              <SelectItem value="Read">Read</SelectItem>
-              <SelectItem value="In Progress">In Progress</SelectItem>
-              <SelectItem value="Follow Up">Follow Up</SelectItem>
-              <SelectItem value="Closed">Closed</SelectItem>
-            </SelectContent>
-          </Select>
-        </Field>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setIsOpen(false)}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={(e) => {
-              e.preventDefault();
-
-              onSave(localStatus);
-              setIsOpen(false);
-            }}
-          >
-            Save Status
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
   );
 }

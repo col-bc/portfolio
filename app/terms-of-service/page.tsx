@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function TermsOfService() {
   return (
-    <section className="flex flex-col items-start gap-8 px-4 py-8">
+    <section className="flex flex-col items-start gap-10 px-4 py-8">
       <Heading>Terms of Service</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         <strong className="font-bold">Effective Date:</strong> August 13, 2026

@@ -1,25 +1,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
-import { cn } from '@/lib/utils';
 import { Job } from '@/prisma/generated/client';
 import Link from 'next/link';
 import {
-  TbBuildingSkyscraper,
-  TbEyeOff,
-  TbHome,
-  TbMapPin,
-  TbPlus,
+    TbBuildingSkyscraper,
+    TbEyeOff,
+    TbHome,
+    TbMapPin,
+    TbPlus,
 } from 'react-icons/tb';
 
 export default async function ManageJobsPage() {
@@ -49,33 +48,46 @@ export default async function ManageJobsPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
+      <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
           <Heading>Manage Jobs</Heading>
           <Link
             href="/auth/manage/jobs/new"
-            className={cn(buttonVariants({ size: 'lg' }))}
+            className={buttonVariants({ size: 'lg', className: 'shadow' })}
           >
             <TbPlus className="h-4 w-4" />
             Create New Job
           </Link>
         </div>
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 md:text-3xl">
-          Current Job{currentJobs.length !== 1 ? 's' : ''}
-        </h2>
-        <div className="flex w-full flex-col gap-4">
-          {currentJobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
+
+        <div className="flex w-full flex-col gap-4 md:gap-6">
+          <div className="flex items-center gap-2">
+            <Heading size="sub">
+              Current Job{currentJobs.length !== 1 ? 's' : ''}
+            </Heading>
+            <Badge variant="secondary" className="font-mono text-lg">
+              {currentJobs.length}
+            </Badge>
+          </div>
+          <div className="flex w-full flex-col gap-4">
+            {currentJobs.map((job) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
         </div>
 
-        <h2 className="text-2xl font-bold tracking-tight underline decoration-chart-1 decoration-2 md:text-3xl">
-          All Jobs
-        </h2>
-        <div className="flex w-full flex-col gap-4">
-          {chronoJobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
+        <div className="flex w-full flex-col gap-4 md:gap-6">
+          <div className="flex items-center gap-2">
+            <Heading size="sub">All Jobs</Heading>
+            <Badge variant="secondary" className="font-mono text-lg">
+              {chronoJobs.length}
+            </Badge>
+          </div>
+          <div className="flex w-full flex-col gap-4">
+            {chronoJobs.map((job) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
         </div>
       </section>
     </>
@@ -111,6 +123,7 @@ function JobCard({ job }: { job: Job }) {
               <TbBuildingSkyscraper className="h-4 w-4" />
               {job.company}
             </div>
+            <span className="text-xs text-muted-foreground">•</span>
             <div className="flex items-center gap-1">
               <TbMapPin className="h-4 w-4" />
               {job.location}

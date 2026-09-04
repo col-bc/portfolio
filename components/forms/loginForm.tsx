@@ -5,30 +5,41 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { login, verifyOtp } from '@/lib/auth/sessionActions';
+import { verifySession } from '@/lib/auth/session';
+import { getCurrentUser, login, verifyOtp } from '@/lib/auth/sessionActions';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
   TbArrowLeft,
-  TbArrowRight,
+  TbAuth2Fa,
   TbCircleXFilled,
   TbEye,
   TbEyeOff,
+  TbLockOpen,
   TbRotate,
 } from 'react-icons/tb';
 import { Alert, AlertAction, AlertDescription, AlertTitle } from '../ui/alert';
-import { Button } from '../ui/button';
-import { Field, FieldLabel } from '../ui/field';
+import { Button, buttonVariants } from '../ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
+import { Field, FieldContent, FieldDescription, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import {
   InputGroup,
   InputGroupButton,
   InputGroupInput,
 } from '../ui/input-group';
+import { Spinner } from '../ui/spinner';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
-export default function LoginForm() {
+export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const router = useRouter();
 
   const turnstileRef = React.useRef<TurnstileInstance | null>(null);
@@ -45,24 +56,27 @@ export default function LoginForm() {
 
   const loginWithPassword = async () => {
     if (!email || !password) {
-      setError('Email and password are required.');
+      setError('Missing required fields.');
       turnstileRef.current?.reset();
+      return;
+    }
+
+    const token = tsToken || turnstileRef.current?.getResponse() || '';
+    if (!token) {
+      setError('Turnstile verification failed. Please try again.');
       return;
     }
 
     const status = await login({
       username: email,
       password,
-      turnstileToken: (tsToken || turnstileRef.current?.getResponse()) ?? '',
+      turnstileToken: token,
     });
 
     if (status.success) {
       setStep('otp');
     } else {
-      setError(
-        status.error ||
-          'Login failed. Please check your credentials and try your request again.'
-      );
+      setError(status.error || 'Username or password is incorrect.');
       setPassword('');
       turnstileRef.current?.reset();
     }
@@ -77,8 +91,11 @@ export default function LoginForm() {
     const status = await verifyOtp(otp);
 
     if (status.success) {
-      router.refresh();
-      router.push('/auth/manage');
+      if (onSuccess === undefined) {
+        router.push('/auth/manage');
+      } else {
+        onSuccess();
+      }
     } else {
       setError(
         status.error ||
@@ -88,21 +105,16 @@ export default function LoginForm() {
     }
   };
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-
-    if (!email || !password) {
-      setError('Please fill in all fields correctly.');
-      return;
-    }
 
     if (step === 'password') {
       await loginWithPassword();
     } else if (step === 'otp') {
       await submitOtp();
     }
-  };
+  }
 
   const reset = () => {
     setEmail('');
@@ -113,37 +125,53 @@ export default function LoginForm() {
     turnstileRef.current?.reset();
   };
 
+  React.useEffect(() => {
+    const handleEffect = async () => {
+      const user = await getCurrentUser();
+      if (user) {
+        await verifySession();
+        router.push('/auth/manage');
+      }
+    };
+    handleEffect();
+  }, [router]);
+
   return (
-    <form onSubmit={handleSubmit} className="grid w-full items-center gap-6">
-      <FieldLabel>
-        {step === 'password' ? 'Login with Password' : 'Enter OTP'}
-      </FieldLabel>
-      {error && (
-        <Alert>
-          <TbCircleXFilled className="size-4 shrink-0 text-destructive!" />
-          <AlertTitle>Login Failed</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-          <AlertAction>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  variant="secondary"
-                  size="icon-sm"
-                  onClick={() => reset()}
-                >
-                  <TbRotate />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Reset form</TooltipContent>
-            </Tooltip>
-          </AlertAction>
-        </Alert>
-      )}
-      {step === 'password' && (
-        <>
+    <Card className="shadow">
+      <CardHeader>
+        <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+          {step === 'password'
+            ? 'Enter Your Credentials'
+            : '2-Step Verification'}
+        </CardTitle>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="flex flex-col gap-6">
+          {error && (
+            <Alert>
+              <TbCircleXFilled className="size-4 shrink-0 text-destructive!" />
+              <AlertTitle>Login Unsuccessful</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+              <Tooltip>
+                <TooltipTrigger>
+                  <AlertAction
+                    className={buttonVariants({
+                      size: 'icon-sm',
+                      variant: 'secondary',
+                    })}
+                    onClick={() => reset()}
+                  >
+                    <TbRotate />
+                  </AlertAction>
+                </TooltipTrigger>
+                <TooltipContent>Reset form</TooltipContent>
+              </Tooltip>
+            </Alert>
+          )}
+
           <Field>
             <FieldLabel htmlFor="email">
-              Email <span className="text-xs text-destructive">*</span>
+              Email Address <span className="text-xs text-destructive">*</span>
             </FieldLabel>
             <Input
               id="email"
@@ -153,6 +181,7 @@ export default function LoginForm() {
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={step === 'otp'}
             />
           </Field>
           <Field>
@@ -168,6 +197,7 @@ export default function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
+                disabled={step === 'otp'}
               />
               <InputGroupButton onClick={toggleShowPassword}>
                 {showPassword ? (
@@ -178,66 +208,91 @@ export default function LoginForm() {
               </InputGroupButton>
             </InputGroup>
           </Field>
-        </>
-      )}
-      {step === 'otp' && (
-        <Field>
-          <FieldLabel htmlFor="otp">
-            One Time Password{' '}
-            <span className="text-xs text-destructive">*</span>
-          </FieldLabel>
-          <InputOTP
-            maxLength={6}
-            value={otp}
-            onChange={(val) => setOtp(val)}
-            autoComplete="one-time-code"
-            autoFocus
-          >
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
-        </Field>
-      )}
-      {step === 'password' && (
-        <Turnstile
-          ref={turnstileRef}
-          siteKey="0x4AAAAAACrt5VbunM62aYIZ"
-          options={{
-            theme: 'auto',
-            size: 'flexible',
-            feedbackEnabled: true,
-            appearance: 'interaction-only',
-          }}
-          onSuccess={(token) => {
-            setTsToken(token);
-          }}
-        />
-      )}
-      <div className="flex items-center gap-4">
-        {step === 'otp' && (
+
+          <Field hidden={step !== 'otp'}>
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="otp">
+                One-Time Password{' '}
+                <span className="text-xs text-destructive">*</span>
+              </FieldLabel>
+              <Link
+                href="/auth/2fa/recovery"
+                className="text-sm text-primary hover:underline"
+              >
+                Use Recovery Code
+              </Link>
+            </div>
+            <FieldDescription>
+              Enter the 6-digit code from your authenticator app or email.
+            </FieldDescription>
+            <FieldContent>
+              <InputOTP
+                maxLength={6}
+                value={otp}
+                onChange={(val) => setOtp(val)}
+                autoComplete="one-time-code"
+                autoFocus
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </FieldContent>
+          </Field>
+          {step === 'password' && (
+            <Turnstile
+              ref={turnstileRef}
+              siteKey="0x4AAAAAACrt5VbunM62aYIZ"
+              options={{
+                theme: 'auto',
+                size: 'flexible',
+                feedbackEnabled: true,
+                appearance: 'interaction-only',
+              }}
+              onSuccess={(token) => {
+                setTsToken(token);
+              }}
+            />
+          )}
+        </CardContent>
+        <CardFooter>
+          {step === 'otp' && (
+            <Button
+              hidden
+              variant="secondary"
+              size="icon"
+              onClick={() => setStep('password')}
+              aria-label="Go back to password step"
+            >
+              <TbArrowLeft className="h-5 w-5" />
+            </Button>
+          )}
           <Button
-            variant="secondary"
-            size="icon"
-            onClick={() => setStep('password')}
+            type="submit"
+            disabled={step === 'password' && !tsToken}
+            className="ml-auto"
           >
-            <TbArrowLeft className="h-5 w-5" />
+            {step === 'password' && !tsToken ? (
+              <Spinner />
+            ) : step === 'password' ? (
+              <>
+                <TbLockOpen className="h-4 w-4" />
+                Secure Login
+              </>
+            ) : (
+              <>
+                <TbAuth2Fa className="h-4 w-4" />
+                Verify Code
+              </>
+            )}
           </Button>
-        )}
-        <Button
-          type="submit"
-          className="max-w-52 flex-1 px-6"
-          disabled={step === 'password' && !tsToken}
-        >
-          {step === 'password' ? 'Login' : 'Verify'}
-          <TbArrowRight className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
-    </form>
+        </CardFooter>
+      </form>
+    </Card>
   );
 }

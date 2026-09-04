@@ -50,7 +50,11 @@ export async function updateJob(
     },
     data: {
       ...job,
-      imageUrl: file ? await saveFileToDisk(file) : null,
+      imageUrl: file
+        ? await saveFileToDisk(file)
+        : job.imageUrl
+          ? job.imageUrl
+          : null,
     },
   });
 

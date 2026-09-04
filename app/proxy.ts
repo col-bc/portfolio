@@ -1,5 +1,5 @@
-import { verifySession } from '@/lib/session';
-import { getCurrentUser } from '@/lib/sessionActions';
+import { verifySession } from '@/lib/auth/session';
+import { getCurrentUser } from '@/lib/auth/sessionActions';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 

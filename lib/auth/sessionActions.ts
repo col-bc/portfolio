@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import * as OTPAuth from 'otpauth';
 import { cache } from 'react';
 import { UAParser } from 'ua-parser-js';
-import { getUser } from '../user.DAL';
+import { getUser } from '../user/userDAL';
 import { logAuthAttempt } from './loginAttemptDAL';
 import {
   AuthAttempt,
@@ -57,11 +57,6 @@ export async function login(data: AuthAttempt): Promise<ActionState<void>> {
     };
   }
 
-  console.debug(
-    '[getSession] Received authentication attempt for user:',
-    data.username
-  );
-
   // Verify Turnstile token
   const turnstileValid = await verifyTurnstileToken(data.turnstileToken);
   if (!turnstileValid) {
@@ -96,14 +91,26 @@ export async function login(data: AuthAttempt): Promise<ActionState<void>> {
       },
     });
 
-    // Issue JWT for the TOTP session
-    const jwt = await issueJWT(user, '3m');
-    (await cookies()).set('totp_session', jwt, {
+    if (user.twoFactorEnabled) {
+      // Issue JWT for the TOTP session
+      const jwt = await issueJWT(user, '3m');
+      (await cookies()).set('totp_session', jwt, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 3, // 3 minutes
+      });
+      return { success: true, data: undefined };
+    }
+    // Issue JWT for the authenticated admin session
+    const jwt = await issueJWT(user, '2h');
+    (await cookies()).set('admin_session', jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 3, // 3 minutes
+      maxAge: 60 * 60 * 2, // 2 hours
     });
     return { success: true, data: undefined };
   }
@@ -120,7 +127,39 @@ export async function login(data: AuthAttempt): Promise<ActionState<void>> {
  * @param otp the TOTP to verify
  * @returns a redirect to the leads page if the OTP is valid, otherwise throws an error
  */
-export async function verifyOtp(otp: string): Promise<ActionState<boolean>> {
+export async function verifyOtp(
+  otp: string,
+  checkSession: boolean = true
+): Promise<ActionState<boolean>> {
+  if (!checkSession) {
+    // If session check is disabled, just verify the OTP without checking the session
+    const totp = new OTPAuth.TOTP({
+      issuer: 'Colby Portfolio',
+      label: 'Admin',
+      algorithm: 'SHA1',
+      digits: 6,
+      period: 30,
+      secret: OTPAuth.Secret.fromBase32(
+        process.env.ADMIN_TOTP_SECRET as string
+      ),
+    });
+
+    const delta = totp.validate({ token: otp, window: 1 });
+
+    if (delta !== null) {
+      return {
+        success: true,
+        data: true,
+      };
+    }
+
+    return {
+      success: false,
+      error: 'Invalid OTP',
+      type: 'UNAUTHORIZED',
+    };
+  }
+
   //validate the totp session
   const totpSession = (await cookies()).get('totp_session');
   if (!totpSession) {
@@ -168,7 +207,10 @@ export async function verifyOtp(otp: string): Promise<ActionState<boolean>> {
       path: '/',
       maxAge: 60 * 60 * 2, // 2 hours
     });
-    return redirect('/auth/manage');
+    return {
+      success: true,
+      data: true,
+    };
   } else {
     console.error('OTP validation failed:', otp);
     return {

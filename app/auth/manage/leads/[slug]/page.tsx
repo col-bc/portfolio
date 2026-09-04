@@ -1,11 +1,11 @@
 import LeadDisplay from '@/components/leadDisplay';
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { getLeadById } from '@/lib/lead/leadDAL';
 import { notFound } from 'next/navigation';
@@ -48,7 +48,7 @@ export default async function ManageJobDetail({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <section className="flex flex-col items-start gap-8 px-4 py-8 md:mb-12 md:gap-12">
+      <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
         <LeadDisplay lead={lead} />
       </section>
     </>

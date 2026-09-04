@@ -54,7 +54,9 @@ export const ModelName = {
   User: 'User',
   Job: 'Job',
   LoginAttempt: 'LoginAttempt',
-  Lead: 'Lead'
+  Lead: 'Lead',
+  ProjectImage: 'ProjectImage',
+  Project: 'Project'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,7 +78,9 @@ export const UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   enabled: 'enabled',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  twoFactorEnabled: 'twoFactorEnabled',
+  backupCodes: 'backupCodes'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -123,13 +127,40 @@ export const LeadScalarFieldEnum = {
   phone: 'phone',
   subject: 'subject',
   message: 'message',
-  notes: 'notes',
   source: 'source',
   createdAt: 'createdAt',
-  status: 'status'
+  status: 'status',
+  notes: 'notes'
 } as const
 
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+export const ProjectImageScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  url: 'url',
+  altText: 'altText',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectImageScalarFieldEnum = (typeof ProjectImageScalarFieldEnum)[keyof typeof ProjectImageScalarFieldEnum]
+
+
+export const ProjectScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  tags: 'tags',
+  visible: 'visible',
+  featured: 'featured',
+  link: 'link',
+  repository: 'repository',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
 export const SortOrder = {

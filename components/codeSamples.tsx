@@ -7,8 +7,8 @@ import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
 import {
-  oneDark,
-  oneLight,
+  vs,
+  vscDarkPlus,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
 
@@ -31,13 +31,13 @@ const AsyncSyntaxHighlighter = dynamic(
 const CodeHighlighter = React.memo((sample: CodeSample) => {
   const { resolvedTheme } = useTheme();
   const style = React.useMemo(
-    () => (resolvedTheme === 'dark' ? oneDark : oneLight),
+    () => (resolvedTheme === 'dark' ? vscDarkPlus : vs),
     [resolvedTheme]
   );
 
   return (
-    <div className="flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background">
-      <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 text-sm! font-semibold text-foreground">
+    <div className="mb-1 flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background shadow-sm!">
+      <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 font-semibold text-foreground">
         {sample.icon && (sample.icon as React.ReactNode)}
         <span className="font-mono">{sample.fileName}</span>
       </div>
@@ -69,13 +69,13 @@ function CodeSamples() {
       onValueChange={setActiveTab}
       className="flex w-full flex-col"
     >
-      <TabsList>
+      <TabsList className="h-auto max-w-full justify-start overflow-x-auto overflow-y-hidden">
         {Object.entries(codeSamples).map(
           ([key, sample]: [string, CodeSample]) => {
             const isActive = activeTab === key;
 
             return (
-              <TabsTrigger key={key} value={key} className="py-1.4 px-6">
+              <TabsTrigger key={key} value={key} className="px-6 py-1.5!">
                 {isActive && (
                   <motion.div
                     layoutId="active-tab-indicator"
@@ -99,7 +99,7 @@ function CodeSamples() {
           {Object.entries(codeSamples).map(
             ([key, sample]: [string, CodeSample]) => (
               <div key={key} className="w-full shrink-0 px-1 text-sm">
-                <p className="text-sn mb-4 leading-relaxed text-muted-foreground">
+                <p className="mb-4 leading-relaxed text-muted-foreground">
                   {sample.description}
                 </p>
 

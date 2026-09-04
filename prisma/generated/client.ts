@@ -61,3 +61,13 @@ export type LoginAttempt = Prisma.LoginAttemptModel
  * 
  */
 export type Lead = Prisma.LeadModel
+/**
+ * Model ProjectImage
+ * 
+ */
+export type ProjectImage = Prisma.ProjectImageModel
+/**
+ * Model Project
+ * 
+ */
+export type Project = Prisma.ProjectModel

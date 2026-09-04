@@ -73,7 +73,6 @@ export async function authenticate(data: AuthAttempt): Promise<User | null> {
     where: { username },
   });
 
-  // TODO create LoginAttempt
   if (!user) {
     return null;
   }

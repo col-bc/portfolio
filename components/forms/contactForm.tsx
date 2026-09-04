@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { Spinner } from '../ui/spinner';
 import { Textarea } from '../ui/textarea';
 
 function handleFormatPhoneNumber(value: string): string {
@@ -252,8 +253,14 @@ export default function ContactForm() {
             .
           </p>
           <Button type="submit" className="w-full" disabled={!tsToken}>
-            <TbSend2 />
-            Send Message
+            {!tsToken ? (
+              <Spinner />
+            ) : (
+              <>
+                <TbSend2 />
+                Send Message
+              </>
+            )}
           </Button>
         </>
       )}

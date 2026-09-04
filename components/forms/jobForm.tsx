@@ -5,7 +5,7 @@ import {
   handleDeleteJob,
   handleUpdateJob,
 } from '@/lib/job/jobActions';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -70,6 +70,7 @@ export default function JobForm({ job }: { job: Job | null }) {
   );
   const [skills, setSkills] = React.useState<string>(job?.skills || '');
   const [visible, setVisible] = React.useState<boolean>(job?.visible || true);
+  const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -354,14 +355,23 @@ export default function JobForm({ job }: { job: Job | null }) {
           Cancel
         </Button>
         {isEditMode && (
-          <ConfirmDelete
-            onConfirm={handleDelete}
-            title="Delete Job"
-            description="You cannot recover deleted jobs. Are you sure you want to continue?"
+          <Button
+            variant="destructive"
+            onClick={() => setShowDeleteDialog(true)}
+            className="px-4"
           >
             <TbTrash className="h-4 w-4" />
             Delete Job
-          </ConfirmDelete>
+          </Button>
+        )}
+        {isEditMode && (
+          <ConfirmDelete
+            open={showDeleteDialog}
+            onOpenChange={setShowDeleteDialog}
+            onConfirm={handleDelete}
+            title="Delete Job?"
+            description="You cannot recover deleted jobs. Are you sure you want to continue?"
+          />
         )}
       </div>
     </form>

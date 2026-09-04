@@ -1,6 +1,6 @@
 'use client';
 
-import { changeResume } from '@/lib/resumeActions';
+import { changeResume } from '@/lib/resume/resumeActions';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { TbFile, TbUpload, TbX } from 'react-icons/tb';

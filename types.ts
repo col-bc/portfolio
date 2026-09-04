@@ -14,3 +14,17 @@ export type Message = {
     { type: 'text'; text: string } | { type: 'data-timestamp'; data: string }
   >;
 };
+
+// export type ProjectImage = {
+//   url: string;
+//   altText?: string | null;
+// };
+// export type Project = {
+//   title: string;
+//   description: string;
+//   tags: string;
+//   visible: boolean;
+//   link?: string | null;
+//   repository?: string | null;
+//   images: ProjectImage[];
+// };
