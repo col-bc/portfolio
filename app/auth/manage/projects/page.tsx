@@ -1,3 +1,4 @@
+import ProjectCard from '@/components/projectCard';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -54,7 +55,11 @@ export default async function ProjectsPage() {
               No projects found. You can create a new project by clicking the
               button above.
             </p>
-          ) : null}
+          ) : (
+            projectData.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))
+          )}
         </div>
       </section>
     </>

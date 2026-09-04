@@ -19,12 +19,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { ProjectWithImages } from '@/lib/project/projectDAL';
 import { cn } from '@/lib/utils';
-import type { Project } from '@/types';
+import { ProjectImage } from '@/prisma/generated/browser';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog';
 
 interface ProjectCardProps {
-  project: Project;
+  project: ProjectWithImages;
   reverse?: boolean;
 }
 
@@ -55,7 +56,7 @@ export default function ProjectCard({
           >
             <CarouselContent className="h-full">
               {/* Light box */}
-              {project.images.map((image, idx) => (
+              {project.images.map((image: ProjectImage, idx: number) => (
                 <CarouselItem
                   key={`carousel-item-${idx}`}
                   className="relative h-full w-full"
@@ -63,7 +64,7 @@ export default function ProjectCard({
                   <Dialog>
                     <DialogTrigger className="group relative block h-full w-full cursor-zoom-in overflow-hidden border-none bg-transparent p-0 outline-none">
                       <Image
-                        src={image.url}
+                        src={`/${image.url}`}
                         alt={image.altText || `${project.title} screenshot`}
                         fill
                         className="h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
@@ -125,7 +126,7 @@ export default function ProjectCard({
           {project.tags.length > 0 && (
             <CardContent className="p-6 pt-0 lg:px-8 lg:pb-6">
               <div className="flex flex-wrap gap-2">
-                {project.tags.split(',').map((tag) => (
+                {project.tags.split(',').map((tag: string) => (
                   <Badge key={tag} variant="secondary" className="font-medium">
                     {tag}
                   </Badge>

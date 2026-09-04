@@ -1,7 +1,10 @@
 import { prisma } from '@/lib/prisma';
-import { Project } from '@/prisma/generated/client';
+import { Project, ProjectImage } from '@/prisma/generated/client';
 import 'server-only';
 
+export interface ProjectWithImages extends Project {
+  images: ProjectImage[];
+}
 export interface CreateProjectDTO {
   title: string;
   description: string;
@@ -20,7 +23,7 @@ export interface CreateProjectImageDTO {
 export async function createProject(
   data: CreateProjectDTO,
   images: CreateProjectImageDTO[]
-): Promise<Project> {
+): Promise<ProjectWithImages> {
   const project = await prisma.project.create({
     data: {
       ...data,
@@ -36,7 +39,7 @@ export async function createProject(
   return project;
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(): Promise<ProjectWithImages[]> {
   const projects = await prisma.project.findMany({
     include: {
       images: true,
@@ -46,7 +49,9 @@ export async function getProjects(): Promise<Project[]> {
   return projects;
 }
 
-export async function getProject(projectId: string): Promise<Project | null> {
+export async function getProject(
+  projectId: string
+): Promise<ProjectWithImages | null> {
   const project = await prisma.project.findUnique({
     where: { id: projectId },
     include: {
@@ -68,7 +73,7 @@ export interface UpdateProjectDTO {
 export async function updateProject(
   projectId: string,
   data: UpdateProjectDTO
-): Promise<Project> {
+): Promise<ProjectWithImages> {
   const project = await prisma.project.update({
     where: { id: projectId },
     data,
@@ -79,7 +84,9 @@ export async function updateProject(
   return project;
 }
 
-export async function deleteProject(projectId: string): Promise<Project> {
+export async function deleteProject(
+  projectId: string
+): Promise<ProjectWithImages> {
   const project = await prisma.project.delete({
     where: { id: projectId },
     include: {

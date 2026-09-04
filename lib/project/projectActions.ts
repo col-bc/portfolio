@@ -1,24 +1,26 @@
 'use server';
 
-import { Project } from '@/prisma/generated/browser';
 import { ActionState } from '@/types';
 import { writeScreen } from '../util/fileSystemService';
 import {
   createProject,
-  CreateProjectDTO,
   deleteProject,
   deleteProjectImage,
   getProject,
   getProjects,
+  ProjectWithImages,
   updateProject,
   UpdateProjectDTO,
 } from './projectDAL';
 
 export async function handleCreateProject(
-  projectData: CreateProjectDTO,
-  images: Buffer[]
-): Promise<ActionState<Project>> {
-  if (!projectData.title || !projectData.description || !projectData.tags) {
+  formData: FormData
+): Promise<ActionState<ProjectWithImages>> {
+  if (
+    !formData.get('title') ||
+    !formData.get('description') ||
+    !formData.get('tags')
+  ) {
     return {
       success: false,
       error: 'Missing required fields',
@@ -26,29 +28,42 @@ export async function handleCreateProject(
     };
   }
 
-  const dirName = `${projectData.title.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`;
+  const dirName = `${formData.get('title')?.toString().replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`;
+
   const imagePaths = await Promise.all(
-    images.map(async (image, index) => {
-      const imagePath = await writeScreen(
-        dirName,
-        `project-image-${Date.now()}-${index}.png`,
-        image
-      );
-      return imagePath;
-    })
+    Array.from(formData.getAll('images') as File[]).map(
+      async (image, index) => {
+        const imagePath = await writeScreen(
+          dirName,
+          `project-image-${Date.now()}-${index}.png`,
+          Buffer.from(await image.arrayBuffer())
+        );
+        return imagePath;
+      }
+    )
   );
 
   const project = await createProject(
-    projectData,
+    {
+      title: formData.get('title')?.toString() || '',
+      description: formData.get('description')?.toString() || '',
+      tags: formData.get('tags')?.toString() || '',
+      link: formData.get('link')?.toString() || undefined,
+      repository: formData.get('repository')?.toString() || undefined,
+      featured: formData.get('featured') === 'true',
+      visible: formData.get('visible') === 'true',
+    },
     imagePaths.map((path) => ({
       url: path,
-      altText: `${projectData.title} image`,
+      altText: `${formData.get('title')?.toString() || ''} image`,
     }))
   );
   return { success: true, data: project };
 }
 
-export async function handleGetProjects(): Promise<ActionState<Project[]>> {
+export async function handleGetProjects(): Promise<
+  ActionState<ProjectWithImages[]>
+> {
   try {
     const projects = await getProjects();
     return { success: true, data: projects };
@@ -64,7 +79,7 @@ export async function handleGetProjects(): Promise<ActionState<Project[]>> {
 
 export async function handleGetProjectById(
   projectId: string
-): Promise<ActionState<Project>> {
+): Promise<ActionState<ProjectWithImages | null>> {
   try {
     const project = await getProject(projectId);
     if (!project) {
@@ -88,7 +103,7 @@ export async function handleGetProjectById(
 export async function handleUpdateProject(
   projectId: string,
   updateData: UpdateProjectDTO
-): Promise<ActionState<Project>> {
+): Promise<ActionState<ProjectWithImages>> {
   try {
     const project = await getProject(projectId);
     if (!project) {

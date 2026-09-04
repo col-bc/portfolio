@@ -1,5 +1,6 @@
 'use server';
-import { readResume, writeResume } from '@/lib/resume/resumeDAL';
+import { readResume } from '@/lib/resume/resumeDAL';
+import { writeResume } from '@/lib/util/fileSystemService';
 
 export async function getResume(): Promise<File | null> {
   const resume = await readResume();
