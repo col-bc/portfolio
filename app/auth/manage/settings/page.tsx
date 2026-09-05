@@ -14,7 +14,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
 import { getAuthAttemptsForUser } from '@/lib/auth/loginAttemptDAL';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
+import { Metadata } from 'next';
 import { TbHome } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Settings',
+};
 
 export default async function SecurityPage() {
   const loginAttempts = await getAuthAttemptsForUser();

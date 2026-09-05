@@ -62,26 +62,40 @@ export async function getProject(
 }
 
 export interface UpdateProjectDTO {
-  title?: string;
-  description?: string;
-  tags?: string;
-  visible?: boolean;
+  title: string;
+  description: string;
+  tags: string;
+  visible: boolean;
+  featured: boolean;
   link?: string | null;
   repository?: string | null;
 }
 
 export async function updateProject(
-  projectId: string,
-  data: UpdateProjectDTO
-): Promise<ProjectWithImages> {
-  const project = await prisma.project.update({
-    where: { id: projectId },
-    data,
+  id: string,
+  data: UpdateProjectDTO,
+  newImages: CreateProjectImageDTO[],
+  imagesToDeleteIds: string[]
+): Promise<Project> {
+  const updatedProject = await prisma.project.update({
+    where: { id },
+    data: {
+      ...data,
+      images: {
+        // 1. Delete the images the user removed in the UI
+        deleteMany: {
+          id: { in: imagesToDeleteIds },
+        },
+        // 2. Create and attach the newly uploaded images
+        create: newImages,
+      },
+    },
     include: {
       images: true,
     },
   });
-  return project;
+
+  return updatedProject;
 }
 
 export async function deleteProject(

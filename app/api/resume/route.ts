@@ -1,6 +1,6 @@
 import { getResume } from '@/lib/resume/resumeActions';
 
-export async function GET(req: Request) {
+export async function GET() {
   const resumeFile = await getResume();
 
   if (!resumeFile) {

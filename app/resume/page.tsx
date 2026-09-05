@@ -4,8 +4,13 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getResume } from '@/lib/resume/resumeActions';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbCloudDown, TbRotate } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Resume',
+};
 
 export default async function ResumePage() {
   const resume = await getResume();
@@ -36,7 +41,7 @@ export default async function ResumePage() {
             </h3>
 
             <Link
-              href="/resume/traditional"
+              href="/api/resume"
               target="_blank"
               className={buttonVariants({ variant: 'secondary', size: 'sm' })}
             >

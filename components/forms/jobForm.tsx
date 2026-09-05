@@ -5,7 +5,7 @@ import {
   handleDeleteJob,
   handleUpdateJob,
 } from '@/lib/job/jobActions';
-import { cn } from '@/lib/util/utils';
+import { cn, formatTimestamp } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -43,10 +43,6 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
-
-const formatDateTime = (date: Date) => {
-  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
-};
 
 export default function JobForm({ job }: { job: Job | null }) {
   const router = useRouter();
@@ -329,13 +325,13 @@ export default function JobForm({ job }: { job: Job | null }) {
           <div className="flex items-center gap-1 p-2">
             <TbCalendarPlus className="h-4 w-4" />
             <span className="text-muted-foreground">
-              Created {formatDateTime(new Date(job.createdAt))}
+              Created {formatTimestamp(new Date(job.createdAt))}
             </span>
           </div>
           <div className="flex items-center gap-1 p-2">
             <TbDeviceFloppy className="h-4 w-4" />
             <span className="text-muted-foreground">
-              Updated {formatDateTime(new Date(job.updatedAt))}
+              Updated {formatTimestamp(new Date(job.updatedAt))}
             </span>
           </div>
         </div>

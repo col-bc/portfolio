@@ -1,5 +1,10 @@
 import { Heading } from '@/components/ui/heading';
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+};
 
 export default function TermsOfService() {
   return (

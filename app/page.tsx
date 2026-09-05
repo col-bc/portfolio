@@ -5,10 +5,12 @@ import ProjectCard from '@/components/projectCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
+import { handleGetProjects } from '@/lib/project/projectActions';
 import { cn } from '@/lib/util/utils';
 import { Lottie } from 'lottie-react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import {
   TbBriefcase,
@@ -18,6 +20,10 @@ import {
   TbServer,
   TbTools,
 } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Home',
+};
 
 type Skill = {
   label: string;
@@ -169,12 +175,15 @@ const skills: Skill[] = [
   },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const projects = await handleGetProjects();
+  const projectData = projects.success ? projects.data : [];
   return (
-    <section className="flex flex-col items-start gap-10 px-4 py-12 md:gap-16 lg:gap-20">
-      <div className="flex flex-col gap-4 text-sm leading-loose md:gap-6">
+    <div className="flex flex-col gap-16 px-4 py-12 md:gap-24 lg:gap-32">
+      {/* --- HERO --- */}
+      <section className="flex flex-col gap-6 text-sm leading-loose">
         <div className="flex items-center justify-between">
-          <Heading className="mb-4 max-w-2xl">
+          <Heading className="max-w-2xl">
             Investigator Turned Software Engineer
           </Heading>
           <div className="hidden max-w-xl! items-center justify-end md:flex">
@@ -200,7 +209,7 @@ export default function Page() {
           precision, strict ethical standards, and the ability to bridge the gap
           between physical operations and digital ecosystems.
         </p>
-        <div className="mt-2 flex gap-4">
+        <div className="mt-4 flex gap-4">
           <Link
             href="/resume"
             className={cn(
@@ -228,123 +237,66 @@ export default function Page() {
             Get in Touch
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="flex w-full min-w-0 flex-col items-start gap-4 md:gap-6">
-        <Heading size="sub">Featured Projects</Heading>
-        <p className="text-base leading-relaxed text-foreground">
-          Below you will find a selection of my favorite projects that highlight
-          my expertise in full-stack development.
-        </p>
-
-        <div className="flex w-full flex-col gap-4 md:gap-6">
-          <ProjectCard
-            project={{
-              title: 'Passman',
-              description:
-                'A full-stack credential vault engineered with a Zero-Knowledge Architecture to ensure user data remains confidential even from the server. Implements client-side AES-256-GCM encryption, flexible item schemas, and a real-time Security Center that audits credential health, password strength, and systemic vulnerability risks.',
-              images: [
-                {
-                  url: '/screens/passman/landing.png',
-                  altText: 'Passman landing page',
-                },
-                {
-                  url: '/screens/passman/locker.png',
-                  altText: 'Passman locker page',
-                },
-                {
-                  url: '/screens/passman/item-form.png',
-                  altText: 'Passman item form page',
-                },
-                {
-                  url: '/screens/passman/security-center.png',
-                  altText: 'Passman security center page',
-                },
-              ],
-              tags: 'Next.js, TypeScript, React, Tailwind CSS, AES-256-GCM, Shadcn UI, Cloudflare',
-              link: 'https://liveurl.com',
-              repository: 'https://github.com/myrepo',
-              visible: true,
-            }}
-          />
-          <ProjectCard
-            reverse
-            project={{
-              title: 'Blueprint AI',
-              description:
-                'An AI-powered resume generation platform built on a decoupled Backend-for-Frontend (BFF) architecture. Next.js handles the responsive UI, OAuth 2.0 authentication, and secure state management via Server Actions, while a dedicated Python FastAPI microservice orchestrates complex prompt engineering and OpenAI API integrations for dynamic document construction',
-              tags: 'Next.js,FastAPI,Python,TypeScript,OpenAI API,OAuth 2.0,Tailwind CSS',
-              link: 'https://blueprint-ai.example.com',
-              repository: 'https://github.com/yourusername/blueprint-ai',
-              images: [
-                {
-                  url: '/screens/blueprint/landing.png',
-                  altText:
-                    'Blueprint AI landing page with a hero section and call-to-action button',
-                },
-                {
-                  url: '/screens/blueprint/job-search.png',
-                  altText:
-                    'Blueprint AI job search page with search results and filters',
-                },
-                {
-                  url: '/screens/blueprint/resume-form.png',
-                  altText:
-                    'Blueprint AI resume form page with input fields and options for customization',
-                },
-                {
-                  url: '/ screens/blueprint/resume-editor.png',
-                  altText:
-                    'Blueprint AI resume editor page with a live preview of the generated resume',
-                },
-              ],
-              visible: true,
-            }}
-          />
+      {/* --- FEATURED PROJECTS --- */}
+      <section className="flex w-full min-w-0 flex-col items-start gap-6">
+        <div className="flex flex-col gap-2">
+          <Heading size="sub">Featured Projects</Heading>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            Below you will find a selection of my favorite projects that
+            highlight my expertise in full-stack development.
+          </p>
         </div>
-        <div className="flex w-full items-center justify-center">
-          <Link
-            href="/projects"
-            className={cn(
-              buttonVariants({
-                className: 'px-6! shadow',
-                size: 'lg',
-                variant: 'outline',
-              })
-            )}
-          >
-            View All Projects
-          </Link>
+
+        <div className="mt-4 flex w-full flex-col gap-8">
+          {projectData.map(
+            (project) =>
+              project.visible &&
+              project.featured && (
+                <ProjectCard key={project.id} project={project} />
+              )
+          )}
         </div>
-      </div>
+      </section>
 
-      <div className="flex w-full min-w-0 flex-col items-start gap-6">
-        <Heading size="sub">Code Samples</Heading>
-        <p className="text-base leading-relaxed text-foreground">
-          Explore various code snippets demonstrating architectural patterns and
-          secure data handling from my recent projects
-        </p>
+      {/* --- CODE SAMPLES --- */}
+      <section className="flex w-full min-w-0 flex-col items-start gap-6">
+        <div className="flex flex-col gap-2">
+          <Heading size="sub">Code Samples</Heading>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            Explore various code snippets demonstrating architectural patterns
+            and secure data handling from my recent projects.
+          </p>
+        </div>
 
-        <CodeSamples />
-      </div>
+        <div className="mt-4 w-full">
+          <CodeSamples />
+        </div>
+      </section>
 
-      <div className="mb-8 flex flex-col gap-6">
-        <Heading size="sub">Skills Overview</Heading>
-        <p className="text-base leading-relaxed text-foreground">
-          I am proficient in a wide range of programming languages, frameworks,
-          and tools that enable me to build robust and scalable applications. My
-          expertise spans front-end and back-end development, database
-          management, and cloud infrastructure, allowing me to deliver
-          end-to-end solutions that meet the needs of modern businesses.
-        </p>
+      {/* --- SKILLS OVERVIEW SECTION --- */}
+      <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <Heading size="sub">Skills Overview</Heading>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            I am proficient in a wide range of programming languages,
+            frameworks, and tools that enable me to build robust and scalable
+            applications. My expertise spans front-end and back-end development,
+            database management, and cloud infrastructure, allowing me to
+            deliver end-to-end solutions that meet the needs of modern
+            businesses.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card className="shadow-sm">
-            <CardContent>
-              <CardTitle className="font-lg flex items-center gap-2 font-semibold">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbBrowser className="size-5" /> Front-End
               </CardTitle>
-
+            </CardHeader>
+            <CardContent>
               <div className="flex flex-wrap items-center gap-2">
                 {skills
                   .filter((skill) => skill.category === 'front')
@@ -357,11 +309,12 @@ export default function Page() {
           </Card>
 
           <Card className="shadow-sm">
-            <CardContent>
-              <CardTitle className="font-lg flex items-center gap-2 font-semibold">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbServer className="size-5" /> Back-End
               </CardTitle>
-
+            </CardHeader>
+            <CardContent>
               <div className="flex flex-wrap items-center gap-2">
                 {skills
                   .filter((skill) => skill.category === 'back')
@@ -374,11 +327,12 @@ export default function Page() {
           </Card>
 
           <Card className="shadow-sm">
-            <CardContent>
-              <CardTitle className="font-lg flex items-center gap-2 font-semibold">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbTools className="size-5" /> Infrastructure
               </CardTitle>
-
+            </CardHeader>
+            <CardContent>
               <div className="flex flex-wrap items-center gap-2">
                 {skills
                   .filter((skill) => skill.category === 'tools')
@@ -391,10 +345,12 @@ export default function Page() {
           </Card>
 
           <Card className="shadow-sm">
-            <CardContent>
-              <CardTitle className="font-lg flex items-center gap-2 font-semibold">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbBriefcase className="size-5" /> Soft Skills
               </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="flex flex-wrap items-center gap-2">
                 {skills
                   .filter((skill) => skill.category === 'soft')
@@ -406,8 +362,8 @@ export default function Page() {
             </CardContent>
           </Card>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 

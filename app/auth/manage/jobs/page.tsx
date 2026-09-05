@@ -1,25 +1,30 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
 import { Job } from '@/prisma/generated/client';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import {
-    TbBuildingSkyscraper,
-    TbEyeOff,
-    TbHome,
-    TbMapPin,
-    TbPlus,
+  TbBuildingSkyscraper,
+  TbEyeOff,
+  TbHome,
+  TbMapPin,
+  TbPlus,
 } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Manage Jobs',
+};
 
 export default async function ManageJobsPage() {
   const jobs = await getJobs();

@@ -1,5 +1,10 @@
 import LoginForm from '@/components/forms/loginForm';
+import { Metadata } from 'next';
 import { TbShieldLock } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Authentication',
+};
 
 export default async function AuthPage() {
   return (

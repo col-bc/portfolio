@@ -9,8 +9,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { getLeads } from '@/lib/lead/leadDAL';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbHome } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Manage Leads',
+};
 
 export default async function LeadsPage() {
   const leads = await getLeads();

@@ -10,10 +10,20 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { getJobs } from '@/lib/job/jobDAL';
 import { cn } from '@/lib/util/utils';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbCertificate, TbDownload, TbFileDownload } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'About',
+};
 
 function duration(startDate: Date, endDate?: Date): string {
   const start = new Date(startDate);
@@ -36,7 +46,7 @@ function formatDate(date: Date): string {
 }
 
 const hoverClasses =
-  'transition-transform shadow hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg';
+  'transition-transform shadow hover:-translate-y-0.5 hover:shadow-lg';
 
 export default async function AboutPage() {
   const jobs = await getJobs();
@@ -46,23 +56,33 @@ export default async function AboutPage() {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
     <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
-      <div className="flex flex-col gap-6 md:gap-8">
-        <Heading>About Me</Heading>
+      <div className="flex flex-col-reverse items-start justify-between gap-6 md:flex-row md:gap-8">
+        <div className="flex flex-col gap-6 md:gap-8">
+          <Heading>About Me</Heading>
 
-        <div className="flex flex-col gap-4 text-sm leading-relaxed">
-          <p className="text-base leading-relaxed text-muted-foreground">
-            I&apos;m a software engineer with a passion for building scalable
-            and efficient applications. With over 5 years of experience in the
-            industry, I have a strong background in full-stack development,
-            cloud computing, and AI integration.
-          </p>
-          <p className="text-base leading-relaxed text-muted-foreground">
-            I thrive in collaborative environments and enjoy working on projects
-            that challenge me to learn new technologies and improve my skills. I
-            am always eager to take on new challenges and contribute to
-            innovative projects that make a positive impact.
-          </p>
+          <div className="flex flex-col gap-4 text-sm leading-relaxed">
+            <p className="text-base leading-relaxed text-muted-foreground">
+              I&apos;m a software engineer with a passion for building scalable
+              and efficient applications. With over 5 years of experience in the
+              industry, I have a strong background in full-stack development,
+              cloud computing, and AI integration.
+            </p>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              I thrive in collaborative environments and enjoy working on
+              projects that challenge me to learn new technologies and improve
+              my skills. I am always eager to take on new challenges and
+              contribute to innovative projects that make a positive impact.
+            </p>
+          </div>
         </div>
+        <Avatar className="size-48 border-4 border-primary">
+          <AvatarImage
+            src="/avatar.jpg"
+            alt="Profile Picture"
+            className="object-cover object-center"
+          />
+          <AvatarFallback>CC</AvatarFallback>
+        </Avatar>
       </div>
 
       {/* Education */}
@@ -98,7 +118,7 @@ export default async function AboutPage() {
               </Badge>
             </div>
             <span className="text-base text-muted-foreground">
-              Estimated Graduation: May 2027
+              Estimated Graduation: August 2027
             </span>
           </CardHeader>
 
@@ -154,19 +174,28 @@ export default async function AboutPage() {
             >
               <TbCertificate /> View Program Details
             </Link>
-            <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-disabled="true"
-              className={cn(
-                buttonVariants({ variant: 'link' }),
-                'pointer-events-none opacity-50'
-              )}
-            >
-              <TbDownload />
-              View Transcript
-            </Link>
+            <Tooltip>
+              <TooltipTrigger>
+                <Link
+                  href="#"
+                  aria-disabled="true"
+                  role="link"
+                  className={cn(
+                    buttonVariants({
+                      variant: 'link',
+                      className: 'pointer-events-none opacity-50',
+                    })
+                  )}
+                >
+                  <TbDownload />
+                  View Credential
+                </Link>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                Credential will be available after graduation
+              </TooltipContent>
+            </Tooltip>
           </CardFooter>
         </Card>
       </div>
@@ -275,7 +304,7 @@ export default async function AboutPage() {
               <TbCertificate /> Course Details
             </Link>
             <Link
-              href="/certifications/wx-non-confrontational-interview-and-interrogation-techniques.pdf"
+              href="/api/wz-certificate"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(buttonVariants({ variant: 'link' }))}
@@ -329,7 +358,7 @@ export default async function AboutPage() {
               <TbCertificate /> Course Details
             </Link>
             <Link
-              href="/certifications/avade-retail-loss-prevention.pdf"
+              href="/api/avade-certificate"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(buttonVariants({ variant: 'link' }))}

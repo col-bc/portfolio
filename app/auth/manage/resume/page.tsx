@@ -11,8 +11,13 @@ import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getResume } from '@/lib/resume/resumeActions';
 import { cn } from '@/lib/util/utils';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbFileCv, TbHome } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Manage Resume',
+};
 
 export default async function ResumePage() {
   const resumeFile: File | null = await getResume();

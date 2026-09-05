@@ -1,33 +1,44 @@
 'use client';
 
-import { handleCreateProject } from '@/lib/project/projectActions';
-import { Project } from '@/prisma/generated/client';
+import {
+  handleCreateProject,
+  handleDeleteProject,
+  handleUpdateProject,
+} from '@/lib/project/projectActions';
+import { ProjectWithImages } from '@/lib/project/projectDAL';
+import { formatTimestamp } from '@/lib/util/utils';
+import { ProjectImage } from '@/prisma/generated/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
-    TbAlertCircleFilled,
-    TbDeviceFloppy,
-    TbImageInPicture,
-    TbX,
+  TbAlertCircleFilled,
+  TbCalendarPlus,
+  TbDeviceFloppy,
+  TbHash,
+  TbImageInPicture,
+  TbTrash,
+  TbX,
 } from 'react-icons/tb';
+import { toast } from 'sonner';
+import ConfirmDelete from '../confirmDelete';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import {
-    Attachment,
-    AttachmentAction,
-    AttachmentActions,
-    AttachmentContent,
-    AttachmentDescription,
-    AttachmentMedia,
-    AttachmentTitle,
+  Attachment,
+  AttachmentAction,
+  AttachmentActions,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
 } from '../ui/attachment';
 import { Button, buttonVariants } from '../ui/button';
 import {
-    Field,
-    FieldContent,
-    FieldDescription,
-    FieldLabel,
-    FieldTitle,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldTitle,
 } from '../ui/field';
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
@@ -38,7 +49,11 @@ interface ImagePreview {
   preview: string;
 }
 
-export default function ProjectForm({ project }: { project: Project | null }) {
+export default function ProjectForm({
+  project,
+}: {
+  project: ProjectWithImages | null;
+}) {
   const router = useRouter();
 
   const imageInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -62,6 +77,25 @@ export default function ProjectForm({ project }: { project: Project | null }) {
     project?.featured ?? false
   );
   const [imageFiles, setImageFiles] = React.useState<ImagePreview[]>([]);
+  const [existingImages, setExistingImages] = React.useState<ProjectImage[]>(
+    (project?.images as ProjectImage[] | undefined) ?? []
+  );
+  const [imagesToDelete, setImagesToDelete] = React.useState<string[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+
+  const deleteProject = async () => {
+    if (!project) return;
+    const status = await handleDeleteProject(project.id!);
+    if (!status.success) {
+      toast.error(
+        status.error || 'An unknown error occurred while deleting the project.'
+      );
+      return;
+    } else {
+      toast.success('Project deleted successfully.');
+      router.push('/auth/manage/projects');
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -107,14 +141,24 @@ export default function ProjectForm({ project }: { project: Project | null }) {
     }
 
     const formData = new FormData(formRef.current as HTMLFormElement);
+    if (mode === 'edit' && project?.id) {
+      formData.append('id', project.id);
+    }
     formData.delete('images');
+
     imageFiles.forEach((imageItem) => {
       formData.append('images', imageItem.file);
+    });
+    imagesToDelete.forEach((id) => {
+      formData.append('imagesToDelete', id);
     });
     formData.set('visible', visible.toString());
     formData.set('featured', featured.toString());
 
-    const status = await handleCreateProject(formData);
+    const status =
+      mode === 'edit'
+        ? await handleUpdateProject(formData)
+        : await handleCreateProject(formData);
 
     if (!status.success) {
       setError(status.error || 'An unknown error occurred.');
@@ -238,6 +282,38 @@ export default function ProjectForm({ project }: { project: Project | null }) {
 
       <Field>
         <FieldLabel htmlFor="project-images">Images</FieldLabel>
+
+        {existingImages.map((img: ProjectImage) => (
+          <Attachment className="w-full p-4!" key={img.id}>
+            <AttachmentMedia>
+              <Image
+                src={img.url}
+                alt={img.altText || 'Existing Project Image'}
+                className="h-10 w-10 rounded-lg object-cover"
+                width={40}
+                height={40}
+              />
+            </AttachmentMedia>
+            <AttachmentContent>
+              <AttachmentTitle>Existing Image</AttachmentTitle>
+              <AttachmentDescription>Saved on server</AttachmentDescription>
+            </AttachmentContent>
+            <AttachmentActions>
+              <AttachmentAction
+                aria-label="Remove existing image"
+                onClick={() => {
+                  setExistingImages((prev) =>
+                    prev.filter((i) => i.id !== img.id)
+                  );
+                  setImagesToDelete((prev) => [...prev, img.id]);
+                }}
+              >
+                <TbX />
+              </AttachmentAction>
+            </AttachmentActions>
+          </Attachment>
+        ))}
+
         {imageFiles.map((preview, index) => (
           <Attachment className="w-full p-4!" key={`preview-${index}`}>
             <AttachmentMedia>
@@ -272,6 +348,7 @@ export default function ProjectForm({ project }: { project: Project | null }) {
             </AttachmentActions>
           </Attachment>
         ))}
+
         <Input
           ref={imageInputRef}
           id="project-images"
@@ -286,9 +363,32 @@ export default function ProjectForm({ project }: { project: Project | null }) {
           htmlFor="project-images"
           className={buttonVariants({ variant: 'outline' })}
         >
-          Upload Images
+          Upload Additional Images
         </label>
       </Field>
+
+      {mode === 'edit' && !!project && (
+        <div className="gap-1 divide-y divide-border rounded-lg border border-border bg-background text-sm text-muted-foreground">
+          <div className="flex items-center gap-1 p-2">
+            <TbHash className="h-4 w-4" />
+            <span className="flex gap-1 font-mono text-muted-foreground">
+              {project.id}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 p-2">
+            <TbCalendarPlus className="h-4 w-4" />
+            <span className="text-muted-foreground">
+              Created {formatTimestamp(new Date(project.createdAt))}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 p-2">
+            <TbDeviceFloppy className="h-4 w-4" />
+            <span className="text-muted-foreground">
+              Updated {formatTimestamp(new Date(project.updatedAt))}
+            </span>
+          </div>
+        </div>
+      )}
 
       <div className="mt-2 flex flex-col gap-4 sm:flex-row">
         <Button type="submit" className="px-4">
@@ -299,12 +399,32 @@ export default function ProjectForm({ project }: { project: Project | null }) {
           type="button"
           variant="secondary"
           className="px-4"
-          onClick={() => router.back()}
+          onClick={() => router.push('/auth/manage/projects')}
         >
           <TbX />
           Cancel
         </Button>
+        {mode === 'edit' && (
+          <Button
+            variant="destructive"
+            onClick={() => setShowDeleteConfirm(true)}
+            className="ml-auto px-4"
+          >
+            <TbTrash className="h-4 w-4" />
+            Delete Project
+          </Button>
+        )}
       </div>
+
+      {mode === 'edit' && (
+        <ConfirmDelete
+          onConfirm={deleteProject}
+          onOpenChange={() => setShowDeleteConfirm(!showDeleteConfirm)}
+          open={showDeleteConfirm}
+          title="Delete Project?"
+          description="Are you sure you want to delete this project? This action cannot be undone."
+        />
+      )}
     </form>
   );
 }

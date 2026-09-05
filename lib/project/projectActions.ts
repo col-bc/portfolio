@@ -1,9 +1,11 @@
 'use server';
 
 import { ActionState } from '@/types';
-import { writeScreen } from '../util/fileSystemService';
+import { revalidatePath } from 'next/cache';
+import { saveProjectImage } from '../util/fileSystemService';
 import {
   createProject,
+  CreateProjectImageDTO,
   deleteProject,
   deleteProjectImage,
   getProject,
@@ -13,52 +15,43 @@ import {
   UpdateProjectDTO,
 } from './projectDAL';
 
-export async function handleCreateProject(
-  formData: FormData
-): Promise<ActionState<ProjectWithImages>> {
-  if (
-    !formData.get('title') ||
-    !formData.get('description') ||
-    !formData.get('tags')
-  ) {
-    return {
-      success: false,
-      error: 'Missing required fields',
-      type: 'VALIDATION',
-    };
+/**
+ * Handles the creation of a new project along with its associated images.
+ * @param formData - The form data containing project details and image files.
+ * @returns An ActionState object indicating success or failure, along with the created project data or an error message.
+ */
+export async function handleCreateProject(formData: FormData) {
+  try {
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const tags = formData.get('tags') as string;
+    const visible = formData.get('visible') === 'true';
+
+    const imageFiles = formData.getAll('images') as File[];
+    const validFiles = imageFiles.filter(
+      (file) => file.size > 0 && file.name !== 'undefined'
+    );
+
+    const projectImagesDTO = [];
+    for (const file of validFiles) {
+      const savedUrl = await saveProjectImage(file);
+
+      projectImagesDTO.push({
+        url: savedUrl,
+        altText: `${title} screenshot`,
+      });
+    }
+
+    const newProject = await createProject(
+      { title, description, tags, visible },
+      projectImagesDTO
+    );
+
+    return { success: true, data: newProject };
+  } catch (error) {
+    console.error('Failed to create project:', error);
+    return { success: false, error: 'Failed to process project and images.' };
   }
-
-  const dirName = `${formData.get('title')?.toString().replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`;
-
-  const imagePaths = await Promise.all(
-    Array.from(formData.getAll('images') as File[]).map(
-      async (image, index) => {
-        const imagePath = await writeScreen(
-          dirName,
-          `project-image-${Date.now()}-${index}.png`,
-          Buffer.from(await image.arrayBuffer())
-        );
-        return imagePath;
-      }
-    )
-  );
-
-  const project = await createProject(
-    {
-      title: formData.get('title')?.toString() || '',
-      description: formData.get('description')?.toString() || '',
-      tags: formData.get('tags')?.toString() || '',
-      link: formData.get('link')?.toString() || undefined,
-      repository: formData.get('repository')?.toString() || undefined,
-      featured: formData.get('featured') === 'true',
-      visible: formData.get('visible') === 'true',
-    },
-    imagePaths.map((path) => ({
-      url: path,
-      altText: `${formData.get('title')?.toString() || ''} image`,
-    }))
-  );
-  return { success: true, data: project };
 }
 
 export async function handleGetProjects(): Promise<
@@ -77,6 +70,11 @@ export async function handleGetProjects(): Promise<
   }
 }
 
+/**
+ * Handles fetching a project by its ID.
+ * @param projectId - The ID of the project to fetch.
+ * @returns An ActionState object indicating success or failure, along with the fetched project data or an error message.
+ */
 export async function handleGetProjectById(
   projectId: string
 ): Promise<ActionState<ProjectWithImages | null>> {
@@ -100,27 +98,65 @@ export async function handleGetProjectById(
   }
 }
 
-export async function handleUpdateProject(
-  projectId: string,
-  updateData: UpdateProjectDTO
-): Promise<ActionState<ProjectWithImages>> {
+export async function handleUpdateProject(formData: FormData) {
   try {
-    const project = await getProject(projectId);
-    if (!project) {
-      return {
-        success: false,
-        error: 'Project not found',
-        type: 'NOT_FOUND',
-      };
+    const id = formData.get('id') as string;
+    if (!id) {
+      return { success: false, error: 'Project ID is missing.' };
     }
-    const updatedProject = await updateProject(projectId, updateData);
+
+    // Extract text fields
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const tags = formData.get('tags') as string;
+    const link = formData.get('link') as string;
+    const repository = formData.get('repository') as string;
+    const visible = formData.get('visible') === 'true';
+    const featured = formData.get('featured') === 'true';
+    const imagesToDelete = formData.getAll('imagesToDelete') as string[];
+    const imageFiles = formData.getAll('images') as File[];
+
+    // Filter out invalid files (size 0 or name 'undefined')
+    const validFiles = imageFiles.filter(
+      (file) => file.size > 0 && file.name !== 'undefined'
+    );
+
+    const newImagesDTO: CreateProjectImageDTO[] = [];
+    for (const file of validFiles) {
+      const savedUrl = await saveProjectImage(file);
+      newImagesDTO.push({
+        url: savedUrl,
+        altText: `${title} screenshot`,
+      });
+    }
+
+    const projectDTO: UpdateProjectDTO = {
+      title,
+      description,
+      tags,
+      visible,
+      featured,
+      link: link || null,
+      repository: repository || null,
+    };
+
+    const updatedProject = await updateProject(
+      id,
+      projectDTO,
+      newImagesDTO,
+      imagesToDelete
+    );
+
+    revalidatePath('/auth/manage/projects');
+    revalidatePath(`/auth/manage/projects/${id}`);
+    revalidatePath('/');
+
     return { success: true, data: updatedProject };
   } catch (error) {
-    console.warn('[ProjectActions] Failed to update project:', error);
+    console.error('Failed to update project:', error);
     return {
       success: false,
-      error: 'Failed to update project',
-      type: 'UNKNOWN',
+      error: 'Failed to update the project and images.',
     };
   }
 }

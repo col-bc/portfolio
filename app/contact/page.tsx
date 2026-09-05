@@ -1,6 +1,7 @@
 import ContactForm from '@/components/forms/contactForm';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import {
   TbBrandGithub,
@@ -9,15 +10,19 @@ import {
   TbMapPin,
 } from 'react-icons/tb';
 
+export const metadata: Metadata = {
+  title: 'Contact',
+};
+
 export default function ContactPage() {
   return (
     <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
       <div className="flex flex-col gap-6 md:gap-8">
         <Heading>Get in Touch</Heading>
-        <p className="text-lg leading-relaxed text-foreground">
+        <p className="text-lg leading-relaxed text-muted-foreground">
           Whether you&apos;re looking to collaborate on a new project or want to
           discuss an open role, I&apos;d love to connect. Fill out the form
-          below and I&apos;ll be in touch shortly
+          below and I&apos;ll be in touch shortly.
         </p>
       </div>
 
@@ -64,8 +69,8 @@ export default function ContactPage() {
                   className: 'w-fit justify-start',
                 })}
               >
-                <TbBrandLinkedin className="mr-2 h-5 w-5" />
-                LinkedIn Profile
+                <TbBrandGithub className="mr-2 h-5 w-5" />
+                GitHub Repositories
               </Link>
               <Link
                 href="https://www.linkedin.com/in/colbycooper/"
@@ -75,8 +80,8 @@ export default function ContactPage() {
                   className: 'w-fit justify-start',
                 })}
               >
-                <TbBrandGithub className="mr-2 h-5 w-5" />
-                GitHub Repositories
+                <TbBrandLinkedin className="mr-2 h-5 w-5" />
+                LinkedIn Profile
               </Link>
             </div>
           </div>

@@ -1,6 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { TbBrandGithub, TbExternalLink } from 'react-icons/tb';
+import {
+  TbBrandGithub,
+  TbExternalLink,
+  TbEye,
+  TbEyeOff,
+  TbStar,
+  TbStarOff,
+} from 'react-icons/tb';
 
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
@@ -27,16 +34,18 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog';
 interface ProjectCardProps {
   project: ProjectWithImages;
   reverse?: boolean;
+  showActions?: boolean;
 }
 
 export default function ProjectCard({
   project,
   reverse = false,
+  showActions = false,
 }: ProjectCardProps) {
   return (
     <Card
       className={cn(
-        'flex flex-col overflow-hidden p-0 transition-all hover:shadow-md',
+        'flex w-full flex-col overflow-hidden p-0 transition-all hover:shadow-md',
         reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'
       )}
     >
@@ -64,7 +73,7 @@ export default function ProjectCard({
                   <Dialog>
                     <DialogTrigger className="group relative block h-full w-full cursor-zoom-in overflow-hidden border-none bg-transparent p-0 outline-none">
                       <Image
-                        src={`/${image.url}`}
+                        src={image.url}
                         alt={image.altText || `${project.title} screenshot`}
                         fill
                         className="h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
@@ -114,15 +123,43 @@ export default function ProjectCard({
       <div className="flex flex-1 flex-col justify-between">
         <div>
           <CardHeader className="p-6 pb-4 lg:p-8 lg:pb-4">
-            <CardTitle className="font-heading text-2xl font-bold tracking-tight">
-              {project.title}
-            </CardTitle>
+            <div className="items center flex justify-between">
+              <CardTitle className="font-heading text-2xl font-bold tracking-tight">
+                {project.title}
+              </CardTitle>
+              {showActions && (
+                <div className="flex gap-2">
+                  <Badge variant="secondary" className="h-8 w-8 font-medium">
+                    {project.visible ? (
+                      <TbEye className="h-8! w-8!" />
+                    ) : (
+                      <TbEyeOff className="h-8! w-8!" />
+                    )}
+                  </Badge>
+                  <Badge variant="secondary" className="h-8 w-8 font-medium">
+                    {project.featured ? (
+                      <TbStar className="h-8! w-8!" />
+                    ) : (
+                      <TbStarOff className="h-8! w-8!" />
+                    )}
+                  </Badge>
+                  <Link
+                    href={`/auth/manage/projects/${project.id}`}
+                    className={buttonVariants({
+                      variant: 'outline',
+                      size: 'sm',
+                    })}
+                  >
+                    Edit
+                  </Link>
+                </div>
+              )}
+            </div>
             <CardDescription className="mt-2 text-base leading-relaxed text-muted-foreground">
               {project.description}
             </CardDescription>
           </CardHeader>
 
-          {/* Render tags if you provide them manually, otherwise omit this block */}
           {project.tags.length > 0 && (
             <CardContent className="p-6 pt-0 lg:px-8 lg:pb-6">
               <div className="flex flex-wrap gap-2">

@@ -3,15 +3,20 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getLeads } from '@/lib/lead/leadDAL';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { unauthorized } from 'next/navigation';
 import {
-    TbBriefcase,
-    TbFileCv,
-    TbFlag,
-    TbFolderCode,
-    TbShield,
+  TbBriefcase,
+  TbFileCv,
+  TbFlag,
+  TbFolderCode,
+  TbShield,
 } from 'react-icons/tb';
+
+export const metadata: Metadata = {
+  title: 'Manage Site',
+};
 
 export default async function ManagePage() {
   const user = await getCurrentUser();
@@ -19,9 +24,10 @@ export default async function ManagePage() {
   const data: {
     jobs: Awaited<ReturnType<typeof getJobs>>;
     leads: Awaited<ReturnType<typeof getLeads>>;
-  } = await Promise.all([getJobs(), getLeads()]).then(
-    ([jobs, leads]) => ({ jobs, leads })
-  );
+  } = await Promise.all([getJobs(), getLeads()]).then(([jobs, leads]) => ({
+    jobs,
+    leads,
+  }));
 
   if (!user) {
     unauthorized();
