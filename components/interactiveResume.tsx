@@ -58,7 +58,7 @@ const InteractiveResume = React.forwardRef<
   InteractiveResumeHandle,
   InteractiveResumeProps
 >((props, ref) => {
-  const { messages, sendMessage, setMessages, status } = useChat<ChatMessage>({
+  const { messages, sendMessage, status } = useChat<ChatMessage>({
     messages: [...initialMessages],
   });
   const [error, setError] = React.useState<string | null>(null);
@@ -106,7 +106,7 @@ const InteractiveResume = React.forwardRef<
             </Empty>
           ) : (
             <MessageScroller>
-              <MessageScrollerViewport>
+              <MessageScrollerViewport className="overscroll-y-auto">
                 <MessageScrollerContent
                   aria-busy={isBusy}
                   className="p-(--card-spacing)"
@@ -129,7 +129,7 @@ const InteractiveResume = React.forwardRef<
                   placeholder="Ask a question..."
                   rows={2}
                   required
-                  className="min-h-[60px] resize-none border-none focus-visible:ring-0"
+                  className="min-h-15 resize-none border-none focus-visible:ring-0"
                   maxLength={280}
                   title="Maximum 280 characters"
                   value={query}

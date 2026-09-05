@@ -16,7 +16,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { getJobs } from '@/lib/job/jobDAL';
-import { cn } from '@/lib/util/utils';
+import { cn, duration, formatDate } from '@/lib/util/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbCertificate, TbDownload, TbFileDownload } from 'react-icons/tb';
@@ -24,26 +24,6 @@ import { TbCertificate, TbDownload, TbFileDownload } from 'react-icons/tb';
 export const metadata: Metadata = {
   title: 'About',
 };
-
-function duration(startDate: Date, endDate?: Date): string {
-  const start = new Date(startDate);
-  const end = endDate ? new Date(endDate) : new Date();
-
-  const years = end.getFullYear() - start.getFullYear();
-  const months = end.getMonth() - start.getMonth();
-
-  if (months < 0 || (months === 0 && end.getDate() < start.getDate())) {
-    return `${years - 1} years, ${12 + months} months`;
-  } else {
-    return `${years} years, ${months} months`;
-  }
-}
-
-function formatDate(date: Date): string {
-  const month = date.toLocaleString('default', { month: 'short' });
-  const year = date.getFullYear();
-  return `${month} ${year}`;
-}
 
 const hoverClasses =
   'transition-transform shadow hover:-translate-y-0.5 hover:shadow-lg';
@@ -55,8 +35,8 @@ export default async function AboutPage() {
   );
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
-    <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
-      <div className="flex flex-col-reverse items-start justify-between gap-6 md:flex-row md:gap-8">
+    <div className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
+      <section className="flex flex-col-reverse items-start justify-between gap-6 md:flex-row md:gap-8">
         <div className="flex flex-col gap-6 md:gap-8">
           <Heading>About Me</Heading>
 
@@ -83,10 +63,10 @@ export default async function AboutPage() {
           />
           <AvatarFallback>CC</AvatarFallback>
         </Avatar>
-      </div>
+      </section>
 
       {/* Education */}
-      <div className="flex flex-col gap-6 md:gap-8">
+      <section className="flex flex-col gap-6 md:gap-8">
         <Heading size="sub">Education</Heading>
 
         <Card className={hoverClasses}>
@@ -112,8 +92,8 @@ export default async function AboutPage() {
               </div>
             </div>
             <div>
-              <Badge variant="outline">In Progress</Badge>
-              <Badge variant="outline" className="ml-2">
+              <Badge variant="secondary">In Progress</Badge>
+              <Badge variant="secondary" className="ml-2">
                 3.8 GPA
               </Badge>
             </div>
@@ -198,10 +178,10 @@ export default async function AboutPage() {
             </Tooltip>
           </CardFooter>
         </Card>
-      </div>
+      </section>
 
       {/* Employment */}
-      <div className="flex flex-col gap-6 md:gap-8">
+      <section className="flex flex-col gap-6 md:gap-8">
         <Heading size="sub">Employment</Heading>
 
         {sortedJobs.map((job, index) => (
@@ -228,15 +208,13 @@ export default async function AboutPage() {
                 </div>
               </div>
               <CardDescription>
-                <div className="flex flex-row">
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(job.startDate)} -{' '}
-                    {job.endDate ? formatDate(job.endDate) : 'Present'}
-                  </p>
+                <p className="text-sm text-muted-foreground">
+                  {formatDate(job.startDate)} -{' '}
+                  {job.endDate ? formatDate(job.endDate) : 'Present'}{' '}
                   <span className="text-xs text-muted-foreground">
                     ({duration(job.startDate, job.endDate || undefined)})
                   </span>
-                </div>
+                </p>
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -244,7 +222,7 @@ export default async function AboutPage() {
               <h6 className="mt-4 mb-2 font-semibold">Key Skills</h6>
               <div className="flex flex-wrap items-center gap-2">
                 {job.skills.split(',').map((skill, skillIndex) => (
-                  <Badge key={skillIndex} variant="outline">
+                  <Badge key={skillIndex} variant="secondary">
                     {skill.trim()}
                   </Badge>
                 ))}
@@ -252,10 +230,10 @@ export default async function AboutPage() {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </section>
 
       {/* Certifications */}
-      <div className="flex flex-col gap-6 md:gap-8">
+      <section className="flex flex-col gap-6 md:gap-8">
         <Heading size="sub">Certifications</Heading>
 
         <Card className={hoverClasses}>
@@ -368,10 +346,10 @@ export default async function AboutPage() {
             </Link>
           </CardFooter>
         </Card>
-      </div>
+      </section>
 
       {/* Summary */}
-      <div className="flex flex-col gap-6 md:gap-8">
+      <section className="flex flex-col gap-6 md:gap-8">
         <Heading size="sub">Summary</Heading>
         <p className="text-base leading-relaxed text-foreground">
           I am a dedicated and results-driven software engineer with a strong
@@ -385,11 +363,9 @@ export default async function AboutPage() {
           not only meets but exceeds expectations.
         </p>
 
-        <div className="w-full rounded-xl bg-muted p-4 text-center">
+        <div className="w-full p-4 text-center">
           <Link
             href="/resume"
-            target="_blank"
-            rel="noopener noreferrer"
             className={cn(
               buttonVariants({
                 variant: 'default',
@@ -402,7 +378,7 @@ export default async function AboutPage() {
             View My Resume
           </Link>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

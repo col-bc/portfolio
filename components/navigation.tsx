@@ -7,23 +7,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
-    TbBrandGithub,
-    TbBrandLinkedin,
-    TbMenu,
-    TbMessages,
-    TbSettings,
-    TbX,
+  TbBrandGithub,
+  TbBrandLinkedin,
+  TbMenu,
+  TbMessages,
+  TbSettings,
+  TbX,
 } from 'react-icons/tb';
 import LogoutButton from './logoutButton';
 import { ThemeToggleButton } from './theme-provider';
 import { Button, buttonVariants } from './ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Separator } from './ui/separator';
 
@@ -103,8 +103,8 @@ export default function Navigation({ user }: { user: User | null }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-50 w-full border-y border-border bg-background/80 shadow-xs backdrop-blur-md">
-        <nav className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-1.5">
+      <div className="sticky top-0 z-50 w-full border-y border-border shadow-xs">
+        <nav className="container mx-auto flex max-w-5xl items-center justify-between bg-background/80 px-4 py-1.5 backdrop-blur-md">
           {/* Desktop Links */}
           <div className="hidden flex-1 gap-2 md:flex">
             <LinkList />
@@ -185,18 +185,18 @@ export default function Navigation({ user }: { user: User | null }) {
           </div>
         </nav>
 
-        {/* Mobile Menu Container */}
-        <AnimatePresence initial={false}>
+        <AnimatePresence>
           {isOpen && (
             <motion.div
               key="mobile-nav"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className="w-full overflow-hidden border-t border-border bg-background/95 backdrop-blur-2xl md:hidden"
+              // 1. Swapped height animation for a slick fade/slide
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 w-full px-4 pt-2 pb-4 md:hidden"
             >
-              <div className="flex w-full flex-col gap-1 p-4">
+              <div className="flex w-full flex-col gap-1 rounded border border-border bg-background/80 p-4 shadow-lg backdrop-blur-md">
                 <LinkList onNavigate={() => setIsOpen(false)} />
                 {!!user && (
                   <>

@@ -1,4 +1,5 @@
 import InteractiveResume from '@/components/interactiveResume';
+import ResumeViewer from '@/components/resumeViewer';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
@@ -16,13 +17,6 @@ export default async function ResumePage() {
   const resume = await getResume();
   const jobs = await getJobs();
 
-  let pdfSrc = undefined;
-  if (resume) {
-    const buffer = await resume.arrayBuffer();
-    const base64String = Buffer.from(buffer).toString('base64');
-    pdfSrc = `data:application/pdf;base64,${base64String}`;
-  }
-
   return (
     <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
       <div className="flex flex-col gap-6 md:gap-8">
@@ -34,7 +28,7 @@ export default async function ResumePage() {
         </p>
       </div>
       <div className="mt-4 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-        <div className="flex w-full flex-col gap-3 lg:w-3/5">
+        <div className="flex w-full min-w-0 flex-col gap-3 md:w-auto lg:w-3/5">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
               Document View
@@ -49,14 +43,7 @@ export default async function ResumePage() {
             </Link>
           </div>
 
-          {/* PDF Wrapper */}
-          <div className="aspect-8.5/11 w-full overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
-            <iframe
-              src={pdfSrc}
-              title="Traditional Resume"
-              className="h-full w-full"
-            ></iframe>
-          </div>
+          <ResumeViewer resumeFile={resume} />
         </div>
 
         <div className="sticky top-24 flex w-full flex-col gap-3 lg:w-2/5">

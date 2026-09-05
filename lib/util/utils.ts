@@ -11,6 +11,12 @@ export function formatTimestamp(timestamp: Date) {
   return `${dateString} ${timeString}`;
 }
 
+export function formatDate(date: Date): string {
+  const month = date.toLocaleString('default', { month: 'short' });
+  const year = date.getFullYear();
+  return `${month} ${year}`;
+}
+
 export function timeSinceTimestamp(timestamp: Date) {
   const now = new Date();
   const seconds = Math.floor((now.getTime() - timestamp.getTime()) / 1000);
@@ -36,4 +42,20 @@ export function timeSinceTimestamp(timestamp: Date) {
   }
 
   return `just now`;
+}
+
+export function duration(startDate: Date, endDate?: Date): string {
+  const start = new Date(startDate);
+  const end = endDate ? new Date(endDate) : new Date();
+
+  const years = end.getFullYear() - start.getFullYear();
+  const months = end.getMonth() - start.getMonth();
+
+  if (years < 1) {
+    return `${months} months`;
+  } else if (months < 0 || (months === 0 && end.getDate() < start.getDate())) {
+    return `${years - 1} years, ${12 + months} months`;
+  } else {
+    return `${years} years, ${months} months`;
+  }
 }

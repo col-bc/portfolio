@@ -29,7 +29,13 @@ import {
 import { ProjectWithImages } from '@/lib/project/projectDAL';
 import { cn } from '@/lib/utils';
 import { ProjectImage } from '@/prisma/generated/browser';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 
 interface ProjectCardProps {
   project: ProjectWithImages;
@@ -82,21 +88,23 @@ export default function ProjectCard({
                       <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
                     </DialogTrigger>
 
-                    <DialogContent className="flex h-full max-h-screen! w-full! max-w-screen! items-center justify-center bg-transparent p-0">
+                    <DialogContent className="flex h-full max-h-screen! w-full! max-w-screen! items-center justify-center border-none bg-transparent p-0 shadow-none">
                       <DialogTitle className="sr-only">
                         {image.altText || `${project.title} screenshot`}
                       </DialogTitle>
 
-                      <div className="relative flex h-[80vh] w-full items-center justify-center">
-                        <Image
-                          src={image.url}
-                          alt={image.altText || `${project.title} screenshot`}
-                          fill
-                          className="h-full w-full object-contain"
-                          sizes="100vw"
-                          quality={100}
-                        />
-                      </div>
+                      <DialogClose className="flex h-full w-full cursor-zoom-out items-center justify-center outline-none">
+                        <div className="relative flex h-[80vh] w-full items-center justify-center">
+                          <Image
+                            src={image.url}
+                            alt={image.altText || `${project.title} screenshot`}
+                            fill
+                            className="h-full w-full object-contain"
+                            sizes="100vw"
+                            quality={100}
+                          />
+                        </div>
+                      </DialogClose>
                     </DialogContent>
                   </Dialog>
                 </CarouselItem>
