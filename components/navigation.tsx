@@ -103,8 +103,8 @@ export default function Navigation({ user }: { user: User | null }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-50 w-full shadow-xs">
-        <nav className="container mx-auto flex max-w-5xl items-center justify-between border-y border-border bg-background/80 px-4 py-1.5 backdrop-blur-md">
+      <div className="sticky top-0 z-50 w-full border-y border-border shadow-xs">
+        <nav className="container mx-auto flex max-w-5xl items-center justify-between bg-background/80 px-4 py-1.5 backdrop-blur-md">
           {/* Desktop Links */}
           <div className="hidden flex-1 gap-2 md:flex">
             <LinkList />

@@ -24,8 +24,14 @@ export default async function ProjectsPage() {
       </div>
 
       {projectData.map(
-        (project) =>
-          project.visible && <ProjectCard key={project.id} project={project} />
+        (project, index) =>
+          project.visible && (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              reverse={index % 2 === 1}
+            />
+          )
       )}
     </section>
   );

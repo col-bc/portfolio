@@ -251,10 +251,14 @@ export default async function Page() {
 
         <div className="mt-4 flex w-full flex-col gap-8">
           {projectData.map(
-            (project) =>
+            (project, index) =>
               project.visible &&
               project.featured && (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  reverse={index % 2 === 1}
+                />
               )
           )}
         </div>
