@@ -1,6 +1,7 @@
 import { DataTable } from '@/components/data-table';
 import { leadColumns } from '@/components/leadTable/dt-lead-columns';
 import { Button } from '@/components/ui/button';
+import { Heading } from '@/components/ui/heading';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getLeads } from '@/lib/lead/leadDAL';
@@ -36,9 +37,7 @@ export default async function ManagePage() {
 
   return (
     <section className="flex flex-col items-start gap-8 md:gap-12 lg:gap-16">
-      <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-        {greeting()}! Welcome back.
-      </h1>
+      <Heading>{greeting()}! Welcome back.</Heading>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-12">
         <div className="col-span-1 space-y-4 lg:col-span-3">
           <h2 className="text-2xl font-bold tracking-tight">Leads</h2>

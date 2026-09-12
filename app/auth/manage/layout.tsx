@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Toaster } from '@/components/ui/toast';
 import { verifySession } from '@/lib/auth/session';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
@@ -25,8 +26,8 @@ export default async function ManageLayout({
 
   return (
     <>
-      <div className="flex flex-col gap-4 p-4 md:flex-row md:gap-6">
-        <nav className="flex shrink-0 flex-row gap-4 rounded-md border border-border bg-card p-2 md:flex-col">
+      <div className="flex flex-col items-start gap-8 p-4 md:flex-row md:gap-12 lg:gap-16">
+        <Card className="flex shrink-0 flex-row gap-4 p-2 shadow md:flex-col">
           <Link
             href="/auth/manage/jobs"
             className="flex items-center justify-center rounded p-2 transition-all hover:bg-muted"
@@ -64,8 +65,10 @@ export default async function ManageLayout({
           >
             <TbLogout className="block size-6" />
           </Button>
-        </nav>
-        {children}
+        </Card>
+        <section className="flex w-full flex-col items-start gap-8 pt-8 md:gap-12 lg:gap-16">
+          {children}
+        </section>
         <Toaster />
       </div>
     </>

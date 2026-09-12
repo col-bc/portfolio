@@ -6,41 +6,40 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
-    TbBuildingSkyscraper,
-    TbDeviceFloppy,
-    TbDotsVertical,
-    TbIdBadge2,
-    TbList,
-    TbMail,
-    TbPhone,
-    TbTrash,
-    TbX,
+  TbBuildingSkyscraper,
+  TbDeviceFloppy,
+  TbDotsVertical,
+  TbIdBadge2,
+  TbList,
+  TbMail,
+  TbPhone,
+  TbTrash,
 } from 'react-icons/tb';
 import { toast } from 'sonner';
 import ConfirmDelete from './confirmDelete';
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { Badge } from './ui/badge';
 import { Button, buttonVariants } from './ui/button';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { Heading } from './ui/heading';
 import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupInput,
-    InputGroupText,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
 } from './ui/input-group';
 import { Label } from './ui/label';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from './ui/select';
 
 export default function LeadDisplay({ lead }: { lead: Lead }) {
@@ -78,9 +77,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
     <div className="flex w-full flex-col gap-8 md:gap-12">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="flex flex-col">
-          <h1 className="mb-2 flex-1 text-3xl font-bold tracking-tight capitalize md:text-4xl">
-            {lead.subject}: From {lead.name}
-          </h1>
+          <Heading>{lead.name}</Heading>
           <p className="text-muted-foreground">
             Received on {lead.createdAt.toLocaleDateString()} at{' '}
             {lead.createdAt.toLocaleTimeString()}.
@@ -135,7 +132,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
           <p className="text-muted-foreground">{lead.message}</p>
         </div>
         <Card className="w-full max-w-lg shadow lg:col-span-2">
-          <CardContent>
+          <CardHeader>
             <div className="mb-6 flex items-center gap-4">
               <Avatar className="h-14 w-14">
                 <AvatarFallback className="text-xl">
@@ -152,14 +149,9 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
                   {lead.company || 'Unknown Org'}
                 </p>
               </div>
-              <Badge
-                variant="default"
-                className="ml-auto self-start tracking-tight uppercase"
-              >
-                {leadStatus}
-              </Badge>
             </div>
-
+          </CardHeader>
+          <CardContent>
             <div className="mb-6 flex flex-col gap-4">
               <InputGroup className="shadow-none">
                 <InputGroupAddon>
@@ -193,7 +185,10 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
                 <InputGroupText>
                   <Link
                     href={`mailto:${leadEmail}`}
-                    className={buttonVariants({ variant: 'outline' })}
+                    className={buttonVariants({
+                      variant: 'secondary',
+                      size: 'sm',
+                    })}
                   >
                     Email
                   </Link>
@@ -211,7 +206,10 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
                 <InputGroupText>
                   <Link
                     href={`tel:${leadPhone}`}
-                    className={buttonVariants({ variant: 'outline' })}
+                    className={buttonVariants({
+                      variant: 'secondary',
+                      size: 'sm',
+                    })}
                   >
                     Call
                   </Link>
@@ -236,22 +234,13 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
               </Select>
             </div>
           </CardContent>
+          <CardFooter>
+            <Button variant="default" onClick={saveLead}>
+              <TbDeviceFloppy className="h-4 w-4" />
+              Save Changes
+            </Button>
+          </CardFooter>
         </Card>
-      </div>
-
-      <div className="flex w-full flex-col gap-4 md:flex-row ">
-        <Button variant="default" onClick={saveLead}>
-          <TbDeviceFloppy className="h-4 w-4" />
-          Save Changes
-        </Button>
-        <Button
-          variant="secondary"
-          onClick={() => router.back()}
-          className="px-4 md:mr-auto"
-        >
-          <TbX className="h-4 w-4" />
-          Cancel
-        </Button>
       </div>
 
       <ConfirmDelete

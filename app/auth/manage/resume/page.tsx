@@ -5,6 +5,7 @@ import { getResume } from '@/lib/resume/resumeActions';
 import { cn } from '@/lib/util/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import React from 'react';
 import { TbFileCv } from 'react-icons/tb';
 
 export const metadata: Metadata = {
@@ -14,11 +15,9 @@ export const metadata: Metadata = {
 export default async function ResumePage() {
   const resumeFile: File | null = await getResume();
   return (
-    <>
+    <React.Fragment>
       <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
-        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Manage Resume
-        </h1>
+        <Heading>Manage Resume</Heading>
         <Link
           href="/auth/manage/resume/change"
           className={cn(buttonVariants({ size: 'lg' }))}
@@ -31,6 +30,6 @@ export default async function ResumePage() {
         <Heading size="sub">Current Resume</Heading>
         <ResumeViewer resumeFile={resumeFile} />
       </div>
-    </>
+    </React.Fragment>
   );
 }

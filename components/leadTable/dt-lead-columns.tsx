@@ -3,6 +3,7 @@
 import { cn } from '@/lib/util/utils';
 import { type Lead } from '@/prisma/generated/client';
 import { createColumnHelper } from '@tanstack/react-table';
+import Link from 'next/link';
 import { TbArrowDown } from 'react-icons/tb';
 import { DataTableFeatures } from '../table-features';
 import { Badge } from '../ui/badge';
@@ -28,7 +29,14 @@ export const leadColumns = columnHelper.columns([
         </Button>
       );
     },
-    cell: (info) => info.getValue().toLocaleString(),
+    cell: (info) => (
+      <Link
+        href={`/auth/manage/leads/${info.row.original.id}`}
+        className="text-foreground hover:underline"
+      >
+        {info.getValue().toLocaleString()}
+      </Link>
+    ),
     enableSorting: true,
     sortFn: (rowA, rowB, columnId) => {
       const a = rowA.getValue(columnId) as Date;

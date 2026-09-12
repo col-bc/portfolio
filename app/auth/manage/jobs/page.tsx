@@ -1,23 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
 import { Job } from '@/prisma/generated/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import React from 'react';
 import {
   TbBuildingSkyscraper,
   TbEyeOff,
-  TbHome,
   TbMapPin,
   TbPlus,
 } from 'react-icons/tb';
@@ -35,67 +27,48 @@ export default async function ManageJobsPage() {
   );
 
   return (
-    <>
-      <Breadcrumb className="w-full border-b bg-transparent px-4 py-2 text-muted-foreground">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href="/auth/manage"
-              className="flex items-center gap-2"
-            >
-              <TbHome />
-              Manage
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Jobs</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
-        <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
-          <Heading>Manage Jobs</Heading>
-          <Link
-            href="/auth/manage/jobs/new"
-            className={buttonVariants({ size: 'lg', className: 'shadow' })}
-          >
-            <TbPlus className="h-4 w-4" />
-            Create New Job
-          </Link>
-        </div>
+    <React.Fragment>
+      <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
+        <Heading>Manage Jobs</Heading>
+        <Link
+          href="/auth/manage/jobs/new"
+          className={buttonVariants({ size: 'lg', className: 'shadow' })}
+        >
+          <TbPlus className="h-4 w-4" />
+          Create New Job
+        </Link>
+      </div>
 
-        <div className="flex w-full flex-col gap-4 md:gap-6">
-          <div className="flex items-center gap-2">
-            <Heading size="sub">
-              Current Job{currentJobs.length !== 1 ? 's' : ''}
-            </Heading>
-            <Badge variant="secondary" className="font-mono text-lg">
-              {currentJobs.length}
-            </Badge>
-          </div>
-          <div className="flex w-full flex-col gap-4">
-            {currentJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
+      <div className="flex w-full flex-col gap-4 md:gap-6">
+        <div className="flex items-center gap-2">
+          <Heading size="sub">
+            Current Job{currentJobs.length !== 1 ? 's' : ''}
+          </Heading>
+          <Badge variant="secondary" className="font-mono text-lg">
+            {currentJobs.length}
+          </Badge>
         </div>
+        <div className="flex w-full flex-col gap-4">
+          {currentJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      </div>
 
-        <div className="flex w-full flex-col gap-4 md:gap-6">
-          <div className="flex items-center gap-2">
-            <Heading size="sub">All Jobs</Heading>
-            <Badge variant="secondary" className="font-mono text-lg">
-              {chronoJobs.length}
-            </Badge>
-          </div>
-          <div className="flex w-full flex-col gap-4">
-            {chronoJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
+      <div className="flex w-full flex-col gap-4 md:gap-6">
+        <div className="flex items-center gap-2">
+          <Heading size="sub">All Jobs</Heading>
+          <Badge variant="secondary" className="font-mono text-lg">
+            {chronoJobs.length}
+          </Badge>
         </div>
-      </section>
-    </>
+        <div className="flex w-full flex-col gap-4">
+          {chronoJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
 
