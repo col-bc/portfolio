@@ -19,7 +19,6 @@ import {
   TbTrash,
   TbX,
 } from 'react-icons/tb';
-import { toast } from 'sonner';
 import ConfirmDelete from '../confirmDelete';
 import { DatePickerField } from '../datePickerField';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
@@ -43,6 +42,7 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
+import { toast } from '../ui/toast';
 
 export default function JobForm({ job }: { job: Job | null }) {
   const router = useRouter();
@@ -122,7 +122,10 @@ export default function JobForm({ job }: { job: Job | null }) {
       setError(result.error || 'An unknown error occurred.');
       return;
     }
-    toast.success(`Job ${isEditMode ? 'updated' : 'created'} successfully.`);
+    toast.add({
+      title: `Job ${isEditMode ? 'updated' : 'created'} successfully.`,
+      description: `The job has been ${isEditMode ? 'updated' : 'created'} successfully.`,
+    });
     router.push(
       '/auth/manage/jobs' + (result.data ? `/${result.data.id}` : '')
     );

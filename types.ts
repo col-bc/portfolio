@@ -15,16 +15,4 @@ export type Message = {
   >;
 };
 
-// export type ProjectImage = {
-//   url: string;
-//   altText?: string | null;
-// };
-// export type Project = {
-//   title: string;
-//   description: string;
-//   tags: string;
-//   visible: boolean;
-//   link?: string | null;
-//   repository?: string | null;
-//   images: ProjectImage[];
-// };
+export interface 

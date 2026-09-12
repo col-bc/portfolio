@@ -25,10 +25,16 @@ import { Job } from '@/prisma/generated/client';
 import { Message as ChatMessage } from '@/types';
 import { useChat } from '@ai-sdk/react';
 import React from 'react';
-import { TbArrowUp, TbInfoCircle, TbMessageFilled } from 'react-icons/tb';
+import {
+  TbAlertCircle,
+  TbArrowUp,
+  TbInfoCircle,
+  TbMessageFilled,
+} from 'react-icons/tb';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
+import { Alert } from './ui/alert';
 import { Field, FieldDescription } from './ui/field';
 
 interface InteractiveResumeHandle {
@@ -61,7 +67,9 @@ const InteractiveResume = React.forwardRef<
   const { messages, sendMessage, status } = useChat<ChatMessage>({
     messages: [...initialMessages],
   });
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(
+    'This is a test error. Nothing happened.'
+  );
 
   const formRef = React.useRef<HTMLFormElement>(null);
   const [query, setQuery] = React.useState('');
@@ -106,6 +114,11 @@ const InteractiveResume = React.forwardRef<
             </Empty>
           ) : (
             <MessageScroller>
+              {error && (
+                <Alert className="flex items-center gap-2">
+                  <TbAlertCircle /> <span>{error}</span>
+                </Alert>
+              )}
               <MessageScrollerViewport className="overscroll-y-auto">
                 <MessageScrollerContent
                   aria-busy={isBusy}

@@ -44,17 +44,19 @@ export async function updateJob(
   job: Partial<Job>,
   file: File | null
 ): Promise<Job> {
+  delete job.imageUrl;
+  let filePath: string | null = null;
+  if (file) {
+    filePath = await saveFileToDisk(file);
+    job.imageUrl = filePath;
+  }
+
   const updatedJob = await prisma.job.update({
     where: {
       id,
     },
     data: {
       ...job,
-      imageUrl: file
-        ? await saveFileToDisk(file)
-        : job.imageUrl
-          ? job.imageUrl
-          : null,
     },
   });
 

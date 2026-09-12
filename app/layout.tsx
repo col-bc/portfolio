@@ -5,6 +5,7 @@ import Navigation from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { cn } from '@/lib/util/utils';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Metadata } from 'next';
 import './globals.css';
 
@@ -91,6 +92,7 @@ export default async function RootLayout({
       )}
     >
       <body>
+        <GoogleAnalytics gaId="GTM-MPF8HZ39" />
         <ThemeProvider>
           <main className="flex min-h-screen max-w-screen flex-col overflow-x-clip bg-background text-foreground antialiased">
             <Navigation user={user} />
