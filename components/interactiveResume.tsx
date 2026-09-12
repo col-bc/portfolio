@@ -67,9 +67,7 @@ const InteractiveResume = React.forwardRef<
   const { messages, sendMessage, status } = useChat<ChatMessage>({
     messages: [...initialMessages],
   });
-  const [error, setError] = React.useState<string | null>(
-    'This is a test error. Nothing happened.'
-  );
+  const [error, setError] = React.useState<string | null>(null);
 
   const formRef = React.useRef<HTMLFormElement>(null);
   const [query, setQuery] = React.useState('');
