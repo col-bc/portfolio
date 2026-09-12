@@ -36,13 +36,12 @@ export default function ContactPage() {
             <p className="mt-2 text-muted-foreground">
               Prefer to send an email directly? Reach out at:
             </p>
-            {/* Update with your actual email */}
             <a
-              href="mailto:colby@example.com"
+              href="mailto:contact@colbyc.com"
               className="mt-4 flex items-center text-primary hover:underline"
             >
               <TbMail className="mr-2 h-5 w-5" />
-              colby@example.com
+              contact@colbyc.com
             </a>
           </div>
 

@@ -27,7 +27,7 @@ export default async function ManageLayout({
   return (
     <>
       <div className="flex flex-col items-start gap-8 p-4 md:flex-row md:gap-12 lg:gap-16">
-        <Card className="flex shrink-0 flex-row gap-4 p-2 shadow md:flex-col">
+        <Card className="flex w-full shrink-0 flex-row gap-4 p-2 shadow md:w-auto md:flex-col">
           <Link
             href="/auth/manage/jobs"
             className="flex items-center justify-center rounded p-2 transition-all hover:bg-muted"

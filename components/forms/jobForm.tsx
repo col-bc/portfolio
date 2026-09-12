@@ -13,18 +13,15 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
   TbCalendarPlus,
-  TbCircleCheckFilled,
   TbDeviceFloppy,
-  TbExclamationCircleFilled,
   TbFileCode,
   TbHash,
-  TbInfoCircleFilled,
   TbTrash,
   TbX,
 } from 'react-icons/tb';
 import ConfirmDelete from '../confirmDelete';
 import { DatePickerField } from '../datePickerField';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import {
   Attachment,
   AttachmentAction,
@@ -165,19 +162,11 @@ export default function JobForm({ job }: { job: Job | null }) {
     router.push('/auth/manage/jobs');
   };
 
-  const AlertIcon = () => {
-    if (!alert) return null;
-    switch (alert.type) {
-      case 'ERROR':
-        return <TbExclamationCircleFilled className="size-4 shrink-0" />;
-      case 'SUCCESS':
-        return <TbCircleCheckFilled className="size-4 shrink-0" />;
-      case 'INFO':
-        return <TbInfoCircleFilled className="size-4 shrink-0" />;
-      default:
-        return null;
+  React.useEffect(() => {
+    if (alert) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
+  }, [alert]);
 
   return (
     <form
@@ -185,8 +174,8 @@ export default function JobForm({ job }: { job: Job | null }) {
       className="flex w-full max-w-lg flex-col gap-6"
     >
       {alert && (
-        <Alert security={alert.type}>
-          {AlertIcon()}
+        <Alert>
+          <AlertIcon type={alert.type} />
           <AlertTitle>{alert.title}</AlertTitle>
           <AlertDescription>{alert.message}</AlertDescription>
         </Alert>

@@ -1,10 +1,11 @@
 'use client';
 
 import { changeResume } from '@/lib/resume/resumeActions';
+import { AlertFeedback } from '@/types';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { TbFile, TbUpload, TbX } from 'react-icons/tb';
-import { toast } from 'sonner';
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import {
   Attachment,
   AttachmentAction,
@@ -18,10 +19,12 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter } from '../ui/card';
 import { Field, FieldContent, FieldLabel } from '../ui/field';
 import { Label } from '../ui/label';
+import { toast } from '../ui/toast';
 
 export default function ChangeResumeForm() {
   const router = useRouter();
 
+  const [alert, setAlert] = useState<AlertFeedback | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,13 +38,20 @@ export default function ChangeResumeForm() {
 
     try {
       await changeResume(formData);
-      toast.success('Resume updated successfully!');
+      toast.add({
+        title: 'Success',
+        description: 'Resume updated successfully.',
+      });
       setFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
       router.push('/auth/manage/resume');
     } catch (error) {
       console.log('Error updating resume:', error);
-      toast.error('Failed to update resume.');
+      setAlert({
+        title: 'Error',
+        message: 'Failed to update resume.',
+        type: 'ERROR',
+      });
     }
   };
 
@@ -55,6 +65,13 @@ export default function ChangeResumeForm() {
     <form onSubmit={handleSubmit} className="w-full">
       <Card className="flex w-full max-w-lg sm:max-w-lg">
         <CardContent>
+          {alert && (
+            <Alert>
+              <AlertIcon type={alert.type} />
+              <AlertTitle>{alert.title}</AlertTitle>
+              <AlertDescription>{alert.message}</AlertDescription>
+            </Alert>
+          )}
           {!file && (
             <Field>
               <FieldLabel>

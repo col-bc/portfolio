@@ -3,12 +3,14 @@ import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
+import { formatDate } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import {
   TbBuildingSkyscraper,
+  TbCalendar,
   TbEyeOff,
   TbMapPin,
   TbPlus,
@@ -108,12 +110,19 @@ function JobCard({ job }: { job: Job }) {
             </div>
           </div>
         </div>
-        {!job.visible && (
-          <Badge variant="outline" className="ml-2 self-start">
-            <TbEyeOff className="h-4 w-4" />
-            Hidden
-          </Badge>
-        )}
+        <div className="flex flex-col justify-end gap-1 self-start md:items-end">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <TbCalendar />
+            {formatDate(job.startDate)} -{' '}
+            {job.endDate ? formatDate(job.endDate) : 'Present'}
+          </div>
+          {!job.visible && (
+            <Badge variant="outline">
+              <TbEyeOff className="h-4 w-4" />
+              Hidden
+            </Badge>
+          )}
+        </div>
       </div>
     </Link>
   );

@@ -8,11 +8,11 @@ import {
 import { ProjectWithImages } from '@/lib/project/projectDAL';
 import { formatTimestamp } from '@/lib/util/utils';
 import { ProjectImage } from '@/prisma/generated/client';
+import { AlertFeedback } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
-  TbAlertCircleFilled,
   TbCalendarPlus,
   TbDeviceFloppy,
   TbHash,
@@ -22,7 +22,7 @@ import {
 } from 'react-icons/tb';
 import { toast } from 'sonner';
 import ConfirmDelete from '../confirmDelete';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import {
   Attachment,
   AttachmentAction,
@@ -62,7 +62,7 @@ export default function ProjectForm({
   const [mode, setMode] = React.useState<'create' | 'edit'>(
     project ? 'edit' : 'create'
   );
-  const [error, setError] = React.useState<string | null>(null);
+  const [alert, setAlert] = React.useState<AlertFeedback | null>(null);
   const [title, setTitle] = React.useState<string>(project?.title || '');
   const [description, setDescription] = React.useState<string>(
     project?.description || ''
@@ -131,12 +131,20 @@ export default function ProjectForm({
     e.preventDefault();
 
     if (!title || !description) {
-      setError('Title and description are required.');
+      setAlert({
+        type: 'ERROR',
+        title: 'Validation Error',
+        message: 'Title and description are required.',
+      });
       return;
     }
 
     if (imageFiles.length > 5) {
-      setError('You can upload a maximum of 5 images.');
+      setAlert({
+        type: 'ERROR',
+        title: 'Validation Error',
+        message: 'You can upload a maximum of 5 images.',
+      });
       return;
     }
 
@@ -161,11 +169,25 @@ export default function ProjectForm({
         : await handleCreateProject(formData);
 
     if (!status.success) {
-      setError(status.error || 'An unknown error occurred.');
+      setAlert({
+        type: 'ERROR',
+        title: 'Submission Error',
+        message: status.error || 'An unknown error occurred.',
+      });
     } else {
-      router.push('/auth/manage/projects');
+      setAlert({
+        type: 'SUCCESS',
+        title: 'Submission Successful',
+        message: 'The project has been successfully submitted.',
+      });
     }
   }
+
+  React.useEffect(() => {
+    if (alert) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [alert]);
 
   return (
     <form
@@ -173,11 +195,11 @@ export default function ProjectForm({
       onSubmit={handleSubmit}
       className="flex w-full max-w-lg flex-col gap-6"
     >
-      {error && (
+      {alert && (
         <Alert>
-          <TbAlertCircleFilled className="size-4 shrink-0" />
-          <AlertTitle>Error Saving Job</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
+          <AlertIcon type={alert.type} />
+          <AlertTitle>{alert.title}</AlertTitle>
+          <AlertDescription>{alert.message}</AlertDescription>
         </Alert>
       )}
 
