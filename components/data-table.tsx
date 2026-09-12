@@ -13,7 +13,7 @@ import {
 
 import type { DataTableProps } from '@/types';
 import React from 'react';
-import { features } from '../table-features';
+import { features } from './table-features';
 
 export function DataTable<TData extends RowData>({
   columns,

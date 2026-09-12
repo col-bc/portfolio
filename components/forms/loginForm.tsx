@@ -63,7 +63,9 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
 
     const token = tsToken || turnstileRef.current?.getResponse() || '';
     if (!token) {
-      setError('Turnstile verification failed. Please try again.');
+      setError(
+        'Turnstile verification failed. Please refresh the page and try again.'
+      );
       return;
     }
 
@@ -137,15 +139,15 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   }, [router]);
 
   return (
-    <Card className="shadow">
-      <CardHeader>
-        <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
-          {step === 'password'
-            ? 'Enter Your Credentials'
-            : '2-Step Verification'}
-        </CardTitle>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <Card className="shadow">
+        <CardHeader>
+          <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+            {step === 'password'
+              ? 'Enter Your Credentials'
+              : '2-Step Verification'}
+          </CardTitle>
+        </CardHeader>
         <CardContent className="flex flex-col gap-6">
           {error && (
             <Alert>
@@ -184,6 +186,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
               disabled={step === 'otp'}
             />
           </Field>
+
           <Field>
             <FieldLabel htmlFor="password">
               Password <span className="text-xs text-destructive">*</span>
@@ -244,6 +247,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
               </InputOTP>
             </FieldContent>
           </Field>
+
           {step === 'password' && (
             <Turnstile
               ref={turnstileRef}
@@ -261,38 +265,39 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
           )}
         </CardContent>
         <CardFooter>
-          {step === 'otp' && (
-            <Button
-              hidden
-              variant="secondary"
-              size="icon"
-              onClick={() => setStep('password')}
-              aria-label="Go back to password step"
-            >
-              <TbArrowLeft className="h-5 w-5" />
-            </Button>
-          )}
-          <Button
-            type="submit"
-            disabled={step === 'password' && !tsToken}
-            className="ml-auto"
-          >
-            {step === 'password' && !tsToken ? (
-              <Spinner />
-            ) : step === 'password' ? (
-              <>
-                <TbLockOpen className="h-4 w-4" />
-                Secure Login
-              </>
-            ) : (
-              <>
-                <TbAuth2Fa className="h-4 w-4" />
-                Verify Code
-              </>
+          <div className="flex w-full gap-2 md:gap-4">
+            {step === 'otp' && (
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => setStep('password')}
+                aria-label="Go back to password step"
+              >
+                <TbArrowLeft className="h-5 w-5" />
+              </Button>
             )}
-          </Button>
+            <Button
+              type="submit"
+              className="flex-1"
+              disabled={step === 'password' && !tsToken}
+            >
+              {step === 'password' && !tsToken ? (
+                <Spinner />
+              ) : step === 'password' ? (
+                <>
+                  <TbLockOpen className="h-4 w-4" />
+                  Secure Login
+                </>
+              ) : (
+                <>
+                  <TbAuth2Fa className="h-4 w-4" />
+                  Verify Code
+                </>
+              )}
+            </Button>
+          </div>
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }

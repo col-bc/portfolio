@@ -12,9 +12,9 @@ import {
   TbBrowser,
   TbCircleCheck,
 } from 'react-icons/tb';
+import { type DataTableFeatures } from '../table-features';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { type DataTableFeatures } from './table-features';
 
 const columnHelper = createColumnHelper<DataTableFeatures, LoginAttempt>();
 
