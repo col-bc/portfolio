@@ -1,3 +1,5 @@
+import type { ColumnDef, RowData } from '@tanstack/react-table';
+import { DataTableFeatures } from './components/table-features';
 export type ActionState<T> =
   | { success: true; data: T }
   | {
@@ -15,4 +17,13 @@ export type Message = {
   >;
 };
 
-export interface 
+export type AlertFeedback = {
+  title: string;
+  message: string;
+  type: 'ERROR' | 'SUCCESS' | 'INFO';
+};
+
+export interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<DataTableFeatures, TData>[];
+  data: TData[];
+}

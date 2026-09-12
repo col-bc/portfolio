@@ -7,15 +7,18 @@ import {
 } from '@/lib/job/jobActions';
 import { cn, formatTimestamp } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
+import { AlertFeedback } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
   TbCalendarPlus,
+  TbCircleCheckFilled,
   TbDeviceFloppy,
   TbExclamationCircleFilled,
   TbFileCode,
   TbHash,
+  TbInfoCircleFilled,
   TbTrash,
   TbX,
 } from 'react-icons/tb';
@@ -42,14 +45,12 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
-import { toast } from '../ui/toast';
 
 export default function JobForm({ job }: { job: Job | null }) {
   const router = useRouter();
   const isEditMode = !!job;
 
-  const [error, setError] = React.useState<string | null>(null);
-
+  const [alert, setAlert] = React.useState<AlertFeedback | null>(null);
   const [file, setFile] = React.useState<File | null>(null);
   const [filePreview, setFilePreview] = React.useState<string | null>(
     job?.imageUrl || null
@@ -84,16 +85,25 @@ export default function JobForm({ job }: { job: Job | null }) {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setAlert(null);
 
     // check all required fields are filled
     if (!title || !company || !startDate) {
-      setError('Please fill in all required fields.');
+      setAlert({
+        title: 'Missing Required Fields',
+        message: 'Please fill in all required fields.',
+        type: 'ERROR',
+      });
       return;
     }
 
     // check the dates are valid
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      setError('Start date cannot be after end date.');
+      setAlert({
+        title: 'Invalid Dates',
+        message: 'Start date cannot be after end date.',
+        type: 'ERROR',
+      });
       return;
     }
 
@@ -119,12 +129,17 @@ export default function JobForm({ job }: { job: Job | null }) {
       ? await handleUpdateJob(job.id, formData)
       : await handleCreateJob(formData);
     if (!result.success) {
-      setError(result.error || 'An unknown error occurred.');
+      setAlert({
+        title: 'Error Saving Job',
+        message: result.error || 'An unknown error occurred.',
+        type: 'ERROR',
+      });
       return;
     }
-    toast.add({
+    setAlert({
       title: `Job ${isEditMode ? 'updated' : 'created'} successfully.`,
-      description: `The job has been ${isEditMode ? 'updated' : 'created'} successfully.`,
+      message: `The job has been ${isEditMode ? 'updated' : 'created'} successfully.`,
+      type: 'SUCCESS',
     });
     router.push(
       '/auth/manage/jobs' + (result.data ? `/${result.data.id}` : '')
@@ -135,11 +150,33 @@ export default function JobForm({ job }: { job: Job | null }) {
     if (!job) return;
     const status = await handleDeleteJob(job.id);
     if (!status.success) {
-      toast.error(status.error || 'Failed to delete job.');
+      setAlert({
+        title: 'Error Deleting Job',
+        message: status.error || 'Failed to delete job.',
+        type: 'ERROR',
+      });
       return;
     }
-    toast.success('Job deleted successfully.');
+    setAlert({
+      title: 'Job Deleted Successfully',
+      message: 'The job has been deleted successfully.',
+      type: 'SUCCESS',
+    });
     router.push('/auth/manage/jobs');
+  };
+
+  const AlertIcon = () => {
+    if (!alert) return null;
+    switch (alert.type) {
+      case 'ERROR':
+        return <TbExclamationCircleFilled className="size-4 shrink-0" />;
+      case 'SUCCESS':
+        return <TbCircleCheckFilled className="size-4 shrink-0" />;
+      case 'INFO':
+        return <TbInfoCircleFilled className="size-4 shrink-0" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -147,11 +184,11 @@ export default function JobForm({ job }: { job: Job | null }) {
       onSubmit={handleSubmit}
       className="flex w-full max-w-lg flex-col gap-6"
     >
-      {error && (
-        <Alert>
-          <TbExclamationCircleFilled className="size-4 shrink-0" />
-          <AlertTitle>Error Saving Job</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
+      {alert && (
+        <Alert security={alert.type}>
+          {AlertIcon()}
+          <AlertTitle>{alert.title}</AlertTitle>
+          <AlertDescription>{alert.message}</AlertDescription>
         </Alert>
       )}
 

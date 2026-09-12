@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  SortingState,
-  useTable,
-  type ColumnDef,
-  type RowData,
-} from '@tanstack/react-table';
+import { SortingState, useTable, type RowData } from '@tanstack/react-table';
 
 import {
   Table,
@@ -16,13 +11,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import type { DataTableProps } from '@/types';
 import React from 'react';
-import { features, type DataTableFeatures } from './table-features';
-
-interface DataTableProps<TData extends RowData> {
-  columns: ColumnDef<DataTableFeatures, TData>[];
-  data: TData[];
-}
+import { features } from '../table-features';
 
 export function DataTable<TData extends RowData>({
   columns,

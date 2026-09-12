@@ -1,18 +1,12 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { DataTable } from '@/components/data-table';
+import { leadColumns } from '@/components/leadTable/dt-lead-columns';
+import { Button } from '@/components/ui/button';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getLeads } from '@/lib/lead/leadDAL';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { unauthorized } from 'next/navigation';
-import {
-  TbBriefcase,
-  TbFileCv,
-  TbFlag,
-  TbFolderCode,
-  TbShield,
-} from 'react-icons/tb';
+import { TbCloudUpload, TbPlus } from 'react-icons/tb';
 
 export const metadata: Metadata = {
   title: 'Manage Site',
@@ -41,71 +35,27 @@ export default async function ManagePage() {
   };
 
   return (
-    <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
+    <section className="flex flex-col items-start gap-8 md:gap-12 lg:gap-16">
       <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
         {greeting()}! Welcome back.
       </h1>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <ModuleCard
-          title="Jobs"
-          description="View and manage your employment history."
-          icon={<TbBriefcase className="size-6" />}
-          count={data.jobs.length}
-        />
-        <ModuleCard
-          title="Resume"
-          description="Manage your resume versions."
-          icon={<TbFileCv className="size-6" />}
-        />
-        <ModuleCard
-          title="Projects"
-          description="View and update your projects."
-          icon={<TbFolderCode className="size-6" />}
-        />
-        <ModuleCard
-          title="Leads"
-          description="View and manage your leads."
-          icon={<TbFlag className="size-6" />}
-          count={data.leads.length}
-        />
-        <ModuleCard
-          title="Settings"
-          description="Manage your security settings."
-          icon={<TbShield className="size-6" />}
-        />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-12">
+        <div className="col-span-1 space-y-4 lg:col-span-3">
+          <h2 className="text-2xl font-bold tracking-tight">Leads</h2>
+          <DataTable columns={leadColumns} data={data.leads} />
+        </div>
+        <div className="col-span-1 flex flex-col gap-4 lg:col-span-2">
+          <Button variant="outline">
+            <TbPlus /> Add Job
+          </Button>
+          <Button variant="outline">
+            <TbPlus /> Add Project
+          </Button>
+          <Button variant="outline">
+            <TbCloudUpload /> Change Resume
+          </Button>
+        </div>
       </div>
     </section>
-  );
-}
-
-function ModuleCard({
-  title,
-  description,
-  icon,
-  count,
-}: {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  count?: string | number;
-}) {
-  return (
-    <Link href={`/auth/manage/${title.toLowerCase()}`} className="group">
-      <Card className="h-full transition-transform group-hover:-translate-y-1 group-hover:bg-muted/25 group-hover:shadow-sm">
-        <CardContent className="flex flex-row items-start gap-4">
-          <div className="rounded-full bg-primary/10 p-3 text-2xl text-primary">
-            {icon}
-          </div>{' '}
-          <div>
-            <CardTitle className="mb-1 text-lg font-semibold tracking-tight">
-              {title} {count && <Badge variant="secondary">{count}</Badge>}
-            </CardTitle>
-            <p className="mt-auto text-sm leading-relaxed text-muted-foreground">
-              {description}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
   );
 }
