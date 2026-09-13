@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "APIRequest" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "apiKeyId" TEXT NOT NULL,
+    "endpoint" TEXT NOT NULL,
+    "method" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "APIRequest_apiKeyId_fkey" FOREIGN KEY ("apiKeyId") REFERENCES "APIKey" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

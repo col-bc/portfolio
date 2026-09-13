@@ -2,7 +2,6 @@ import JobForm from '@/components/forms/jobForm';
 import { Heading } from '@/components/ui/heading';
 import { getJobById } from '@/lib/job/jobDAL';
 import { notFound } from 'next/navigation';
-import React from 'react';
 
 export default async function ManageJobDetail({
   params,
@@ -19,11 +18,11 @@ export default async function ManageJobDetail({
   }
 
   return (
-    <React.Fragment>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
       <Heading>
         {job.title} at {job.company}
       </Heading>
       <JobForm job={job} />
-    </React.Fragment>
+    </div>
   );
 }

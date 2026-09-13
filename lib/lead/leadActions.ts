@@ -18,7 +18,11 @@ export async function handleCreateLead(
     };
   }
   try {
-    const lead = await createLead(data);
+    const lead = await createLead({
+      ...data,
+      status: 'unread',
+      source: 'contact-form',
+    });
     return { success: true, data: lead };
   } catch (error) {
     console.error('Error creating lead:', error);

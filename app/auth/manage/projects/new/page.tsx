@@ -1,13 +1,12 @@
 import ProjectForm from '@/components/forms/projectForm';
 import { Heading } from '@/components/ui/heading';
-import React from 'react';
 
-export default function CreateNewJobPage() {
+export default function CreateNewProjectPage() {
   return (
-    <React.Fragment>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
       <Heading>Create New Project</Heading>
 
       <ProjectForm project={null} />
-    </React.Fragment>
+    </div>
   );
 }

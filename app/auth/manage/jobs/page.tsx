@@ -7,7 +7,6 @@ import { formatDate } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import React from 'react';
 import {
   TbBuildingSkyscraper,
   TbCalendar,
@@ -29,7 +28,7 @@ export default async function ManageJobsPage() {
   );
 
   return (
-    <React.Fragment>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
       <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
         <Heading>Manage Jobs</Heading>
         <Link
@@ -70,7 +69,7 @@ export default async function ManageJobsPage() {
           ))}
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

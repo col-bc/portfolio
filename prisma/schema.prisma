@@ -17,6 +17,7 @@ model User {
   twoFactorEnabled Boolean        @default(false)
   backupCodes      String         @default("")
   loginAttempts    LoginAttempt[]
+  apikeys          APIKey[]
 }
 
 model Job {
@@ -82,4 +83,26 @@ model Project {
   images      ProjectImage[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+}
+
+model APIKey {
+  id          String       @id @default(cuid())
+  name        String
+  keyHash     String       @unique
+  keyHint     String
+  enabled     Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  apirequests APIRequest[]
+}
+
+model APIRequest {
+  id        String   @id @default(cuid())
+  apiKeyId  String
+  endpoint  String
+  method    String
+  status    String
+  createdAt DateTime @default(now())
+  apiKey    APIKey   @relation(fields: [apiKeyId], references: [id])
 }

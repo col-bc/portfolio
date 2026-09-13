@@ -42,6 +42,7 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
+import { toast } from '../ui/toast';
 
 export default function JobForm({ job }: { job: Job | null }) {
   const router = useRouter();
@@ -145,6 +146,7 @@ export default function JobForm({ job }: { job: Job | null }) {
 
   const handleDelete = async () => {
     if (!job) return;
+    const title = job.title;
     const status = await handleDeleteJob(job.id);
     if (!status.success) {
       setAlert({
@@ -154,9 +156,9 @@ export default function JobForm({ job }: { job: Job | null }) {
       });
       return;
     }
-    setAlert({
+    toast.add({
       title: 'Job Deleted Successfully',
-      message: 'The job has been deleted successfully.',
+      description: `${title} has been deleted successfully.`,
       type: 'SUCCESS',
     });
     router.push('/auth/manage/jobs');

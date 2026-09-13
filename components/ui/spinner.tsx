@@ -1,10 +1,16 @@
-import { cn } from "@/lib/utils"
-import { IconLoader } from "@tabler/icons-react"
+import { cn } from '@/lib/utils';
+import { TbLoader } from 'react-icons/tb';
 
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
+function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
-    <IconLoader data-slot="spinner" role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...props} />
-  )
+    <TbLoader
+      data-slot="spinner"
+      role="status"
+      aria-label="Loading"
+      className={cn('size-4 animate-spin', className)}
+      {...props}
+    />
+  );
 }
 
-export { Spinner }
+export { Spinner };

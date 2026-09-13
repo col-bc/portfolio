@@ -1,13 +1,12 @@
 import JobForm from '@/components/forms/jobForm';
 import { Heading } from '@/components/ui/heading';
-import React from 'react';
 
 export default function CreateNewJobPage() {
   return (
-    <React.Fragment>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
       <Heading>Create New Job</Heading>
 
       <JobForm job={null} />
-    </React.Fragment>
+    </div>
   );
 }

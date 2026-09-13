@@ -9,8 +9,13 @@ import { useState } from 'react';
 import {
   TbBrandGithub,
   TbBrandLinkedin,
+  TbBriefcase,
+  TbFileCv,
+  TbFlag,
+  TbFolderCode,
   TbMenu,
   TbMessages,
+  TbPlus,
   TbSettings,
   TbX,
 } from 'react-icons/tb';
@@ -23,6 +28,10 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Separator } from './ui/separator';
@@ -103,8 +112,8 @@ export default function Navigation({ user }: { user: User | null }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-50 w-full border-y border-border shadow-xs">
-        <nav className="container mx-auto flex max-w-5xl items-center justify-between bg-background/80 px-4 py-1.5 backdrop-blur-md">
+      <div className="sticky top-0 z-50 w-full border-y border-border bg-background/80 shadow-xs backdrop-blur-md">
+        <nav className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-1.5">
           {/* Desktop Links */}
           <div className="hidden flex-1 gap-2 md:flex">
             <LinkList />
@@ -121,30 +130,73 @@ export default function Navigation({ user }: { user: User | null }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                   <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        <TbPlus className="h-4 w-4" />
+                        Quick Create
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <Link href="/auth/manage/jobs/new" passHref>
+                            <DropdownMenuItem>
+                              <TbBriefcase className="h-4 w-4" />
+                              Employment
+                            </DropdownMenuItem>
+                          </Link>
+                          <Link href="/auth/manage/projects/new" passHref>
+                            <DropdownMenuItem>
+                              <TbFolderCode className="h-4 w-4" />
+                              Project
+                            </DropdownMenuItem>
+                          </Link>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+                  <DropdownMenuGroup>
                     <DropdownMenuLabel>Manage Site</DropdownMenuLabel>
-
                     <DropdownMenuItem>
-                      <Link href="/auth/manage/jobs" className="w-full">
+                      <Link
+                        href="/auth/manage/jobs"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <TbBriefcase className="h-4 w-4" />
                         Employment
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/auth/manage/resume" className="w-full">
+                      <Link
+                        href="/auth/manage/resume"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <TbFileCv className="h-4 w-4" />
                         Resume
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/auth/manage/projects" className="w-full">
+                      <Link
+                        href="/auth/manage/projects"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <TbFolderCode className="h-4 w-4" />
                         Projects
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/auth/manage/leads" className="w-full">
+                      <Link
+                        href="/auth/manage/leads"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <TbFlag className="h-4 w-4" />
                         Leads
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/auth/manage/settings" className="w-full">
+                      <Link
+                        href="/auth/manage/settings"
+                        className="flex w-full items-center gap-2"
+                      >
+                        <TbSettings className="h-4 w-4" />
                         Settings
                       </Link>
                     </DropdownMenuItem>

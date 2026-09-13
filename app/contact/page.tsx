@@ -82,6 +82,16 @@ export default function ContactPage() {
                 <TbBrandLinkedin className="mr-2 h-5 w-5" />
                 LinkedIn Profile
               </Link>
+              <Link
+                href="https://app.joinhandshake.com/profiles/acca2t"
+                target="_blank"
+                className={buttonVariants({
+                  variant: 'outline',
+                  className: 'w-fit justify-start',
+                })}
+              >
+                Handshake Profile
+              </Link>
             </div>
           </div>
         </div>

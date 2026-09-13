@@ -96,7 +96,7 @@ export default function ContactForm() {
       phone,
       subject: selectedSubject,
       message,
-      source: 'contact_form',
+      source: 'contact-form',
       status: 'unread',
       notes: '',
     };

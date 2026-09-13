@@ -1,11 +1,12 @@
 import { DataTable } from '@/components/data-table';
-import { leadColumns } from '@/components/leadTable/dt-lead-columns';
+import { leadColumns } from '@/components/leadTable/lead-datatable-columns';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getCurrentUser } from '@/lib/auth/sessionActions';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getLeads } from '@/lib/lead/leadDAL';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { unauthorized } from 'next/navigation';
 import { TbCloudUpload, TbPlus } from 'react-icons/tb';
 
@@ -28,33 +29,39 @@ export default async function ManagePage() {
     unauthorized();
   }
 
-  const greeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 18) return 'Good afternoon';
-    return 'Good evening';
-  };
-
   return (
-    <section className="flex flex-col items-start gap-8 md:gap-12 lg:gap-16">
-      <Heading>{greeting()}! Welcome back.</Heading>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-12">
-        <div className="col-span-1 space-y-4 lg:col-span-3">
-          <h2 className="text-2xl font-bold tracking-tight">Leads</h2>
-          <DataTable columns={leadColumns} data={data.leads} />
-        </div>
-        <div className="col-span-1 flex flex-col gap-4 lg:col-span-2">
-          <Button variant="outline">
-            <TbPlus /> Add Job
-          </Button>
-          <Button variant="outline">
-            <TbPlus /> Add Project
-          </Button>
-          <Button variant="outline">
-            <TbCloudUpload /> Change Resume
-          </Button>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
+      <div className="flex flex-col gap-4">
+        <Heading>Welcome back.</Heading>
+        <div className="flex gap-4">
+          <Link href="/auth/manage/jobs/new" passHref>
+            <Button variant="secondary" size="xs">
+              <TbPlus /> Add Job
+            </Button>
+          </Link>
+          <Link href="/auth/manage/projects/new" passHref>
+            <Button variant="secondary" size="xs">
+              <TbPlus /> Add Project
+            </Button>
+          </Link>
+          <Link href="/auth/manage/resume" passHref>
+            <Button variant="secondary" size="xs">
+              <TbCloudUpload /> Change Resume
+            </Button>
+          </Link>
         </div>
       </div>
-    </section>
+      <div className="flex w-full flex-col gap-4">
+        <div className="wrap flex items-center justify-between">
+          <h2 className="text-2xl font-bold tracking-tight">Leads</h2>
+          <Link href="/auth/manage/leads" passHref>
+            <Button variant="secondary" size="xs">
+              View All
+            </Button>
+          </Link>
+        </div>
+        <DataTable columns={leadColumns} data={data.leads} />
+      </div>
+    </div>
   );
 }

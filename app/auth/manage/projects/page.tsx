@@ -4,7 +4,6 @@ import { Heading } from '@/components/ui/heading';
 import { handleGetProjects } from '@/lib/project/projectActions';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import React from 'react';
 import { TbFolderCode, TbPlus } from 'react-icons/tb';
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export default async function ProjectsPage() {
   const projectData = projects.success ? projects.data : [];
 
   return (
-    <React.Fragment>
+    <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
       <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
         <Heading>Manage Projects</Heading>
         <Link
@@ -45,6 +44,6 @@ export default async function ProjectsPage() {
           ))
         )}
       </div>
-    </React.Fragment>
+    </div>
   );
 }

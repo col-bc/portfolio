@@ -207,6 +207,7 @@ export type UserWhereInput = {
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   backupCodes?: Prisma.StringFilter<"User"> | string
   loginAttempts?: Prisma.LoginAttemptListRelationFilter
+  apikeys?: Prisma.APIKeyListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -219,6 +220,7 @@ export type UserOrderByWithRelationInput = {
   twoFactorEnabled?: Prisma.SortOrder
   backupCodes?: Prisma.SortOrder
   loginAttempts?: Prisma.LoginAttemptOrderByRelationAggregateInput
+  apikeys?: Prisma.APIKeyOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -234,6 +236,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   twoFactorEnabled?: Prisma.BoolFilter<"User"> | boolean
   backupCodes?: Prisma.StringFilter<"User"> | string
   loginAttempts?: Prisma.LoginAttemptListRelationFilter
+  apikeys?: Prisma.APIKeyListRelationFilter
 }, "id" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -274,6 +277,7 @@ export type UserCreateInput = {
   twoFactorEnabled?: boolean
   backupCodes?: string
   loginAttempts?: Prisma.LoginAttemptCreateNestedManyWithoutUserInput
+  apikeys?: Prisma.APIKeyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -286,6 +290,7 @@ export type UserUncheckedCreateInput = {
   twoFactorEnabled?: boolean
   backupCodes?: string
   loginAttempts?: Prisma.LoginAttemptUncheckedCreateNestedManyWithoutUserInput
+  apikeys?: Prisma.APIKeyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -298,6 +303,7 @@ export type UserUpdateInput = {
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
   loginAttempts?: Prisma.LoginAttemptUpdateManyWithoutUserNestedInput
+  apikeys?: Prisma.APIKeyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -310,6 +316,7 @@ export type UserUncheckedUpdateInput = {
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
   loginAttempts?: Prisma.LoginAttemptUncheckedUpdateManyWithoutUserNestedInput
+  apikeys?: Prisma.APIKeyUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -383,6 +390,11 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -411,6 +423,20 @@ export type UserUpdateOneWithoutLoginAttemptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLoginAttemptsInput, Prisma.UserUpdateWithoutLoginAttemptsInput>, Prisma.UserUncheckedUpdateWithoutLoginAttemptsInput>
 }
 
+export type UserCreateNestedOneWithoutApikeysInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApikeysInput, Prisma.UserUncheckedCreateWithoutApikeysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApikeysInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutApikeysNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApikeysInput, Prisma.UserUncheckedCreateWithoutApikeysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApikeysInput
+  upsert?: Prisma.UserUpsertWithoutApikeysInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApikeysInput, Prisma.UserUpdateWithoutApikeysInput>, Prisma.UserUncheckedUpdateWithoutApikeysInput>
+}
+
 export type UserCreateWithoutLoginAttemptsInput = {
   id?: string
   username: string
@@ -420,6 +446,7 @@ export type UserCreateWithoutLoginAttemptsInput = {
   updatedAt?: Date | string
   twoFactorEnabled?: boolean
   backupCodes?: string
+  apikeys?: Prisma.APIKeyCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLoginAttemptsInput = {
@@ -431,6 +458,7 @@ export type UserUncheckedCreateWithoutLoginAttemptsInput = {
   updatedAt?: Date | string
   twoFactorEnabled?: boolean
   backupCodes?: string
+  apikeys?: Prisma.APIKeyUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLoginAttemptsInput = {
@@ -458,6 +486,7 @@ export type UserUpdateWithoutLoginAttemptsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeys?: Prisma.APIKeyUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLoginAttemptsInput = {
@@ -469,6 +498,71 @@ export type UserUncheckedUpdateWithoutLoginAttemptsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeys?: Prisma.APIKeyUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutApikeysInput = {
+  id?: string
+  username: string
+  passwordHash: string
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
+  loginAttempts?: Prisma.LoginAttemptCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutApikeysInput = {
+  id?: string
+  username: string
+  passwordHash: string
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  twoFactorEnabled?: boolean
+  backupCodes?: string
+  loginAttempts?: Prisma.LoginAttemptUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutApikeysInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApikeysInput, Prisma.UserUncheckedCreateWithoutApikeysInput>
+}
+
+export type UserUpsertWithoutApikeysInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApikeysInput, Prisma.UserUncheckedUpdateWithoutApikeysInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApikeysInput, Prisma.UserUncheckedCreateWithoutApikeysInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApikeysInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApikeysInput, Prisma.UserUncheckedUpdateWithoutApikeysInput>
+}
+
+export type UserUpdateWithoutApikeysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
+  loginAttempts?: Prisma.LoginAttemptUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApikeysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  backupCodes?: Prisma.StringFieldUpdateOperationsInput | string
+  loginAttempts?: Prisma.LoginAttemptUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -478,10 +572,12 @@ export type UserUncheckedUpdateWithoutLoginAttemptsInput = {
 
 export type UserCountOutputType = {
   loginAttempts: number
+  apikeys: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loginAttempts?: boolean | UserCountOutputTypeCountLoginAttemptsArgs
+  apikeys?: boolean | UserCountOutputTypeCountApikeysArgs
 }
 
 /**
@@ -501,6 +597,13 @@ export type UserCountOutputTypeCountLoginAttemptsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.LoginAttemptWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApikeysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.APIKeyWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -512,6 +615,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   twoFactorEnabled?: boolean
   backupCodes?: boolean
   loginAttempts?: boolean | Prisma.User$loginAttemptsArgs<ExtArgs>
+  apikeys?: boolean | Prisma.User$apikeysArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -551,6 +655,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "passwordHash" | "enabled" | "createdAt" | "updatedAt" | "twoFactorEnabled" | "backupCodes", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loginAttempts?: boolean | Prisma.User$loginAttemptsArgs<ExtArgs>
+  apikeys?: boolean | Prisma.User$apikeysArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -560,6 +665,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     loginAttempts: Prisma.$LoginAttemptPayload<ExtArgs>[]
+    apikeys: Prisma.$APIKeyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -965,6 +1071,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   loginAttempts<T extends Prisma.User$loginAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$loginAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LoginAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  apikeys<T extends Prisma.User$apikeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apikeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$APIKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1414,6 +1521,30 @@ export type User$loginAttemptsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.LoginAttemptScalarFieldEnum | Prisma.LoginAttemptScalarFieldEnum[]
+}
+
+/**
+ * User.apikeys
+ */
+export type User$apikeysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the APIKey
+   */
+  select?: Prisma.APIKeySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the APIKey
+   */
+  omit?: Prisma.APIKeyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.APIKeyInclude<ExtArgs> | null
+  where?: Prisma.APIKeyWhereInput
+  orderBy?: Prisma.APIKeyOrderByWithRelationInput | Prisma.APIKeyOrderByWithRelationInput[]
+  cursor?: Prisma.APIKeyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.APIKeyScalarFieldEnum | Prisma.APIKeyScalarFieldEnum[]
 }
 
 /**

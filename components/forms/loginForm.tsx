@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
   TbArrowLeft,
-  TbAuth2Fa,
+  TbCheck,
   TbCircleXFilled,
   TbEye,
   TbEyeOff,
@@ -282,7 +282,10 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
               disabled={step === 'password' && !tsToken}
             >
               {step === 'password' && !tsToken ? (
-                <Spinner />
+                <>
+                  <Spinner className="h-6 w-6" />
+                  Checking Session
+                </>
               ) : step === 'password' ? (
                 <>
                   <TbLockOpen className="h-4 w-4" />
@@ -290,7 +293,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
                 </>
               ) : (
                 <>
-                  <TbAuth2Fa className="h-4 w-4" />
+                  <TbCheck className="h-4 w-4" />
                   Verify Code
                 </>
               )}

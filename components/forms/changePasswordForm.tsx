@@ -7,6 +7,13 @@ import { TbAlertCircleFilled, TbDeviceFloppy } from 'react-icons/tb';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Button } from '../ui/button';
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
+import {
   Field,
   FieldContent,
   FieldDescription,
@@ -67,84 +74,96 @@ export default function ChangePasswordForm() {
     tsToken && testRequirements(newPassword) && newPassword === confirmPassword;
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {error && (
-        <Alert>
-          <TbAlertCircleFilled className="size-4" />
-          <AlertTitle>Failed to Change Password</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      <Field>
-        <FieldLabel>
-          Current Password <span className="text-xs text-destructive">*</span>
-        </FieldLabel>
-        <PasswordInput
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          required
-          placeholder="Enter your current password"
-          autoComplete="current-password"
-        />
-      </Field>
-      <Field
-        aria-invalid={newPassword.length > 0 && !testRequirements(newPassword)}
-      >
-        <FieldLabel>
-          New Password <span className="text-xs text-destructive">*</span>
-        </FieldLabel>
-        <FieldContent>
-          <PasswordInput
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-            placeholder="Choose a new password"
-            autoComplete="new-password"
-          />
-          <FieldDescription>
-            Password must be at least 12 characters long, contain at least one
-            uppercase letter, one lowercase letter, and one number.
-          </FieldDescription>
-          {newPassword.length > 0 && !testRequirements(newPassword) && (
-            <FieldError>
-              Password does not meet the required criteria.
-            </FieldError>
+    <form onSubmit={handleSubmit}>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Update Your Password</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <Alert>
+              <TbAlertCircleFilled className="size-4" />
+              <AlertTitle>Failed to Change Password</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           )}
-        </FieldContent>
-      </Field>
-      <Field aria-invalid={newPassword !== confirmPassword}>
-        <FieldLabel>
-          Confirm Password <span className="text-xs text-destructive">*</span>
-        </FieldLabel>
-        <PasswordInput
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm your new password"
-          required
-          autoComplete="new-password"
-        />
-        {newPassword !== confirmPassword && (
-          <FieldError>Passwords do not match</FieldError>
-        )}
-      </Field>
-      <Turnstile
-        ref={tsRef}
-        siteKey="0x4AAAAAACrt5VbunM62aYIZ"
-        options={{
-          theme: 'auto',
-          size: 'flexible',
-          feedbackEnabled: true,
-          appearance: 'interaction-only',
-        }}
-        onSuccess={(token) => {
-          setTsToken(token);
-        }}
-      />
-
-      <Button type="submit" disabled={!allowSubmit}>
-        <TbDeviceFloppy />
-        Change Password
-      </Button>
+          <Field>
+            <FieldLabel>
+              Current Password{' '}
+              <span className="text-xs text-destructive">*</span>
+            </FieldLabel>
+            <PasswordInput
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+              placeholder="Enter your current password"
+              autoComplete="current-password"
+            />
+          </Field>
+          <Field
+            aria-invalid={
+              newPassword.length > 0 && !testRequirements(newPassword)
+            }
+          >
+            <FieldLabel>
+              New Password <span className="text-xs text-destructive">*</span>
+            </FieldLabel>
+            <FieldContent>
+              <PasswordInput
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                placeholder="Choose a new password"
+                autoComplete="new-password"
+              />
+              <FieldDescription>
+                Password must be at least 12 characters long, contain at least
+                one uppercase letter, one lowercase letter, and one number.
+              </FieldDescription>
+              {newPassword.length > 0 && !testRequirements(newPassword) && (
+                <FieldError>
+                  Password does not meet the required criteria.
+                </FieldError>
+              )}
+            </FieldContent>
+          </Field>
+          <Field aria-invalid={newPassword !== confirmPassword}>
+            <FieldLabel>
+              Confirm Password{' '}
+              <span className="text-xs text-destructive">*</span>
+            </FieldLabel>
+            <PasswordInput
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your new password"
+              required
+              autoComplete="new-password"
+            />
+            {newPassword !== confirmPassword && (
+              <FieldError>Passwords do not match</FieldError>
+            )}
+          </Field>
+          <Turnstile
+            ref={tsRef}
+            siteKey="0x4AAAAAACrt5VbunM62aYIZ"
+            options={{
+              theme: 'auto',
+              size: 'flexible',
+              feedbackEnabled: true,
+              appearance: 'interaction-only',
+            }}
+            onSuccess={(token) => {
+              setTsToken(token);
+            }}
+          />
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" disabled={!allowSubmit}>
+            <TbDeviceFloppy />
+            Change Password
+          </Button>
+        </CardFooter>
+      </Card>
     </form>
   );
 }

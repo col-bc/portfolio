@@ -47,3 +47,13 @@ export type ProjectImage = Prisma.ProjectImageModel
  * 
  */
 export type Project = Prisma.ProjectModel
+/**
+ * Model APIKey
+ * 
+ */
+export type APIKey = Prisma.APIKeyModel
+/**
+ * Model APIRequest
+ * 
+ */
+export type APIRequest = Prisma.APIRequestModel

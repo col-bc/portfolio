@@ -56,7 +56,9 @@ export const ModelName = {
   LoginAttempt: 'LoginAttempt',
   Lead: 'Lead',
   ProjectImage: 'ProjectImage',
-  Project: 'Project'
+  Project: 'Project',
+  APIKey: 'APIKey',
+  APIRequest: 'APIRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -161,6 +163,31 @@ export const ProjectScalarFieldEnum = {
 } as const
 
 export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+export const APIKeyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  keyHash: 'keyHash',
+  keyHint: 'keyHint',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  userId: 'userId'
+} as const
+
+export type APIKeyScalarFieldEnum = (typeof APIKeyScalarFieldEnum)[keyof typeof APIKeyScalarFieldEnum]
+
+
+export const APIRequestScalarFieldEnum = {
+  id: 'id',
+  apiKeyId: 'apiKeyId',
+  endpoint: 'endpoint',
+  method: 'method',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type APIRequestScalarFieldEnum = (typeof APIRequestScalarFieldEnum)[keyof typeof APIRequestScalarFieldEnum]
 
 
 export const SortOrder = {

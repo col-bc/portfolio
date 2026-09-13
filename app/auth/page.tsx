@@ -12,7 +12,7 @@ export default async function AuthPage() {
       <div className="flex w-full max-w-md flex-col items-center gap-6">
         <div className="flex flex-col items-center text-center">
           <div className="mb-4 rounded-full bg-primary/10 p-3">
-            <TbShieldLock className="h-6 w-6 text-primary" />
+            <TbShieldLock className="h-8 w-8 text-primary" />
           </div>
           <h1 className="font-heading text-3xl font-bold tracking-tight">
             Secure Access
