@@ -88,7 +88,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
     );
   if (user.twoFactorEnabled || step === 'enabled') {
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Two-Factor Authentication</CardTitle>
@@ -139,7 +139,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
     );
   } else if (step === 'setup' && setupData) {
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Two-Factor Authentication</CardTitle>
@@ -194,7 +194,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
   } else if (step === 'confirm') {
     return (
       <form onSubmit={handleVerifyCode}>
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md shadow">
           <CardHeader>
             <CardTitle>Confirm Setup</CardTitle>
           </CardHeader>

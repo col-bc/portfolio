@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { TbFileCv } from 'react-icons/tb';
+import { buttonVariants } from './ui/button';
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from './ui/empty';
 import { Spinner } from './ui/spinner';
 
@@ -45,12 +46,14 @@ export default function ResumeViewer({
 
   useEffect(() => {
     if (!resumeFile) {
-      setResumeUrl('');
+      const initUrl = () => setResumeUrl('');
+      initUrl();
       return;
     }
 
     const objectUrl = URL.createObjectURL(resumeFile);
-    setResumeUrl(objectUrl);
+    const setUrl = () => setResumeUrl(objectUrl);
+    setUrl();
 
     return () => URL.revokeObjectURL(objectUrl);
   }, [resumeFile]);
@@ -70,11 +73,9 @@ export default function ResumeViewer({
   }
 
   return (
-    <Card className="relative flex min-h-96 w-full min-w-0 items-center justify-center rounded-md border bg-muted/20 p-4 shadow">
-      {/* 1. The Invisible Ruler stays exactly the same */}
+    <Card className="relative flex min-h-96 w-full min-w-0 items-center justify-center rounded-lg p-4 shadow">
       <div ref={rulerRef} className="absolute inset-x-4 top-4 h-0" />
 
-      {/* 2. NEW: The Overflow Wrapper. This clips the PDF during a resize! */}
       <div className="flex w-full min-w-0 justify-center overflow-hidden">
         {containerWidth && resumeUrl ? (
           <Document
@@ -92,7 +93,10 @@ export default function ResumeViewer({
                   href={resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+                  className={buttonVariants({
+                    variant: 'secondary',
+                    size: 'sm',
+                  })}
                 >
                   Download Resume Instead
                 </a>
@@ -104,7 +108,7 @@ export default function ResumeViewer({
               renderTextLayer={false}
               renderAnnotationLayer={false}
               width={containerWidth}
-              className="shadow-sm"
+              className="shadow"
             />
           </Document>
         ) : (

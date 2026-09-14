@@ -32,7 +32,7 @@ export function DataTable<TData extends RowData>({
   });
 
   return (
-    <div className="w-full overflow-hidden rounded-md border shadow">
+    <div className="w-full overflow-hidden rounded-lg border shadow">
       <Table>
         <TableHeader className="bg-muted text-muted-foreground">
           {table.getHeaderGroups().map((headerGroup) => (

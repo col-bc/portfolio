@@ -112,7 +112,7 @@ export default function Navigation({ user }: { user: User | null }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-50 w-full border-y border-border bg-background/80 shadow-xs backdrop-blur-md">
+      <div className="sticky top-0 z-50 w-full border-y border-border bg-background shadow-sm">
         <nav className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-1.5">
           {/* Desktop Links */}
           <div className="hidden flex-1 gap-2 md:flex">
@@ -147,6 +147,12 @@ export default function Navigation({ user }: { user: User | null }) {
                             <DropdownMenuItem>
                               <TbFolderCode className="h-4 w-4" />
                               Project
+                            </DropdownMenuItem>
+                          </Link>
+                          <Link href="/auth/manage/leads/new" passHref>
+                            <DropdownMenuItem>
+                              <TbFlag className="h-4 w-4" />
+                              Lead
                             </DropdownMenuItem>
                           </Link>
                         </DropdownMenuSubContent>
@@ -218,7 +224,6 @@ export default function Navigation({ user }: { user: User | null }) {
               href="/contact"
               className={buttonVariants({
                 variant: 'outline',
-                className: 'shadow',
               })}
             >
               <TbMessages />
@@ -247,12 +252,12 @@ export default function Navigation({ user }: { user: User | null }) {
               transition={{ duration: 0.2 }}
               className="absolute top-full left-0 w-full px-4 pt-2 pb-4 md:hidden"
             >
-              <div className="flex w-full flex-col gap-1 rounded border border-border bg-background/80 p-4 shadow-lg backdrop-blur-md">
+              <div className="flex w-full flex-col gap-1 rounded-lg border border-border bg-background p-4 shadow">
                 <LinkList onNavigate={() => setIsOpen(false)} />
                 {!!user && (
                   <>
                     <Separator className="my-2" />
-                    <LogoutButton className="w-full" />
+                    <LogoutButton />
                   </>
                 )}
               </div>

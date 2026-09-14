@@ -11,7 +11,7 @@ import {
 } from 'react-icons/tb';
 import { Alert } from '../ui/alert';
 import { Button } from '../ui/button';
-import { Field, FieldLabel } from '../ui/field';
+import { Field, FieldLabel, FieldRequiredIndicator } from '../ui/field';
 import { Input } from '../ui/input';
 import {
   Select,
@@ -136,7 +136,7 @@ export default function ContactForm() {
 
           <Field>
             <FieldLabel htmlFor="name">
-              Full Name <span className="text-xs text-destructive">*</span>
+              Full Name <FieldRequiredIndicator />
             </FieldLabel>
             <Input
               id="name"
@@ -149,10 +149,7 @@ export default function ContactForm() {
             />
           </Field>
           <Field>
-            <FieldLabel htmlFor="company">
-              Company{' '}
-              <span className="text-xs text-muted-foreground">(optional)</span>
-            </FieldLabel>
+            <FieldLabel htmlFor="company">Company</FieldLabel>
             <Input
               id="company"
               type="text"

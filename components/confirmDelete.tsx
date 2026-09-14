@@ -30,7 +30,7 @@ export default function ConfirmDelete({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <div className="flex h-14 w-14 items-center justify-center rounded bg-destructive/20">
+        <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-destructive/20">
           <TbTrash className="size-10 text-destructive" />
         </div>
         <h3 className="text-lg font-medium text-foreground">{title}</h3>

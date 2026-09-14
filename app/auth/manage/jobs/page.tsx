@@ -78,7 +78,7 @@ function JobCard({ job }: { job: Job }) {
     <Link
       key={job.id}
       href={`/auth/manage/jobs/${job.id}`}
-      className="flex flex-col gap-2 rounded-lg border p-4 transition-all hover:-translate-y-1 hover:bg-muted/40 hover:shadow-sm"
+      className="flex flex-col gap-2 rounded-lg border p-4 transition-all hover:-translate-y-1 hover:bg-muted/40 hover:shadow"
     >
       <div className="flex w-full flex-col justify-between gap-1 md:flex-row md:items-center">
         <Avatar className="mr-4 h-12 w-12 border-2 border-muted">

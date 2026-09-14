@@ -26,13 +26,13 @@ export const metadata: Metadata = {
 };
 
 const hoverClasses =
-  'transition-transform shadow hover:-translate-y-0.5 hover:shadow-lg';
+  'transition-transform shadow-lg hover:-translate-y-0.5 hover:shadow-lg';
 
 export default async function AboutPage() {
   const jobs = await getJobs();
-  const sortedJobs = jobs.sort(
-    (a, b) => b.startDate.getTime() - a.startDate.getTime()
-  );
+  const sortedJobs = jobs
+    .filter((job) => job.visible)
+    .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return (
     <div className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">

@@ -7,13 +7,13 @@ import React, { useRef, useState } from 'react';
 import { TbFile, TbUpload, TbX } from 'react-icons/tb';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import {
-  Attachment,
-  AttachmentAction,
-  AttachmentActions,
-  AttachmentContent,
-  AttachmentDescription,
-  AttachmentMedia,
-  AttachmentTitle,
+    Attachment,
+    AttachmentAction,
+    AttachmentActions,
+    AttachmentContent,
+    AttachmentDescription,
+    AttachmentMedia,
+    AttachmentTitle,
 } from '../ui/attachment';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter } from '../ui/card';
@@ -63,7 +63,7 @@ export default function ChangeResumeForm() {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <Card className="flex w-full max-w-lg sm:max-w-lg">
+      <Card className="flex w-full max-w-lg sm:max-w-lg shadow">
         <CardContent>
           {alert && (
             <Alert>

@@ -168,9 +168,9 @@ const InteractiveResume = React.forwardRef<
                   </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
-              <FieldDescription className="mt-2 text-xs text-muted-foreground">
+              <FieldDescription className="mt-2 text-center text-xs text-muted-foreground">
                 <TbInfoCircle className="inline size-4! text-muted-foreground!" />{' '}
-                AI can make mistakes, always verify the information provided.
+                AI can make mistakes. Always verify critical information.
               </FieldDescription>
             </Field>
           </form>

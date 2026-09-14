@@ -44,6 +44,11 @@ export default async function ManagePage() {
               <TbPlus /> Add Project
             </Button>
           </Link>
+          <Link href="/auth/manage/leads/new" passHref>
+            <Button variant="secondary" size="xs">
+              <TbPlus /> Add Lead
+            </Button>
+          </Link>
           <Link href="/auth/manage/resume" passHref>
             <Button variant="secondary" size="xs">
               <TbCloudUpload /> Change Resume

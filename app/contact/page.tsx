@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
+    <section className="flex flex-col gap-16 px-4 py-12 md:gap-20 lg:gap-24">
       <div className="flex flex-col gap-6 md:gap-8">
         <Heading>Get in Touch</Heading>
         <p className="text-lg leading-relaxed text-muted-foreground">

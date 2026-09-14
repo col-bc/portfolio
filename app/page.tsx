@@ -179,7 +179,7 @@ export default async function Page() {
   const projects = await handleGetProjects();
   const projectData = projects.success ? projects.data : [];
   return (
-    <div className="flex flex-col gap-16 px-4 py-12 md:gap-24 lg:gap-32">
+    <div className="flex flex-col gap-16 px-4 py-12 md:gap-20 lg:gap-24">
       {/* --- HERO --- */}
       <section className="flex flex-col gap-6 text-sm leading-loose">
         <div className="flex items-center justify-between">
@@ -214,7 +214,7 @@ export default async function Page() {
             href="/resume"
             className={cn(
               buttonVariants({
-                className: 'px-4 shadow',
+                className: 'px-6 shadow',
                 size: 'lg',
                 variant: 'default',
               })
@@ -227,7 +227,7 @@ export default async function Page() {
             href="/contact"
             className={cn(
               buttonVariants({
-                className: 'px-4',
+                className: 'px-6',
                 size: 'lg',
                 variant: 'outline',
               })
@@ -294,7 +294,7 @@ export default async function Page() {
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <Card className="shadow-sm">
+          <Card className="shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbBrowser className="size-5" /> Front-End
@@ -312,7 +312,7 @@ export default async function Page() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm">
+          <Card className="shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbServer className="size-5" /> Back-End
@@ -330,7 +330,7 @@ export default async function Page() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm">
+          <Card className="shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbTools className="size-5" /> Infrastructure
@@ -348,7 +348,7 @@ export default async function Page() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm">
+          <Card className="shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                 <TbBriefcase className="size-5" /> Soft Skills
@@ -376,7 +376,7 @@ function SkillBadge({ skill }: { skill: Skill }) {
     <Badge
       key={skill.label}
       variant="secondary"
-      className="flex cursor-pointer items-center gap-2 px-3! py-1! text-sm! transition-transform hover:-translate-y-0.5 hover:scale-105 hover:shadow-sm"
+      className="flex cursor-pointer items-center gap-2 px-3! py-1! text-sm!"
     >
       <Avatar className="size-4">
         <AvatarImage src={skill.icon} alt={skill.label} />

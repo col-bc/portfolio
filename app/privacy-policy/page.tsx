@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
   return (
-    <section className="flex flex-col items-start gap-8 px-4 py-8">
+    <section className="flex flex-col gap-16 px-4 py-12 md:gap-20 lg:gap-24">
       <Heading>Privacy Policy</Heading>
       <p className="leading-relaxed text-pretty text-foreground">
         <strong className="font-bold">Effective Date:</strong> August 13, 2026

@@ -64,7 +64,9 @@ export default function JobForm({ job }: { job: Job | null }) {
     job?.isCurrent || false
   );
   const [skills, setSkills] = React.useState<string>(job?.skills || '');
-  const [visible, setVisible] = React.useState<boolean>(job?.visible || true);
+  const [visible, setVisible] = React.useState<boolean>(
+    Boolean(job?.visible || true)
+  );
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -169,6 +171,23 @@ export default function JobForm({ job }: { job: Job | null }) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [alert]);
+
+  React.useEffect(() => {
+    if (isEditMode && job) {
+      const initData = () => {
+        setTitle(job.title || '');
+        setCompany(job.company || '');
+        setLocation(job.location || '');
+        setDescription(job.description || '');
+        setStartDate(job.startDate || '');
+        setEndDate(job.endDate || '');
+        setIsCurrentRole(Boolean(job.isCurrent));
+        setSkills(job.skills || '');
+        setVisible(Boolean(job.visible));
+      };
+      initData();
+    }
+  }, [isEditMode, job]);
 
   return (
     <form

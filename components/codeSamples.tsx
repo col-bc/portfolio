@@ -7,8 +7,8 @@ import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
 import {
-  vs,
-  vscDarkPlus,
+    vs,
+    vscDarkPlus,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
 
@@ -36,7 +36,7 @@ const CodeHighlighter = React.memo((sample: CodeSample) => {
   );
 
   return (
-    <div className="mb-1 flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background shadow-sm!">
+    <div className="mb-1 flex w-full flex-col gap-0! overflow-auto rounded-lg border border-border bg-background shadow">
       <div className="flex w-full items-center gap-2 rounded-t-lg border-b border-border bg-muted px-4 py-2 font-semibold text-foreground">
         {sample.icon && (sample.icon as React.ReactNode)}
         <span className="font-mono">{sample.fileName}</span>

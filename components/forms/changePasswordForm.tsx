@@ -75,7 +75,7 @@ export default function ChangePasswordForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md shadow">
         <CardHeader>
           <CardTitle>Update Your Password</CardTitle>
         </CardHeader>
@@ -158,7 +158,7 @@ export default function ChangePasswordForm() {
           />
         </CardContent>
         <CardFooter>
-          <Button type="submit" disabled={!allowSubmit}>
+          <Button type="submit">
             <TbDeviceFloppy />
             Change Password
           </Button>
