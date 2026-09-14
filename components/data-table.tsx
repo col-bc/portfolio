@@ -18,7 +18,8 @@ import { features } from './table-features';
 export function DataTable<TData extends RowData>({
   columns,
   data,
-}: DataTableProps<TData>) {
+  className,
+}: DataTableProps<TData> & { className?: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useTable({
@@ -32,7 +33,9 @@ export function DataTable<TData extends RowData>({
   });
 
   return (
-    <div className="w-full overflow-hidden rounded-md border shadow">
+    <div
+      className={`w-full overflow-hidden rounded-md border shadow ${className || ''}`}
+    >
       <Table>
         <TableHeader className="bg-muted text-muted-foreground">
           {table.getHeaderGroups().map((headerGroup) => (

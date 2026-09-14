@@ -2,16 +2,14 @@ import { APIKey } from '@/prisma/generated/client';
 import argon2 from 'argon2';
 import crypto from 'crypto';
 import 'server-only';
-import { getCurrentUser } from '../auth/sessionActions';
 import { prisma } from '../prisma';
 
-export async function createApiKey(data: {
-  name: string;
-}): Promise<{ key: string; object: APIKey }> {
-  const user = await getCurrentUser();
-  if (!user) {
-    throw new Error('User not authenticated');
+export async function createApiKey(
+  userId: string,
+  data: {
+    name: string;
   }
+): Promise<{ secret: string; object: APIKey }> {
   const key = crypto.randomBytes(32).toString('hex');
   const keyHash = await argon2.hash(key);
   const keyHint = key.slice(0, 4);
@@ -22,21 +20,17 @@ export async function createApiKey(data: {
       keyHash,
       keyHint,
       enabled: true,
-      userId: user.id,
+      userId: userId,
     },
   });
 
-  return { key, object };
+  return { secret: key, object };
 }
 
-export async function getApiKeys(): Promise<APIKey[]> {
-  const user = await getCurrentUser();
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
+export async function getApiKeys(userId: string): Promise<APIKey[]> {
   return prisma.aPIKey.findMany({
     where: {
-      userId: user.id,
+      userId: userId,
     },
   });
 }

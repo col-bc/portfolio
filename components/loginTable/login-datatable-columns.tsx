@@ -47,7 +47,7 @@ export const columns = columnHelper.columns([
   columnHelper.accessor('success', {
     header: 'Status',
     cell: (info) => (
-      <Badge variant="outline">
+      <Badge variant="secondary">
         {info.getValue() ? <TbCircleCheck className="mr-2" /> : null}
         {info.getValue() ? 'Success' : 'Failure'}
       </Badge>
