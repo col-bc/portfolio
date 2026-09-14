@@ -18,7 +18,8 @@ import { features } from './table-features';
 export function DataTable<TData extends RowData>({
   columns,
   data,
-}: DataTableProps<TData>) {
+  className,
+}: DataTableProps<TData> & { className?: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useTable({

@@ -5,10 +5,10 @@ import { cn } from '@/lib/util/utils';
 const headingVariants = cva('font-heading font-bold tracking-tight', {
   variants: {
     size: {
-      subSub: 'text-xl md:text-2xl',
-      sub: 'text-2xl md:text-3xl',
+      subSub: 'text-lg md:text-xl',
+      sub: 'text-xl md:text-2xl',
       default:
-        'text-4xl leading-tight font-black! tracking-tighter md:text-5xl',
+        'text-3xl leading-tight font-black! tracking-tighter md:text-4xl',
     },
   },
   defaultVariants: {

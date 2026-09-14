@@ -13,10 +13,6 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-  images: {
-    domains: ['example.com'], // Replace with your image domains
-  },
-
   turbopack: {
     rules: {
       '*.svg': {

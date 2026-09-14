@@ -8,7 +8,7 @@ import { getLeads } from '@/lib/lead/leadDAL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { unauthorized } from 'next/navigation';
-import { TbCloudUpload, TbPlus } from 'react-icons/tb';
+import { TbCloudUpload, TbPlus, TbSettings } from 'react-icons/tb';
 
 export const metadata: Metadata = {
   title: 'Manage Site',
@@ -52,6 +52,11 @@ export default async function ManagePage() {
           <Link href="/auth/manage/resume" passHref>
             <Button variant="secondary" size="xs">
               <TbCloudUpload /> Change Resume
+            </Button>
+          </Link>
+          <Link href="/auth/manage/settings" passHref>
+            <Button variant="secondary" size="xs">
+              <TbSettings /> Manage Settings
             </Button>
           </Link>
         </div>
