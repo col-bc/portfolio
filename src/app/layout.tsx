@@ -1,4 +1,4 @@
-import { Fira_Code, IBM_Plex_Sans, Roboto_Flex } from 'next/font/google';
+import { Fira_Code, IBM_Plex_Sans, Inter } from 'next/font/google';
 
 import Footer from '@/components/footer';
 import Navigation from '@/components/navigation';
@@ -9,12 +9,12 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Metadata } from 'next';
 import './globals.css';
 
-const redHatDisplay = IBM_Plex_Sans({
+const headingFont = IBM_Plex_Sans({
   subsets: ['latin'],
   variable: '--font-heading',
 });
 
-const roboto = Roboto_Flex({ subsets: ['latin'], variable: '--font-sans' });
+const bodyFont = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const monoFont = Fira_Code({
   subsets: ['latin'],
@@ -83,9 +83,9 @@ export default async function RootLayout({
         'antialiased',
         monoFont.variable,
         'font-mono',
-        redHatDisplay.variable,
+        headingFont.variable,
         'font-heading',
-        roboto.variable,
+        bodyFont.variable,
         'font-body'
       )}
     >

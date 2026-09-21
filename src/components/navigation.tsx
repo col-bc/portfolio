@@ -75,7 +75,7 @@ export default function Navigation({ user }: { user: User | null }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div className="relative">
       <header className="bg-background">
         <div className="container mx-auto flex max-w-5xl gap-2.5 px-4 py-2.5">
           <div className="mr-auto flex max-w-80 flex-1 flex-col">
@@ -112,7 +112,7 @@ export default function Navigation({ user }: { user: User | null }) {
         </div>
       </header>
 
-      <div className="sticky top-0 z-50 w-full border-y border-muted bg-muted">
+      <div className="w-full border-y border-muted">
         <nav className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-1.5">
           {/* Desktop Links */}
           <div className="hidden flex-1 gap-2 md:flex">
@@ -250,7 +250,7 @@ export default function Navigation({ user }: { user: User | null }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 w-full px-4 pt-2 pb-4 md:hidden"
+              className="absolute top-full left-0 z-50! w-full px-4 pt-2 pb-4 md:hidden"
             >
               <div className="flex w-full flex-col gap-1 rounded-lg border border-border bg-background p-4 shadow">
                 <LinkList onNavigate={() => setIsOpen(false)} />

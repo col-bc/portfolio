@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-muted/40">
+    <footer className="bg-muted">
       <div className="container mx-auto max-w-5xl px-4 py-6 text-sm text-muted-foreground">
         <div className="grid grid-cols-1 items-center gap-2 sm:gap-4 md:grid-cols-3">
           <div className="md:col-span-2 md:text-left">
