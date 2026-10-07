@@ -27,12 +27,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { createSuperuser } from '@/lib/auth/sessionActions';
 import { AlertFeedback } from '@/types';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { TbCircleXFilled, TbRotate, TbUserPlus } from 'react-icons/tb';
-import { createSuperuser } from './session';
 
 export default function InitUserForm() {
   const router = useRouter();

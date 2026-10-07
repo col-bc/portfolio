@@ -3,9 +3,9 @@
 import { Job } from '@/prisma/generated/client';
 import { ActionState } from '@/types';
 import { getCurrentUser } from '../auth/sessionActions';
-import createJob, { deleteJob, getJobs, updateJob } from '../job/jobDAL';
+import createJob, { deleteJob, updateJob } from '../job/jobDAL';
 
-export async function handleDeleteJob(
+export async function deleteJobAction(
   jobId: string
 ): Promise<ActionState<void>> {
   const userStatus = await getCurrentUser();
@@ -18,18 +18,18 @@ export async function handleDeleteJob(
   }
 
   try {
-  const success = await deleteJob(jobId);
-  if (!success) {
+    const success = await deleteJob(jobId);
+    if (!success) {
+      return {
+        success: false,
+        error: 'Failed to delete job.',
+        type: 'UNKNOWN',
+      };
+    }
     return {
-      success: false,
-      error: 'Failed to delete job.',
-      type: 'UNKNOWN',
+      success: true,
+      data: undefined,
     };
-  }
-  return {
-    success: true,
-    data: undefined,
-  };
   } catch (error) {
     console.warn('Error deleting job:', error);
     return {
@@ -40,7 +40,7 @@ export async function handleDeleteJob(
   }
 }
 
-export async function handleCreateJob(
+export async function createJobAction(
   formData: FormData
 ): Promise<ActionState<Job>> {
   const userStatus = await getCurrentUser();
@@ -92,7 +92,7 @@ export async function handleCreateJob(
   }
 }
 
-export async function handleUpdateJob(
+export async function updateJobAction(
   jobId: string,
   formData: FormData
 ): Promise<ActionState<Job>> {
@@ -140,23 +140,6 @@ export async function handleUpdateJob(
     return {
       success: false,
       error: 'Failed to update job.',
-      type: 'UNKNOWN',
-    };
-  }
-}
-
-export async function handleGetJobs(): Promise<ActionState<Job[]>> {
-  try {
-    const jobs = await getJobs();
-    return {
-      success: true,
-      data: jobs,
-    };
-  } catch (error) {
-    console.warn('Error fetching jobs:', error);
-    return {
-      success: false,
-      error: 'Failed to fetch jobs.',
       type: 'UNKNOWN',
     };
   }

@@ -53,7 +53,7 @@ const initialMessages: ChatMessage[] = [
     parts: [
       {
         type: 'text',
-        text: 'Hi there! I am your interactive resume assistant. I can help you answer questions about work experience, education, and how these skills translate to different roles. Ask a question to get started.',
+        text: "Hi there! I am an interactive resume assistant. I can help you answer questions about Colby's work experience, education, and how these skills translate to different roles. Ask a question to get started.",
       },
       { type: 'data-timestamp', data: new Date().toISOString() },
     ],
@@ -200,7 +200,7 @@ const MessageAnimated: React.FC<{ message: ChatMessage }> = ({ message }) => {
             <span className="size-2 animate-bounce rounded-full bg-primary/80 delay-200"></span>
           </div>
         ) : (
-          <div className="prose prose-sm max-w-none text-pretty text-foreground dark:prose-invert prose-p:mb-2 prose-p:leading-relaxed prose-ul:my-2 prose-li:my-1">
+          <div className="prose prose-sm dark:prose-invert prose-p:mb-2 prose-p:leading-relaxed prose-ul:my-2 prose-li:my-1 max-w-none text-pretty text-foreground">
             <ReactMarkdown
               skipHtml={true}
               remarkPlugins={[remarkGfm, remarkBreaks]}

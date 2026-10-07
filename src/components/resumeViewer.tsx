@@ -66,7 +66,7 @@ export default function ResumeViewer({
         </EmptyMedia>
         <EmptyTitle>No Resume Uploaded</EmptyTitle>
         <EmptyDescription>
-          When you upload your resume, it will be displayed here.
+          When you upload a resume, it will be displayed here.
         </EmptyDescription>
       </Empty>
     );

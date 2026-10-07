@@ -2,21 +2,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { handleGetJobs } from '@/lib/job/jobActions';
+import { getJobs } from '@/lib/job/jobDAL';
 import { cn, duration, formatDate } from '@/lib/util/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -27,11 +27,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const jobs = await handleGetJobs();
-  const sortedJobs = jobs.success
-    ? jobs.data
-        .filter((job) => job.visible)
-        .sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
+  const jobs = await getJobs();
+  const sortedJobs = jobs
+    ? jobs.filter((job) => job.visible).sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
     : [];
   return (
     <div className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
@@ -255,7 +253,7 @@ export default async function AboutPage() {
             <CardDescription>
               <div className="flex flex-row">
                 <p className="text-sm text-muted-foreground">
-                  Completed August - September, 2023
+                  Completed August - September, 2018
                 </p>
               </div>
             </CardDescription>

@@ -1,42 +1,46 @@
 'use server';
 
+import { createPasswordHash, verifyPasswordHash } from '@/lib/util/crypto';
 import { User } from '@/prisma/generated/client';
 import { ActionState } from '@/types';
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import * as OTPAuth from 'otpauth';
-import { cache } from 'react';
+import 'server-only';
 import { UAParser } from 'ua-parser-js';
+import { prisma } from '../prisma';
 import { getUser } from '../user/userDAL';
-import { logAuthAttempt } from './loginAttemptDAL';
-import {
-  AuthAttempt,
-  authenticate,
-  getSessionToken,
-  issueJWT,
-  verifyJWT,
-  verifyTurnstileToken,
-} from './session';
+import { issueJWT, verifyJWT, verifyTurnstileToken } from '../util/auth.util';
+import { logAuthAttempt } from './loginAttemptActions';
+import type { AuthAttempt } from './session';
 
-/*** Retrieves the current authenticated user based on the session token in the cookies */
-export const getCurrentUser = cache(
-  async function getCurrentUser(): Promise<User | null> {
-    const sessionToken = await getSessionToken();
-    if (!sessionToken) {
-      return null;
-    }
-    const payload = await verifyJWT(sessionToken);
-    if (!payload || !payload.success) {
-      return null;
-    }
-    const userId = payload.data.sub;
-    if (!userId || typeof userId !== 'string') {
-      return null;
-    }
-    const user = await getUser(userId);
-    return user;
+export async function createSuperuser(
+  username: string,
+  password: string,
+  turnstileToken: string
+): Promise<{ success: boolean; user?: User }> {
+  const userCount = await prisma.user.count();
+  if (userCount > 0) {
+    return { success: false };
   }
-);
+
+  const tsStatus = await verifyTurnstileToken(turnstileToken);
+  if (!tsStatus) {
+    return {
+      success: false,
+    };
+  }
+
+  const passwordHash = await createPasswordHash(password);
+  const user = await prisma.user.create({
+    data: {
+      username,
+      passwordHash,
+      enabled: true,
+    },
+  });
+  return { success: true, user };
+}
 
 /**
  * Handles an authentication attempt by verifying the Turnstile token and authenticating the admin user
@@ -73,61 +77,72 @@ export async function login(data: AuthAttempt): Promise<
   }
 
   // Authenticate the user credentials
-  const user = await authenticate(data);
-  if (user) {
-    const headerContent = await headers();
-    const rawUserAgent = headerContent.get('user-agent') || '';
-    const ipAddress = headerContent.get('x-forwarded-for') || '';
+  const user = await prisma.user.findUnique({
+    where: { username: data.username },
+  });
+  if (!user) {
+    return {
+      success: false,
+      error: 'Invalid username or password.',
+      type: 'UNAUTHORIZED',
+    };
+  }
 
-    const parser = new UAParser(rawUserAgent);
-    const parsedUA = parser.getResult();
+  const validLogin = await verifyPasswordHash(user.passwordHash, data.password);
+  if (!user.enabled || !validLogin) {
+    return {
+      success: false,
+      error: 'Invalid username or password.',
+      type: 'UNAUTHORIZED',
+    };
+  }
 
-    await logAuthAttempt({
-      user,
-      success: true,
-      ipAddress: ipAddress,
-      userAgent: {
-        browser:
-          `${parsedUA.browser.name || 'Unknown'} ${parsedUA.browser.version || ''}`.trim(),
-        device: parsedUA.device.model || parsedUA.device.type || 'Desktop',
-        os: `${parsedUA.os.name || 'Unknown'} ${parsedUA.os.version || ''}`.trim(),
-      },
-    });
+  const headerContent = await headers();
+  const rawUserAgent = headerContent.get('user-agent') || '';
+  const ipAddress = headerContent.get('x-forwarded-for') || '';
 
-    if (user.twoFactorEnabled) {
-      // Issue JWT for the TOTP session
-      const jwt = await issueJWT(user, '3m');
-      (await cookies()).set('totp_session', jwt, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 60 * 3, // 3 minutes
-      });
-      return {
-        success: true,
-        data: {
-          twoFactorEnabled: true,
-        },
-      };
-    }
-    // Issue JWT for the authenticated admin session
-    const jwt = await issueJWT(user, '2h');
-    (await cookies()).set('admin_session', jwt, {
+  const parser = new UAParser(rawUserAgent);
+  const parsedUA = parser.getResult();
+
+  await logAuthAttempt({
+    user,
+    success: true,
+    ipAddress: ipAddress,
+    userAgent: {
+      browser:
+        `${parsedUA.browser.name || 'Unknown'} ${parsedUA.browser.version || ''}`.trim(),
+      device: parsedUA.device.model || parsedUA.device.type || 'Desktop',
+      os: `${parsedUA.os.name || 'Unknown'} ${parsedUA.os.version || ''}`.trim(),
+    },
+  });
+
+  if (user.twoFactorEnabled) {
+    // Issue JWT for the TOTP session
+    const jwt = await issueJWT(user, '3m');
+    (await cookies()).set('totp_session', jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 60 * 2, // 2 hours
+      maxAge: 60 * 3, // 3 minutes
     });
-    return { success: true, data: { twoFactorEnabled: false } };
+    return {
+      success: true,
+      data: {
+        twoFactorEnabled: true,
+      },
+    };
   }
-
-  return {
-    success: false,
-    error: 'Cannot login with provided credentials. Please try again.',
-    type: 'UNAUTHORIZED',
-  };
+  // Issue JWT for the authenticated admin session
+  const jwt = await issueJWT(user, '2h');
+  (await cookies()).set('admin_session', jwt, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 60 * 60 * 2, // 2 hours
+  });
+  return { success: true, data: { twoFactorEnabled: false } };
 }
 
 /**

@@ -1,6 +1,6 @@
 'use client';
 
-import InitUserForm from '@/lib/auth/initUserForm';
+import InitUserForm from '@/components/forms/initUserForm';
 import { permanentRedirect } from 'next/navigation';
 import { TbTools } from 'react-icons/tb';
 

@@ -5,8 +5,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { verifySession } from '@/lib/auth/session';
-import { getCurrentUser, login, verifyOtp } from '@/lib/auth/sessionActions';
+import { getCurrentUser, verifySession } from '@/lib/auth/session';
+import { login, verifyOtp } from '@/lib/auth/sessionActions';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

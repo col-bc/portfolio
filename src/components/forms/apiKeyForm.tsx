@@ -1,7 +1,7 @@
 'use client';
 
-import { handleCreateApiKey } from '@/lib/api/apiActions.';
-import { APIKey } from '@/prisma/generated/client';
+import { createApiKey } from '@/lib/api/apiActions.';
+import { APIKey, User } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
 import React from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
@@ -32,10 +32,12 @@ function ApiKeyForm({
   apiKey,
   open,
   onOpenChange,
+  user,
 }: {
   apiKey: APIKey | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  user: User;
 }) {
   const [alert, setAlert] = React.useState<AlertFeedback | null>(null);
   const [keyId, setKeyId] = React.useState(apiKey?.id || '');
@@ -59,7 +61,7 @@ function ApiKeyForm({
       });
       return;
     }
-    const result = await handleCreateApiKey({ name });
+    const result = await createApiKey(user.id, { name });
     if (!result.success) {
       setAlert({
         type: 'ERROR',
@@ -69,10 +71,10 @@ function ApiKeyForm({
       setGeneratedKey(null);
       return;
     } else {
-      setGeneratedKey(result.data?.token);
-      setKeyId(result.data?.apiKey?.id || '');
-      setKeyHint(result.data?.apiKey?.keyHint || '');
-      setEnabled(result.data?.apiKey?.enabled || true);
+      setGeneratedKey(result.data?.secret);
+      setKeyId(result.data?.object?.id || '');
+      setKeyHint(result.data?.object?.keyHint || '');
+      setEnabled(result.data?.object?.enabled || true);
       setAlert({
         type: 'SUCCESS',
         title: 'API Key Created',

@@ -3,12 +3,7 @@
 import { handleCreateLead } from '@/lib/lead/leadActions';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import React from 'react';
-import {
-  TbExclamationCircle,
-  TbInfoCircle,
-  TbMessageCheck,
-  TbSend2,
-} from 'react-icons/tb';
+import { TbExclamationCircle, TbMessageCheck, TbSend2 } from 'react-icons/tb';
 import { Alert } from '../ui/alert';
 import { Button } from '../ui/button';
 import { Field, FieldLabel, FieldRequiredIndicator } from '../ui/field';
@@ -63,7 +58,6 @@ export default function ContactForm() {
   const [name, setName] = React.useState<string>('');
   const [company, setCompany] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
-  const [countryCode, setCountryCode] = React.useState<string>('+1');
   const [phone, setPhone] = React.useState<string>('');
   const [isSubmitted, setIsSubmitted] = React.useState<boolean>(false);
   const [tsToken, setTsToken] = React.useState<string | null>(null);
@@ -120,7 +114,7 @@ export default function ContactForm() {
           </div>
           <h2 className="text-lg font-semibold">Thank you for reaching out!</h2>
           <p className="text-sm text-muted-foreground">
-            I appreciate your message and will get back to you as soon as
+            Thank you for your message.I will get back to you as soon as
             possible.
           </p>
           <Button variant="outline" onClick={resetForm}>
@@ -224,7 +218,7 @@ export default function ContactForm() {
             </FieldLabel>
             <Textarea
               id="message"
-              placeholder="Write your message here..."
+              placeholder="Ask your question here..."
               className="h-40 resize-y"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -245,9 +239,8 @@ export default function ContactForm() {
             }}
           />
           <p className="text-sm text-muted-foreground">
-            <TbInfoCircle className="mr-1 inline-block h-4 w-4" />
-            By submitting this form, you agree to the processing of your
-            personal data in accordance with our{' '}
+            By submitting this form, you agree to the processing of your data in
+            accordance with the{' '}
             <a href="/privacy-policy" className="text-primary hover:underline">
               Privacy Policy
             </a>

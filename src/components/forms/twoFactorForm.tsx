@@ -47,12 +47,12 @@ export default function TwoFactorForm({ user }: { user: User }) {
 
   React.useEffect(() => {
     async function loadData() {
-      const response = await getTotpSetupData();
-      if (response.success) {
-        setSetupData(response.data);
+      const { uri, secret } = await getTotpSetupData();
+      if (uri && secret) {
+        setSetupData({ uri, secret });
         setStep('setup');
       } else {
-        setError(response.error);
+        setError('Failed to load TOTP setup data.');
       }
     }
     loadData();
@@ -102,7 +102,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
         </CardHeader>
         <CardContent>
           <CardDescription className="font-semibold">
-            Two-Factor Authentication is enabled for your account.
+            Two-Factor Authentication is enabled.
           </CardDescription>
           <CardDescription>
             Store these backup codes in a safe place in case you loose access to

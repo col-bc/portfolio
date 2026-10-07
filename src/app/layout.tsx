@@ -22,7 +22,6 @@ const monoFont = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  // Using a template allows sub-pages to automatically format like "Projects | Colby Cooper"
   title: {
     default: 'Colby Cooper | Software Engineer',
     template: '%s | Colby Cooper',
@@ -44,22 +43,22 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'Colby Cooper',
-      url: 'https://your-domain.com', // Update with your actual URL
+      url: 'https://colbyc.com',
     },
   ],
   creator: 'Colby Cooper',
-  metadataBase: new URL('https://your-domain.com'), // Crucial for resolving relative image paths
+  metadataBase: new URL('https://colbyc.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://your-domain.com',
+    url: 'https://colbyc.com',
     title: 'Colby Cooper | Software Engineer',
     description:
       'Portfolio of Colby Cooper, a Software Engineering student and full-stack developer.',
     siteName: 'Colby Cooper Portfolio',
     images: [
       {
-        url: '/og-image.png', // Add a 1200x630 image to your public folder
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Colby Cooper - Software Engineer Portfolio',
