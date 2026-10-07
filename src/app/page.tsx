@@ -14,12 +14,12 @@ import { Lottie } from 'lottie-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import {
-    TbBriefcase,
-    TbBrowser,
-    TbFileText,
-    TbMessages,
-    TbServer,
-    TbTools,
+  TbBriefcase,
+  TbBrowser,
+  TbFileText,
+  TbMessages,
+  TbServer,
+  TbTools,
 } from 'react-icons/tb';
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ const skills: Skill[] = [
   {
     label: 'JavaScript',
     icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-    url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+    url: 'https://web.dev/javascript',
     category: 'front',
   },
   {
@@ -84,7 +84,7 @@ const skills: Skill[] = [
   },
   {
     label: 'Tailwind CSS',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg',
+    icon: '	https://devicons.io/devicons/icons/tailwind-icon.svg',
     url: 'https://tailwindcss.com/',
     category: 'front',
   },
@@ -185,7 +185,7 @@ export default async function Page() {
       {/* --- HERO --- */}
       <section className="flex flex-col gap-6 text-sm leading-loose">
         <div className="flex items-center justify-between">
-          <h1 className="font-heading max-w-2xl text-4xl! leading-16  font-bold tracking-tight md:text-5xl!">
+          <h1 className="max-w-2xl font-heading text-4xl! leading-16 font-bold tracking-tight md:text-5xl!">
             Investigator Turned Software Engineer
           </h1>
           <Lottie
@@ -250,18 +250,20 @@ export default async function Page() {
         </div>
 
         <div className="mt-4 flex w-full flex-col gap-8">
-          {projectData.filter(project => project.visible && project.featured).length > 0 ?
-            projectData.filter(project => project.visible && project.featured).map(
-              (project, index) => (
+          {projectData.filter((project) => project.visible && project.featured)
+            .length > 0 ? (
+            projectData
+              .filter((project) => project.visible && project.featured)
+              .map((project, index) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
                   reverse={index % 2 === 1}
                 />
-              )
-            )
-            : <Skeleton className="h-80 w-full" />
-          }
+              ))
+          ) : (
+            <Skeleton className="h-80 w-full" />
+          )}
         </div>
       </section>
 

@@ -6,7 +6,11 @@ export type ActionState<T> =
       success: false;
       error: string;
       type:
-        'UNAUTHORIZED' | 'VALIDATION' | 'UNKNOWN' | 'NOT_FOUND' | 'RATE_LIMIT';
+        | 'UNAUTHORIZED'
+        | 'VALIDATION'
+        | 'SERVER_ERROR'
+        | 'NOT_FOUND'
+        | 'RATE_LIMIT';
     };
 
 export type Message = {
@@ -26,4 +30,10 @@ export type AlertFeedback = {
 export interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
   data: TData[];
+}
+
+export interface UserAgentInterface {
+  browser: string;
+  os: string;
+  device: string;
 }

@@ -10,12 +10,11 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty';
 import { Heading } from '@/components/ui/heading';
-import { handleGetJobs } from '@/lib/job/jobActions';
+import { getJobs } from '@/lib/job/jobDAL';
 import { formatDate } from '@/lib/util/utils';
 import { Job } from '@/prisma/generated/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { unauthorized } from 'next/navigation';
 import {
   TbBriefcase,
   TbBuildingSkyscraper,
@@ -30,14 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ManageJobsPage() {
-  const jobsStatus = await handleGetJobs();
-  if (!jobsStatus.success) {
-    if (jobsStatus.type === 'UNAUTHORIZED') {
-      unauthorized();
-    }
-  }
-
-  const jobs = jobsStatus.success ? jobsStatus.data || [] : [];
+  const jobs = await getJobs();
   const currentJobs = jobs.filter((job) => job.isCurrent);
   const chronoJobs = [...jobs].sort(
     (a, b) => b.startDate.getTime() - a.startDate.getTime()
@@ -64,8 +56,8 @@ export default async function ManageJobsPage() {
             </EmptyMedia>
             <EmptyTitle>No Jobs</EmptyTitle>
             <EmptyDescription>
-              You haven&apos;t created any jobs yet. Get started by creating
-              your first job.
+              You haven&apos;t created any jobs yet. Get started by adding your
+              first job.
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent className="flex-row justify-center gap-2">

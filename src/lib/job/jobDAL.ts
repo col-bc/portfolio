@@ -2,38 +2,39 @@ import { prisma } from '@/lib/prisma';
 import { Job } from '@/prisma/generated/client';
 import fs from 'fs';
 import 'server-only';
+import { getCurrentUser } from '../auth/sessionActions';
 
 export default async function createJob(
   job: Omit<Job, 'id' | 'imageUrl' | 'createdAt' | 'updatedAt'>,
   file: File | null
 ): Promise<Job> {
   try {
-  const newJob = await prisma.job.create({
-    data: {
-      ...job,
-      imageUrl: file ? await saveFileToDisk(file) : null,
-    },
-  });
+    const newJob = await prisma.job.create({
+      data: {
+        ...job,
+        imageUrl: file ? await saveFileToDisk(file) : null,
+      },
+    });
 
-  return newJob;
-} catch (error) {
-  console.error('Error creating job:', error);
-  throw error;
-}
+    return newJob;
+  } catch (error) {
+    console.warn('Error creating job:', error);
+    throw error;
+  }
 }
 
 export async function getJobs(): Promise<Job[]> {
   try {
-  const jobs = await prisma.job.findMany({
-    orderBy: {
-      startDate: 'desc',
-    },
-  });
+    const jobs = await prisma.job.findMany({
+      orderBy: {
+        startDate: 'desc',
+      },
+    });
 
     return jobs;
   } catch (error) {
-    console.error('Error fetching jobs:', error);
-    throw error;
+    console.warn('Error fetching jobs:', error);
+    return [] as Job[];
   }
 }
 
@@ -48,7 +49,7 @@ export async function getJobById(id: string): Promise<Job | null> {
     return job;
   } catch (error) {
     console.error('Error fetching job by ID:', error);
-    throw error;
+    return null;
   }
 }
 
@@ -58,27 +59,27 @@ export async function updateJob(
   file: File | null
 ): Promise<Job> {
   try {
-  delete job.imageUrl;
-  let filePath: string | null = null;
-  if (file) {
-    filePath = await saveFileToDisk(file);
-    job.imageUrl = filePath;
-  }
+    delete job.imageUrl;
+    let filePath: string | null = null;
+    if (file) {
+      filePath = await saveFileToDisk(file);
+      job.imageUrl = filePath;
+    }
 
-  const updatedJob = await prisma.job.update({
-    where: {
-      id,
-    },
-    data: {
-      ...job,
-    },
-  });
+    const updatedJob = await prisma.job.update({
+      where: {
+        id,
+      },
+      data: {
+        ...job,
+      },
+    });
 
-  return updatedJob;
+    return updatedJob;
   } catch (error) {
     console.error('Error updating job:', error);
     throw error;
-  } 
+  }
 }
 
 export async function deleteJob(id: string): Promise<boolean> {
@@ -99,14 +100,27 @@ export async function deleteJob(id: string): Promise<boolean> {
 }
 
 async function saveFileToDisk(file: File): Promise<string> {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error('User not authenticated');
+  }
+  // Mitigate directory traversals
+  if (
+    file.name.indexOf('..') !== -1 ||
+    file.name.indexOf('/') !== -1 ||
+    file.name.indexOf('\\') !== -1
+  ) {
+    throw new Error('Invalid file name');
+  }
   try {
-  const filePath = `/uploads/${file.name}`;
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+    const secureName = `${Date.now()}-${file.name}`;
+    const filePath = `/uploads/${secureName}`;
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-  await fs.promises.writeFile(`public${filePath}`, buffer);
+    await fs.promises.writeFile(`public${filePath}`, buffer);
 
-  return filePath;
+    return filePath;
   } catch (error) {
     console.error('Error saving file to disk:', error);
     throw error;

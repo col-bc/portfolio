@@ -4,9 +4,9 @@ import ChangePasswordForm from '@/components/forms/changePasswordForm';
 import TwoFactorForm from '@/components/forms/twoFactorForm';
 import { columns } from '@/components/loginTable/login-datatable-columns';
 import { Heading } from '@/components/ui/heading';
-import { handleGetApiKeysForUser } from '@/lib/api/apiActions.';
-import { getAuthAttemptsForUser } from '@/lib/auth/loginAttemptDAL';
-import { getCurrentUser } from '@/lib/auth/sessionActions';
+import { getApiKeys } from '@/lib/api/apiDAL';
+import { getAuthAttemptsForUser } from '@/lib/auth/authAttemptDal';
+import { getCurrentUser } from '@/lib/auth/session';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -15,11 +15,9 @@ export const metadata: Metadata = {
 };
 
 export default async function SecurityPage() {
-  const loginAttempts = await getAuthAttemptsForUser();
   const user = await getCurrentUser();
-  const keys = await handleGetApiKeysForUser();
-
-  const keyData = keys.success ? keys.data : [];
+  const loginAttempts = await getAuthAttemptsForUser();
+  const keyData = await getApiKeys(user!.id);
 
   return (
     <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
