@@ -1,3 +1,5 @@
+import "server-only";
+
 import { User } from '@/prisma/generated/client';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
