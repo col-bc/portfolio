@@ -2,10 +2,13 @@
 
 import { Job } from '@/prisma/generated/client';
 import { ActionState } from '@/types';
-import { getCurrentUser } from '../auth/sessionActions';
-import createJob, { deleteJob, updateJob } from '../job/jobDAL';
+import 'server-only';
+import { getCurrentUser } from '../auth/session';
+import { prisma } from '../prisma';
+import { saveJobImage } from '../util/fileSystemService';
 
-export async function deleteJobAction(
+
+export async function deleteJob(
   jobId: string
 ): Promise<ActionState<void>> {
   const userStatus = await getCurrentUser();
@@ -18,12 +21,16 @@ export async function deleteJobAction(
   }
 
   try {
-    const success = await deleteJob(jobId);
-    if (!success) {
+    const deletedJob = await prisma.job.delete({
+      where: {
+        id: jobId
+      },
+    });
+    if (!deletedJob) {
       return {
         success: false,
         error: 'Failed to delete job.',
-        type: 'UNKNOWN',
+        type: 'SERVER_ERROR',
       };
     }
     return {
@@ -35,12 +42,12 @@ export async function deleteJobAction(
     return {
       success: false,
       error: 'Failed to delete job.',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
 }
 
-export async function createJobAction(
+export async function createJob(
   formData: FormData
 ): Promise<ActionState<Job>> {
   const userStatus = await getCurrentUser();
@@ -77,7 +84,13 @@ export async function createJobAction(
   };
 
   try {
-    const newJob = await createJob(jobData, file);
+    const newJob = await prisma.job.create({
+      data: {
+        ...jobData,
+        imageUrl: file ? await saveJobImage(file) : null,
+      },
+    });
+
     return {
       success: true,
       data: newJob,
@@ -87,12 +100,12 @@ export async function createJobAction(
     return {
       success: false,
       error: 'Failed to create job.',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
 }
 
-export async function updateJobAction(
+export async function updateJob(
   jobId: string,
   formData: FormData
 ): Promise<ActionState<Job>> {
@@ -117,7 +130,7 @@ export async function updateJobAction(
 
   const file = formData.get('file') as File | null;
 
-  const jobData = {
+  const jobData: Partial<Job> = {
     title,
     company,
     location,
@@ -130,7 +143,24 @@ export async function updateJobAction(
     visible,
   };
   try {
-    const updatedJob = await updateJob(jobId, jobData, file);
+    if (jobData.imageUrl) {
+        delete jobData.imageUrl;
+    }
+    let filePath: string | null = null;
+    if (file) {
+      filePath = await saveJobImage(file);
+      jobData.imageUrl = filePath;
+    }
+
+    const updatedJob = await prisma.job.update({
+      where: {
+        id: jobId,
+      },
+      data: {
+        ...jobData,
+      },
+    });
+
     return {
       success: true,
       data: updatedJob,
@@ -140,7 +170,7 @@ export async function updateJobAction(
     return {
       success: false,
       error: 'Failed to update job.',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
 }

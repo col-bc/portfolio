@@ -2,26 +2,27 @@
 
 import { ActionState } from '@/types';
 import { revalidatePath } from 'next/cache';
-import { getCurrentUser } from '../auth/sessionActions';
+import { getCurrentUser } from '../auth/session';
+import { prisma } from '../prisma';
 import { saveProjectImage } from '../util/fileSystemService';
-import {
-    createProject,
-    CreateProjectImageDTO,
-    deleteProject,
-    deleteProjectImage,
-    getProject,
-    getProjects,
-    ProjectWithImages,
-    updateProject,
-    UpdateProjectDTO,
-} from './projectDAL';
+import { getProject } from './projectDAL';
 
-/**
- * Handles the creation of a new project along with its associated images.
- * @param formData - The form data containing project details and image files.
- * @returns An ActionState object indicating success or failure, along with the created project data or an error message.
- */
-export async function handleCreateProject(formData: FormData) {
+export interface CreateProjectDTO {
+  title: string;
+  description: string;
+  tags: string;
+  visible?: boolean;
+  featured?: boolean;
+  link?: string | null;
+  repository?: string | null;
+}
+
+export interface CreateProjectImageDTO {
+  url: string;
+  altText: string;
+}
+
+export async function createProject(formData: FormData) {
   const userStatus = await getCurrentUser();
   if (!userStatus) {
     return {
@@ -51,71 +52,39 @@ export async function handleCreateProject(formData: FormData) {
       });
     }
 
-    const newProject = await createProject(
-      { title, description, tags, visible },
-      projectImagesDTO
-    );
+    const project = await prisma.project.create({
+      data: {
+        title,
+        description,
+        tags,
+        visible,
+        images: {
+          create: projectImagesDTO,
+        },
+      },
+      include: {
+        images: true,
+      },
+    });
 
-    return { success: true, data: newProject };
+    return { success: true, data: project };
   } catch (error) {
     console.warn('Failed to create project:', error);
     return { success: false, error: 'Failed to process project and images.' };
   }
 }
 
-export async function handleGetProjects(): Promise<
-  ActionState<ProjectWithImages[]>
-> {
-  try {
-    const projects = await getProjects();
-    return { success: true, data: projects };
-  } catch (error) {
-    console.warn('[ProjectActions] Failed to fetch projects:', error);
-    return {
-      success: false,
-      error: 'Failed to fetch projects',
-      type: 'UNKNOWN',
-    };
-  }
+export interface UpdateProjectDTO {
+  title: string;
+  description: string;
+  tags: string;
+  visible: boolean;
+  featured: boolean;
+  link?: string | null;
+  repository?: string | null;
 }
 
-/**
- * Handles fetching a project by its ID.
- * @param projectId - The ID of the project to fetch.
- * @returns An ActionState object indicating success or failure, along with the fetched project data or an error message.
- */
-export async function handleGetProjectById(
-  projectId: string
-): Promise<ActionState<ProjectWithImages | null>> {
-  const userStatus = await getCurrentUser();
-  if (!userStatus) {
-    return {
-      success: false,
-      error: 'User not authenticated.',
-      type: 'UNAUTHORIZED',
-    };
-  }
-  try {
-    const project = await getProject(projectId);
-    if (!project) {
-      return {
-        success: false,
-        error: 'Project not found',
-        type: 'NOT_FOUND',
-      };
-    }
-    return { success: true, data: project };
-  } catch (error) {
-    console.warn('[ProjectActions] Failed to fetch project by ID:', error);
-    return {
-      success: false,
-      error: 'Failed to fetch project by ID',
-      type: 'UNKNOWN',
-    };
-  }
-}
-
-export async function handleUpdateProject(formData: FormData) {
+export async function updateProject(formData: FormData) {
   const userStatus = await getCurrentUser();
   if (!userStatus) {
     return {
@@ -165,12 +134,23 @@ export async function handleUpdateProject(formData: FormData) {
       repository: repository || null,
     };
 
-    const updatedProject = await updateProject(
-      id,
-      projectDTO,
-      newImagesDTO,
-      imagesToDelete
-    );
+    const updatedProject = await prisma.project.update({
+      where: { id },
+      data: {
+        ...projectDTO,
+        images: {
+          // 1. Delete the images the user removed in the UI
+          deleteMany: {
+            id: { in: imagesToDelete },
+          },
+          // 2. Create and attach the newly uploaded images
+          create: newImagesDTO,
+        },
+      },
+      include: {
+        images: true,
+      },
+    });
 
     revalidatePath('/auth/manage/projects');
     revalidatePath(`/auth/manage/projects/${id}`);
@@ -186,7 +166,7 @@ export async function handleUpdateProject(formData: FormData) {
   }
 }
 
-export async function handleDeleteProject(
+export async function deleteProject(
   projectId: string
 ): Promise<ActionState<null>> {
   const userStatus = await getCurrentUser();
@@ -206,14 +186,19 @@ export async function handleDeleteProject(
         type: 'NOT_FOUND',
       };
     }
-    await deleteProject(projectId);
+    await prisma.project.delete({
+      where: { id: projectId },
+      include: {
+        images: true,
+      },
+    });
     return { success: true, data: null };
   } catch (error) {
     console.warn('[ProjectActions] Failed to delete project:', error);
     return {
       success: false,
       error: 'Failed to delete project',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
 }
@@ -239,14 +224,16 @@ export async function handleDeleteProjectImage(
         type: 'NOT_FOUND',
       };
     }
-    await deleteProjectImage(imageId);
+    await prisma.projectImage.delete({
+      where: { id: imageId },
+    });
     return { success: true, data: null };
   } catch (error) {
     console.warn('[ProjectActions] Failed to delete project image:', error);
     return {
       success: false,
       error: 'Failed to delete project image',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
 }
