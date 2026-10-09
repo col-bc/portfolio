@@ -1,10 +1,3 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
 export function formatTimestamp(timestamp: Date) {
   const dateString = timestamp.toLocaleString();
   const timeString = timestamp.toLocaleTimeString();
@@ -44,7 +37,7 @@ export function timeSinceTimestamp(timestamp: Date) {
   return `just now`;
 }
 
-export function duration(startDate: Date, endDate?: Date): string {
+export function durationFormat(startDate: Date, endDate?: Date): string {
   const start = new Date(startDate);
   const end = endDate ? new Date(endDate) : new Date();
 
@@ -58,4 +51,13 @@ export function duration(startDate: Date, endDate?: Date): string {
   } else {
     return `${years} years, ${months} months`;
   }
+}
+
+export function formatPhoneNumber(phoneNumber: string): string {
+  const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return phoneNumber;
 }

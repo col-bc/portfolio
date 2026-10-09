@@ -18,7 +18,7 @@ export const getJobs = cache(async (): Promise<Job[]> => {
   }
 });
 
-export const getJobById = cache(async (id: string): Promise<Job | null> =>   {
+export const getJobById = cache(async (id: string): Promise<Job | null> => {
   try {
     const job = await prisma.job.findUnique({
       where: {

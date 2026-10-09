@@ -1,7 +1,7 @@
 import ProjectCard from '@/components/projectCard';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
-import { handleGetProjects } from '@/lib/project/projectActions';
+import { getProjects } from '@/lib/project/projectDAL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbFolderCode, TbPlus } from 'react-icons/tb';
@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await handleGetProjects();
-
-  const projectData = projects.success ? projects.data : [];
+  const projects = await getProjects();
 
   return (
     <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
@@ -29,7 +27,7 @@ export default async function ProjectsPage() {
       </div>
 
       <div className="flex w-full flex-col gap-4 md:gap-6">
-        {projectData.length === 0 ? (
+        {projects.length === 0 ? (
           <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-dashed bg-muted p-8 text-center">
             <TbFolderCode className="h-12 w-12 text-muted-foreground" />
             <Heading size="subSub">No projects found</Heading>
@@ -39,7 +37,7 @@ export default async function ProjectsPage() {
             </p>
           </div>
         ) : (
-          projectData.map((project) => (
+          projects.map((project) => (
             <ProjectCard key={project.id} project={project} showActions />
           ))
         )}

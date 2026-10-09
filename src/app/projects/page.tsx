@@ -1,6 +1,6 @@
 import ProjectCard from '@/components/projectCard';
 import { Heading } from '@/components/ui/heading';
-import { handleGetProjects } from '@/lib/project/projectActions';
+import { getProjects } from '@/lib/project/projectDAL';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,8 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const projects = await handleGetProjects();
-  const projectData = projects.success ? projects.data : [];
+  const projects = await getProjects();
 
   return (
     <section className="flex flex-col gap-16 px-4 py-12 md:gap-20 lg:gap-24">
@@ -23,7 +22,7 @@ export default async function ProjectsPage() {
         </p>
       </div>
 
-      {projectData.map(
+      {projects.map(
         (project, index) =>
           project.visible && (
             <ProjectCard

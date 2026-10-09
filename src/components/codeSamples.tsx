@@ -47,7 +47,8 @@ const CodeHighlighter = React.memo((sample: CodeSample) => {
         <AsyncSyntaxHighlighter
           language={sample.language}
           style={style}
-          className="rounded-0! m-0! h-full max-h-150 w-full border-none!"
+          className="rounded-0! m-0! h-full max-h-150 w-full border-none! font-mono!"
+          codeTagProps={{ style: { fontFamily: 'inherit' } }}
         >
           {sample.code}
         </AsyncSyntaxHighlighter>

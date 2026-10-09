@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { verifyOtp } from '@/lib/auth/sessionActions';
-import { getTotpSetupData } from '@/lib/auth/twoFactor';
-import { handleSetTwoFactorEnabled } from '@/lib/user/userActions';
+import { setTwoFactorEnabled } from '@/lib/user/userActions';
 import { User } from '@/prisma/generated/client';
 import { QRCodeSVG } from 'qrcode.react';
 import React from 'react';
@@ -34,35 +33,24 @@ import { Field, FieldContent, FieldLabel } from '../ui/field';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '../ui/input-otp';
 import { Separator } from '../ui/separator';
 
-export default function TwoFactorForm({ user }: { user: User }) {
-  const [setupData, setSetupData] = React.useState<{
-    uri: string;
-    secret: string;
-  } | null>(null);
+export default function TwoFactorForm({
+  user,
+  setupData,
+}: {
+  user: User;
+  setupData: { uri: string; secret: string };
+}) {
   const [error, setError] = React.useState<string | null>(null);
   const [step, setStep] = React.useState<
     'loading' | 'setup' | 'confirm' | 'enabled'
   >(user.twoFactorEnabled ? 'enabled' : 'loading');
   const [otp, setOtp] = React.useState('');
 
-  React.useEffect(() => {
-    async function loadData() {
-      const { uri, secret } = await getTotpSetupData();
-      if (uri && secret) {
-        setSetupData({ uri, secret });
-        setStep('setup');
-      } else {
-        setError('Failed to load TOTP setup data.');
-      }
-    }
-    loadData();
-  }, []);
-
   const handleVerifyCode = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const status = await verifyOtp(otp, false);
     if (status.success) {
-      const status = await handleSetTwoFactorEnabled(true);
+      const status = await setTwoFactorEnabled(true);
       if (status.success) {
         setStep('enabled');
       }
@@ -72,7 +60,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
   };
 
   const handleDisableTwoFactor = async () => {
-    const status = await handleSetTwoFactorEnabled(false);
+    const status = await setTwoFactorEnabled(false);
     if (status.success) {
       setStep('setup');
     }
@@ -80,7 +68,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
 
   if (!setupData || !user)
     return (
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-lg shadow">
         <CardContent>
           <Spinner />
         </CardContent>
@@ -88,7 +76,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
     );
   if (user.twoFactorEnabled || step === 'enabled') {
     return (
-      <Card className="w-full max-w-md shadow">
+      <Card className="w-full max-w-lg shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Two-Factor Authentication</CardTitle>
@@ -139,7 +127,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
     );
   } else if (step === 'setup' && setupData) {
     return (
-      <Card className="w-full max-w-md shadow">
+      <Card className="w-full max-w-lg shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Two-Factor Authentication</CardTitle>
@@ -194,7 +182,7 @@ export default function TwoFactorForm({ user }: { user: User }) {
   } else if (step === 'confirm') {
     return (
       <form onSubmit={handleVerifyCode}>
-        <Card className="w-full max-w-md shadow">
+        <Card className="w-full max-w-lg shadow">
           <CardHeader>
             <CardTitle>Confirm Setup</CardTitle>
           </CardHeader>

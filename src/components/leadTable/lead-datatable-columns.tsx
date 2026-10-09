@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/lib/utils';
 import { type Lead } from '@/prisma/generated/client';
 import { createColumnHelper } from '@tanstack/react-table';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ const leadBadgeClasses = (status: string) => {
   const val = status.toLocaleLowerCase();
   return cn(
     'uppercase',
-    val==='unread' && 'text-primary bg-primary/10! border-primary!',
+    val === 'unread' && 'border-primary! bg-primary/10! text-primary',
     ['read', 'in-progress'].includes(val) && 'text-blue-600 dark:text-blue-400',
     val === 'follow-up' && 'text-yellow-600 dark:text-yellow-400',
     val === 'closed' && 'text-foreground'
@@ -87,14 +87,13 @@ export const leadColumns = columnHelper.columns([
               'ml-2 h-4 w-4',
               column.getIsSorted() === 'asc' ? 'rotate-180' : ''
             )}
-            />
+          />
         </Button>
       );
     },
     enableSorting: true,
     cell: (info) => (
       <Badge variant="outline" className={leadBadgeClasses(info.getValue())}>
-        
         {info.getValue()}
       </Badge>
     ),

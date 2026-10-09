@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/empty';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
-import { formatDate } from '@/lib/util/utils';
+import { cn, formatDate } from '@/lib/utils';
 import { Job } from '@/prisma/generated/client';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -75,9 +75,13 @@ export default async function ManageJobsPage() {
                 {currentJobs.length}
               </Badge>
             </div>
-            <div className="flex w-full flex-col gap-4">
-              {currentJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
+            <div className="flex w-full flex-col">
+              {currentJobs.map((job, idx) => (
+                <JobItem
+                  key={`current-${job.id}`}
+                  job={job}
+                  last={idx === currentJobs.length - 1}
+                />
               ))}
             </div>
           </div>
@@ -89,9 +93,13 @@ export default async function ManageJobsPage() {
                 {chronoJobs.length}
               </Badge>
             </div>
-            <div className="flex w-full flex-col gap-4">
-              {chronoJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
+            <div className="flex w-full flex-col">
+              {chronoJobs.map((job, idx) => (
+                <JobItem
+                  key={job.id}
+                  job={job}
+                  last={idx === chronoJobs.length - 1}
+                />
               ))}
             </div>
           </div>
@@ -101,14 +109,18 @@ export default async function ManageJobsPage() {
   );
 }
 
-function JobCard({ job }: { job: Job }) {
+function JobItem({ job, last }: { job: Job; last: boolean }) {
   return (
     <Link
-      key={job.id}
       href={`/auth/manage/jobs/${job.id}`}
-      className="flex flex-col gap-2 rounded-lg border p-4 transition-all hover:-translate-y-1 hover:bg-muted/40 hover:shadow"
+      className="flex flex-col gap-2 transition-all hover:bg-muted/20"
     >
-      <div className="flex w-full flex-col justify-between gap-1 md:flex-row md:items-center">
+      <div
+        className={cn(
+          'flex w-full flex-col justify-between gap-1 p-4 md:flex-row md:items-center',
+          !last && 'border-b border-border'
+        )}
+      >
         <Avatar className="mr-4 h-12 w-12 border-2 border-muted">
           <AvatarImage
             className="rounded-full object-cover"

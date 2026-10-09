@@ -1,5 +1,7 @@
 import LoginForm from '@/components/forms/loginForm';
+import { getCurrentUser } from '@/lib/auth/session';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { TbShieldLock } from 'react-icons/tb';
 
 export const metadata: Metadata = {
@@ -7,6 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AuthPage() {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect('/auth/manage');
+  }
+
   return (
     <section className="flex min-h-[75vh] flex-col items-center justify-center px-4 py-12">
       <div className="flex w-full max-w-md flex-col items-center gap-6">

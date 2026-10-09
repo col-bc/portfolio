@@ -4,7 +4,7 @@ import { Lead } from '@/prisma/generated/browser';
 import { ActionState } from '@/types';
 import { getCurrentUser } from '../auth/session';
 import { prisma } from '../prisma';
-import { verifyTurnstileToken } from '../util/auth.util';
+import { verifyTurnstileToken } from '../util/tokens';
 
 export async function createLead(
   data: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>,

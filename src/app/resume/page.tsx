@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
-import { getResume } from '@/lib/resume/resumeActions';
+import { getResume } from '@/lib/resume/resumeDAL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbCloudDown, TbRotate } from 'react-icons/tb';

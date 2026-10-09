@@ -3,7 +3,7 @@ import { leadColumns } from '@/components/leadTable/lead-datatable-columns';
 import LogoutButton from '@/components/logoutButton';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
-import { getCurrentUser } from '@/lib/auth/sessionActions';
+import { getCurrentUser } from '@/lib/auth/session';
 import { getJobs } from '@/lib/job/jobDAL';
 import { getLeads } from '@/lib/lead/leadDAL';
 import { Metadata } from 'next';

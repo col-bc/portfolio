@@ -1,13 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from 'cn';
 import * as React from 'react';
-
-import { cn } from '@/lib/utils';
-import { AlertFeedback } from '@/types';
-import {
-  TbCircleCheckFilled,
-  TbExclamationCircleFilled,
-  TbInfoCircleFilled,
-} from 'react-icons/tb';
+import { TbAlertCircleFilled } from 'react-icons/tb';
 
 const alertVariants = cva(
   "group/alert relative grid w-full gap-0.5 rounded-lg border px-4 py-3 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2.5 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4",
@@ -79,21 +73,16 @@ function AlertAction({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
-function AlertIcon({ type }: { type: AlertFeedback['type'] }) {
-  switch (type) {
-    case 'ERROR':
-      return (
-        <TbExclamationCircleFilled className="size-4 shrink-0 text-red-500!" />
-      );
-    case 'SUCCESS':
-      return (
-        <TbCircleCheckFilled className="size-4 shrink-0 text-green-500!" />
-      );
-    case 'INFO':
-      return <TbInfoCircleFilled className="size-4 shrink-0 text-blue-500!" />;
-    default:
-      return null;
-  }
+function AlertIcon(props: React.ComponentProps<typeof TbAlertCircleFilled>) {
+  const { className, ...rest } = props;
+
+  return (
+    <TbAlertCircleFilled
+      data-slot="alert-icon"
+      className={cn('absolute top-2.5 left-3', className)}
+      {...rest}
+    />
+  );
 }
 
 export { Alert, AlertAction, AlertDescription, AlertIcon, AlertTitle };

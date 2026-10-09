@@ -7,10 +7,7 @@ import { getCurrentUser } from '../auth/session';
 import { prisma } from '../prisma';
 import { saveJobImage } from '../util/fileSystemService';
 
-
-export async function deleteJob(
-  jobId: string
-): Promise<ActionState<void>> {
+export async function deleteJob(jobId: string): Promise<ActionState<void>> {
   const userStatus = await getCurrentUser();
   if (!userStatus) {
     return {
@@ -23,7 +20,7 @@ export async function deleteJob(
   try {
     const deletedJob = await prisma.job.delete({
       where: {
-        id: jobId
+        id: jobId,
       },
     });
     if (!deletedJob) {
@@ -47,9 +44,7 @@ export async function deleteJob(
   }
 }
 
-export async function createJob(
-  formData: FormData
-): Promise<ActionState<Job>> {
+export async function createJob(formData: FormData): Promise<ActionState<Job>> {
   const userStatus = await getCurrentUser();
   if (!userStatus) {
     return {
@@ -144,7 +139,7 @@ export async function updateJob(
   };
   try {
     if (jobData.imageUrl) {
-        delete jobData.imageUrl;
+      delete jobData.imageUrl;
     }
     let filePath: string | null = null;
     if (file) {

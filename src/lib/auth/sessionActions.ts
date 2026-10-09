@@ -10,7 +10,7 @@ import 'server-only';
 import { UAParser } from 'ua-parser-js';
 import { prisma } from '../prisma';
 import { getUser } from '../user/userDAL';
-import { issueJWT, verifyJWT, verifyTurnstileToken } from '../util/auth.util';
+import { issueJWT, verifyJWT, verifyTurnstileToken } from '../util/tokens';
 import { logAuthAttempt } from './loginAttemptActions';
 import type { AuthAttempt } from './session';
 

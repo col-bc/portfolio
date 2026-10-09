@@ -1,5 +1,4 @@
 // import animatedWave from '@/assets/lottie-wave.json';
-import animatedGlass from '@/assets/lottie-magnifying-glass.json';
 import CodeSamples from '@/components/codeSamples';
 import ProjectCard from '@/components/projectCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -8,9 +7,8 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
 import { Skeleton } from '@/components/ui/skeleton';
-import { handleGetProjects } from '@/lib/project/projectActions';
-import { cn } from '@/lib/util/utils';
-import { Lottie } from 'lottie-react';
+import { getProjects } from '@/lib/project/projectDAL';
+import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import {
@@ -177,23 +175,22 @@ const skills: Skill[] = [
 ];
 
 export default async function Page() {
-  const projects = await handleGetProjects();
-  const projectData = projects.success ? projects.data : [];
+  const projects = await getProjects();
 
   return (
-    <div className="flex flex-col gap-16 px-4 py-12 md:gap-20 lg:gap-24">
+    <div className="flex flex-col gap-16 px-4 py-12 md:gap-20 md:pb-20 lg:gap-24 lg:pb-24">
       {/* --- HERO --- */}
       <section className="flex flex-col gap-6 text-sm leading-loose">
         <div className="flex items-center justify-between">
-          <h1 className="max-w-2xl font-heading text-4xl! leading-16 font-bold tracking-tight md:text-5xl!">
+          <h1 className="font-heading text-4xl! font-bold tracking-tight md:text-5xl!">
             Investigator Turned Software Engineer
           </h1>
-          <Lottie
+          {/* <Lottie
             src={animatedGlass}
             autoplay
             loop
             className="hidden w-full max-w-32 sm:block"
-          />
+          /> */}
         </div>
         <h3 className="font-heading text-lg leading-relaxed font-medium tracking-tight text-foreground md:text-xl">
           I am a technical problem-solver who treats every operational
@@ -250,9 +247,9 @@ export default async function Page() {
         </div>
 
         <div className="mt-4 flex w-full flex-col gap-8">
-          {projectData.filter((project) => project.visible && project.featured)
+          {projects.filter((project) => project.visible && project.featured)
             .length > 0 ? (
-            projectData
+            projects
               .filter((project) => project.visible && project.featured)
               .map((project, index) => (
                 <ProjectCard

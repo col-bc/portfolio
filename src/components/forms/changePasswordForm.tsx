@@ -1,6 +1,6 @@
 'use client';
 
-import { handleChangePassword } from '@/lib/user/userActions';
+import { changePassword } from '@/lib/user/userActions';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import React from 'react';
 import { TbAlertCircleFilled, TbDeviceFloppy } from 'react-icons/tb';
@@ -39,11 +39,7 @@ export default function ChangePasswordForm() {
       setError('Please ensure all fields are correctly filled out.');
       return;
     }
-    const result = await handleChangePassword(
-      currentPassword,
-      newPassword,
-      tsToken
-    );
+    const result = await changePassword(currentPassword, newPassword, tsToken);
     if (!result.success) {
       setError(result.error || 'Failed to change password.');
     } else {
@@ -75,7 +71,7 @@ export default function ChangePasswordForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Card className="w-full max-w-md shadow">
+      <Card className="w-full max-w-lg shadow">
         <CardHeader>
           <CardTitle>Update Your Password</CardTitle>
         </CardHeader>
