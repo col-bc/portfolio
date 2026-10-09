@@ -6,7 +6,7 @@ import {
   updateProject,
 } from '@/lib/project/projectActions';
 import { ProjectWithImages } from '@/lib/project/projectDAL';
-import { formatTimestamp } from '@/lib/utils';
+import { formatTimestamp } from '@/lib/util/formats';
 import { ProjectImage } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
 import Image from 'next/image';

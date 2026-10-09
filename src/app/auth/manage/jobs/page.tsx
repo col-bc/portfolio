@@ -11,8 +11,9 @@ import {
 } from '@/components/ui/empty';
 import { Heading } from '@/components/ui/heading';
 import { getJobs } from '@/lib/job/jobDAL';
-import { cn, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/util/formats';
 import { Job } from '@/prisma/generated/client';
+import { cn } from 'cn';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import {

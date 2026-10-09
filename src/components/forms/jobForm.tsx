@@ -1,9 +1,10 @@
 'use client';
 
 import { createJob, deleteJob, updateJob } from '@/lib/job/jobActions';
-import { cn, formatTimestamp } from '@/lib/utils';
+import { formatTimestamp } from '@/lib/util/formats';
 import { Job } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
+import { cn } from 'cn';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
