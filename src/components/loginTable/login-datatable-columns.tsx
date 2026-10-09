@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/lib/utils';
 import { type LoginAttempt } from '@/prisma/generated/client';
 import { createColumnHelper } from '@tanstack/react-table';
 import {

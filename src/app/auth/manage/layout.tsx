@@ -1,6 +1,5 @@
 import { Toaster } from '@/components/ui/toast';
-import { verifySession } from '@/lib/auth/session';
-import { getCurrentUser } from '@/lib/auth/sessionActions';
+import { getCurrentUser, verifySession } from '@/lib/auth/session';
 import { unauthorized } from 'next/navigation';
 
 export default async function ManageLayout({

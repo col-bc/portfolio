@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/lib/utils';
 import { User } from '@/prisma/generated/client';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
@@ -222,9 +222,12 @@ export default function Navigation({ user }: { user: User | null }) {
             <ThemeToggleButton />
             <Link
               href="/contact"
-              className={buttonVariants({
-                variant: 'outline',
-              })}
+              className={cn(
+                buttonVariants({
+                  size: 'sm',
+                  variant: 'outline',
+                })
+              )}
             >
               <TbMessages />
               Get in Touch

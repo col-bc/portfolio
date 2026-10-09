@@ -1,14 +1,20 @@
 'use client';
 
-import { APIKey } from '@/prisma/generated/client';
+import { APIKey, User } from '@/prisma/generated/client';
 import React from 'react';
 import { TbKey } from 'react-icons/tb';
-import { ApiKeyForm } from './forms/apiKeyForm';
+import { ApiKeyForm, ApiKeyList } from './forms/apiKeyForm';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Empty, EmptyDescription, EmptyMedia, EmptyTitle } from './ui/empty';
 
-export default function ApiKeyWrapper({ keys }: { keys: APIKey[] }) {
+export default function ApiKeyWrapper({
+  keys,
+  user,
+}: {
+  keys: APIKey[];
+  user: User;
+}) {
   const [showCreateKeyDialog, setShowCreateKeyDialog] = React.useState(false);
   const [currentKey, setCurrentKey] = React.useState<APIKey | null>(null);
 
@@ -19,7 +25,7 @@ export default function ApiKeyWrapper({ keys }: { keys: APIKey[] }) {
 
   return (
     <>
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-lg shadow">
         <CardHeader>
           <CardTitle>Manage API Keys</CardTitle>
         </CardHeader>
@@ -42,17 +48,14 @@ export default function ApiKeyWrapper({ keys }: { keys: APIKey[] }) {
               </Button>
             </Empty>
           ) : (
-            <ul>
-              {keys.map((key) => (
-                <li key={key.id}>{key.name}</li>
-              ))}
-            </ul>
+            <ApiKeyList keys={keys} user={user} />
           )}
         </CardContent>
       </Card>
 
       <ApiKeyForm
         open={showCreateKeyDialog}
+        user={user}
         onOpenChange={(open) => setShowCreateKeyDialog(open)}
         apiKey={null}
       />

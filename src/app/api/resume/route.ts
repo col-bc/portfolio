@@ -1,4 +1,4 @@
-import { getResume } from '@/lib/resume/resumeActions';
+import { getResume } from '@/lib/resume/resumeDAL';
 
 export async function GET() {
   const resumeFile = await getResume();

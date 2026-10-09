@@ -1,12 +1,14 @@
 'use server';
 
 import { ActionState } from '@/types';
-import { verifyTurnstileToken } from '../auth/session';
-import { getCurrentUser } from '../auth/sessionActions';
+import 'server-only';
+import { getCurrentUser } from '../auth/session';
+import { prisma } from '../prisma';
 import { createPasswordHash, verifyPasswordHash } from '../util/crypto';
-import { setTwoFactorEnabled, updateUserPassword } from './userDAL';
+import { verifyTurnstileToken } from '../util/tokens';
 
-export async function handleChangePassword(
+/** Change a password for an authenticated user */
+export async function changePassword(
   currentPassword: string,
   newPassword: string,
   turnstileToken: string
@@ -60,10 +62,13 @@ export async function handleChangePassword(
       type: 'VALIDATION',
     };
   }
-  // Proceed with changing the password
+
   const newPasswordHash = await createPasswordHash(newPassword);
-  const status = await updateUserPassword(user.id, newPasswordHash);
-  if (status) {
+  const newUser = await prisma.user.update({
+    where: { id: user.id },
+    data: { passwordHash: newPasswordHash },
+  });
+  if (newUser && newUser.passwordHash === newPasswordHash) {
     return { success: true, data: true };
   } else {
     return {
@@ -74,7 +79,7 @@ export async function handleChangePassword(
   }
 }
 
-export async function handleSetTwoFactorEnabled(
+export async function setTwoFactorEnabled(
   enabled: boolean
 ): Promise<ActionState<boolean>> {
   const user = await getCurrentUser();
@@ -86,6 +91,21 @@ export async function handleSetTwoFactorEnabled(
     };
   }
 
-  await setTwoFactorEnabled(user.id, enabled);
+  let codes: string | undefined = undefined;
+  if (enabled) {
+    // Generate backup codes
+    codes = Array.from({ length: 6 }, () =>
+      Math.random().toString(36).substring(2, 10)
+    ).join(',');
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      twoFactorEnabled: enabled,
+      backupCodes: codes,
+    },
+  });
+
   return { success: true, data: true };
 }

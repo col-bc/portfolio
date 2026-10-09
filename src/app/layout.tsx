@@ -3,18 +3,18 @@ import { Fira_Code, IBM_Plex_Sans, Inter } from 'next/font/google';
 import Footer from '@/components/footer';
 import Navigation from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
-import { getCurrentUser } from '@/lib/auth/sessionActions';
-import { cn } from '@/lib/util/utils';
+import { getCurrentUser } from '@/lib/auth/session';
+import { cn } from '@/lib/utils';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Metadata } from 'next';
 import './globals.css';
 
-const headingFont = IBM_Plex_Sans({
+const ibmPlexSansHeading = IBM_Plex_Sans({
   subsets: ['latin'],
   variable: '--font-heading',
 });
 
-const bodyFont = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const sansFont = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const monoFont = Fira_Code({
   subsets: ['latin'],
@@ -79,19 +79,19 @@ export default async function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        'antialiased',
         monoFont.variable,
+        sansFont.variable,
+        ibmPlexSansHeading.variable,
+        'antialiased',
         'font-mono',
-        headingFont.variable,
-        'font-heading',
-        bodyFont.variable,
-        'font-body'
+        'font-sans',
+        'font-heading'
       )}
     >
       <body>
         <GoogleAnalytics gaId="G-CBL0YRB69Y" />
         <ThemeProvider>
-          <main className="flex min-h-screen max-w-screen flex-col overflow-x-clip bg-background text-foreground antialiased">
+          <main className="flex min-h-screen max-w-screen flex-col overflow-x-clip bg-background font-sans text-foreground">
             <Navigation user={user} />
 
             <div className="container mx-auto flex max-w-5xl flex-1 flex-col">

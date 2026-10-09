@@ -2,25 +2,26 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { Heading } from '@/components/ui/heading';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { getJobs } from '@/lib/job/jobDAL';
-import { cn, duration, formatDate } from '@/lib/util/utils';
+import { durationFormat, formatDate } from '@/lib/util/formats';
+import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { TbCertificate, TbDownload, TbFileDownload } from 'react-icons/tb';
+import { TbCertificate, TbDownload, TbFileText } from 'react-icons/tb';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -29,7 +30,9 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const jobs = await getJobs();
   const sortedJobs = jobs
-    ? jobs.filter((job) => job.visible).sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
+    ? jobs
+        .filter((job) => job.visible)
+        .sort((a, b) => b.startDate.getTime() - a.startDate.getTime())
     : [];
   return (
     <div className="flex flex-col items-start gap-10 px-4 py-8 md:gap-16 lg:gap-20">
@@ -37,14 +40,14 @@ export default async function AboutPage() {
         <div className="flex flex-col gap-6 md:gap-8">
           <Heading>About Me</Heading>
 
-          <div className="flex flex-col gap-4 text-sm leading-relaxed">
-            <p className="text-base leading-relaxed text-muted-foreground">
+          <div className="flex flex-col gap-4">
+            <p className="text-base leading-relaxed">
               I&apos;m a software engineer with a passion for building scalable
               and efficient applications. With over 5 years of experience in the
               industry, I have a strong background in full-stack development,
               cloud computing, and AI integration.
             </p>
-            <p className="text-base leading-relaxed text-muted-foreground">
+            <p className="text-base leading-relaxed">
               I thrive in collaborative environments and enjoy working on
               projects that challenge me to learn new technologies and improve
               my skills. I am always eager to take on new challenges and
@@ -209,7 +212,12 @@ export default async function AboutPage() {
                       {formatDate(job.startDate)} -{' '}
                       {job.endDate ? formatDate(job.endDate) : 'Present'}{' '}
                       <span className="text-xs text-muted-foreground">
-                        ({duration(job.startDate, job.endDate || undefined)})
+                        (
+                        {durationFormat(
+                          job.startDate,
+                          job.endDate || undefined
+                        )}
+                        )
                       </span>
                     </p>
                   </CardDescription>
@@ -364,13 +372,13 @@ export default async function AboutPage() {
             href="/resume"
             className={cn(
               buttonVariants({
-                variant: 'default',
+                variant: 'secondary',
                 size: 'lg',
                 className: 'w-full max-w-xs! justify-center md:max-w-none',
               })
             )}
           >
-            <TbFileDownload />
+            <TbFileText />
             View My Resume
           </Link>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import { handleCreateLead } from '@/lib/lead/leadActions';
+import { createLead } from '@/lib/lead/leadActions';
+import { formatPhoneNumber } from '@/lib/util/formats';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import React from 'react';
 import { TbExclamationCircle, TbMessageCheck, TbSend2 } from 'react-icons/tb';
@@ -18,21 +19,6 @@ import {
 } from '../ui/select';
 import { Spinner } from '../ui/spinner';
 import { Textarea } from '../ui/textarea';
-
-function handleFormatPhoneNumber(value: string): string {
-  // Remove all non-digit characters and limit to 10 digits
-  const cleaned = value.replace(/\D/g, '').slice(0, 10);
-
-  // Format the cleaned number as (123) 456-7890
-  const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-  if (match) {
-    const part1 = match[1] ? `(${match[1]}` : '';
-    const part2 = match[2] ? `) ${match[2]}` : '';
-    const part3 = match[3] ? `-${match[3]}` : '';
-    return `${part1}${part2}${part3}`;
-  }
-  return cleaned;
-}
 
 function validateEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -96,7 +82,7 @@ export default function ContactForm() {
       status: 'unread',
       notes: '',
     };
-    const status = await handleCreateLead(formData, tsToken || '');
+    const status = await createLead(formData, tsToken || '');
     if (status.success) {
       setIsSubmitted(true);
     }
@@ -182,9 +168,7 @@ export default function ContactForm() {
               placeholder="(123) 456-7890"
               className="flex-1"
               value={phone}
-              onChange={(e) =>
-                setPhone(handleFormatPhoneNumber(e.target.value))
-              }
+              onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
             />
           </Field>
           <Field>

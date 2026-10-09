@@ -1,49 +1,49 @@
 'use client';
 
-import { handleDeleteLead, handleUpdateLead } from '@/lib/lead/leadActions';
+import { deleteLead, updateLead } from '@/lib/lead/leadActions';
 import { Lead } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import {
-    TbBuildingSkyscraper,
-    TbDeviceFloppy,
-    TbDotsVertical,
-    TbIdBadge2,
-    TbList,
-    TbMail,
-    TbPhone,
-    TbTrash,
-    TbX,
+  TbBuildingSkyscraper,
+  TbDeviceFloppy,
+  TbDotsVertical,
+  TbIdBadge2,
+  TbList,
+  TbMail,
+  TbPhone,
+  TbTrash,
+  TbX,
 } from 'react-icons/tb';
 import ConfirmDelete from './confirmDelete';
 import {
-    Alert,
-    AlertAction,
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
 } from './ui/alert';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button, buttonVariants } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuPortal,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Heading } from './ui/heading';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
 import { Label } from './ui/label';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from './ui/select';
 import { toast } from './ui/toast';
 
@@ -59,8 +59,8 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
   const [leadPhone, setLeadPhone] = useState(lead.phone || '');
   const [leadNotes, setLeadNotes] = useState(lead.notes || '');
 
-  const deleteLead = async () => {
-    await handleDeleteLead(lead.id);
+  const handleDeleteLead = async () => {
+    await deleteLead(lead.id);
     toast.add({
       title: 'Lead deleted successfully',
       description: 'The lead has been deleted successfully.',
@@ -73,7 +73,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
     e.preventDefault();
     setAlert(null);
 
-    const result = await handleUpdateLead(lead.id, {
+    const result = await updateLead(lead.id, {
       status: leadStatus,
       notes: leadNotes,
     });
@@ -130,7 +130,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
             </Label>
             <p className="text-foreground">{lead.message}</p>
           </div>
-          <div className="flex ">
+          <div className="flex">
             <Button
               variant="destructive"
               onClick={() => setShowDeleteDialog(true)}
@@ -262,7 +262,7 @@ export default function LeadDisplay({ lead }: { lead: Lead }) {
       <ConfirmDelete
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
-        onConfirm={deleteLead}
+        onConfirm={handleDeleteLead}
         title="Delete Lead?"
         description="You cannot recover deleted leads. Are you sure you want to continue?"
       />

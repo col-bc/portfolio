@@ -1,12 +1,12 @@
 'use client';
 
 import {
-  handleCreateProject,
-  handleDeleteProject,
-  handleUpdateProject,
+  createProject,
+  deleteProject,
+  updateProject,
 } from '@/lib/project/projectActions';
 import { ProjectWithImages } from '@/lib/project/projectDAL';
-import { formatTimestamp } from '@/lib/util/utils';
+import { formatTimestamp } from '@/lib/utils';
 import { ProjectImage } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
 import Image from 'next/image';
@@ -83,9 +83,9 @@ export default function ProjectForm({
   const [imagesToDelete, setImagesToDelete] = React.useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
 
-  const deleteProject = async () => {
+  const handleDeleteProject = async () => {
     if (!project) return;
-    const status = await handleDeleteProject(project.id!);
+    const status = await deleteProject(project.id!);
     if (!status.success) {
       toast.error(
         status.error || 'An unknown error occurred while deleting the project.'
@@ -165,8 +165,8 @@ export default function ProjectForm({
 
     const status =
       mode === 'edit'
-        ? await handleUpdateProject(formData)
-        : await handleCreateProject(formData);
+        ? await updateProject(formData)
+        : await createProject(formData);
 
     if (!status.success) {
       setAlert({
@@ -440,7 +440,7 @@ export default function ProjectForm({
 
       {mode === 'edit' && (
         <ConfirmDelete
-          onConfirm={deleteProject}
+          onConfirm={handleDeleteProject}
           onOpenChange={() => setShowDeleteConfirm(!showDeleteConfirm)}
           open={showDeleteConfirm}
           title="Delete Project?"

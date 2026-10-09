@@ -1,43 +1,39 @@
 'use client';
 
-import {
-    createJobAction,
-    deleteJobAction,
-    updateJobAction,
-} from '@/lib/job/jobActions';
-import { cn, formatTimestamp } from '@/lib/util/utils';
+import { createJob, deleteJob, updateJob } from '@/lib/job/jobActions';
+import { cn, formatTimestamp } from '@/lib/utils';
 import { Job } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import {
-    TbCalendarPlus,
-    TbDeviceFloppy,
-    TbFileCode,
-    TbHash,
-    TbTrash,
-    TbX,
+  TbCalendarPlus,
+  TbDeviceFloppy,
+  TbFileCode,
+  TbHash,
+  TbTrash,
+  TbX,
 } from 'react-icons/tb';
 import ConfirmDelete from '../confirmDelete';
 import { DatePickerField } from '../datePickerField';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import {
-    Attachment,
-    AttachmentAction,
-    AttachmentActions,
-    AttachmentContent,
-    AttachmentDescription,
-    AttachmentMedia,
-    AttachmentTitle,
+  Attachment,
+  AttachmentAction,
+  AttachmentActions,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
 } from '../ui/attachment';
 import { Button, buttonVariants } from '../ui/button';
 import {
-    Field,
-    FieldContent,
-    FieldDescription,
-    FieldLabel,
-    FieldTitle,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+  FieldTitle,
 } from '../ui/field';
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
@@ -126,8 +122,8 @@ export default function JobForm({ job }: { job: Job | null }) {
     }
 
     const result = isEditMode
-      ? await updateJobAction(job.id, formData)
-      : await createJobAction(formData);
+      ? await updateJob(job.id, formData)
+      : await createJob(formData);
     if (!result.success) {
       setAlert({
         title: 'Error Saving Job',
@@ -149,7 +145,7 @@ export default function JobForm({ job }: { job: Job | null }) {
   const handleDelete = async () => {
     if (!job) return;
     const title = job.title;
-    const status = await deleteJobAction(job.id);
+    const status = await deleteJob(job.id);
     if (!status.success) {
       setAlert({
         title: 'Error Deleting Job',
@@ -347,13 +343,14 @@ export default function JobForm({ job }: { job: Job | null }) {
           </FieldLabel>
         )}
       </Field>
+
       {isEditMode && (
         <FieldLabel htmlFor="show-job" className="mt-2">
           <Field orientation="horizontal">
             <FieldContent>
               <FieldTitle>Show on Portfolio</FieldTitle>
               <FieldDescription>
-                This job is {visible ? 'visible' : 'hidden'} on the  portfolio.
+                This job is {visible ? 'visible' : 'hidden'} on the portfolio.
               </FieldDescription>
             </FieldContent>
             <Switch

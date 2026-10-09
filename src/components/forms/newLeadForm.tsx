@@ -1,5 +1,6 @@
 'use client';
-import { handleCreateLead } from '@/lib/lead/leadActions';
+
+import { createLead } from '@/lib/lead/leadActions';
 import { AlertFeedback } from '@/types';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { useRouter } from 'next/navigation';
@@ -53,7 +54,7 @@ export default function CreateLeadForm() {
     }
 
     const tsToken = turnstileRef.current?.getResponse();
-    const result = await handleCreateLead(
+    const result = await createLead(
       {
         subject: leadSource,
         name: contactName,

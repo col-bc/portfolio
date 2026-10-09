@@ -7,6 +7,7 @@ import { Heading } from '@/components/ui/heading';
 import { getApiKeys } from '@/lib/api/apiDAL';
 import { getAuthAttemptsForUser } from '@/lib/auth/authAttemptDal';
 import { getCurrentUser } from '@/lib/auth/session';
+import { getTotpSetupData } from '@/lib/auth/twoFactor';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -18,16 +19,15 @@ export default async function SecurityPage() {
   const user = await getCurrentUser();
   const loginAttempts = await getAuthAttemptsForUser();
   const keyData = await getApiKeys(user!.id);
+  const totpSetupData = await getTotpSetupData();
 
   return (
     <div className="flex w-full flex-col gap-8 md:gap-12 lg:gap-16">
-      <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
-        <Heading>Security Settings</Heading>
-      </div>
+      <Heading>Security Settings</Heading>
 
-      <div className="flex flex-col gap-6 md:flex-row-reverse">
-        <nav className="w-full max-w-52">
-          <h5 className="mb-2 font-semibold text-muted-foreground">
+      <div className="flex w-full flex-col gap-8">
+        <nav className="w-full max-w-2xs">
+          <h5 className="mb-4 font-semibold text-muted-foreground">
             ON THIS PAGE
           </h5>
           <ul className="space-y-0.5 border-l-2 border-border pl-4 text-sm text-muted-foreground">
@@ -66,30 +66,28 @@ export default async function SecurityPage() {
           </ul>
         </nav>
 
-        <div className="flex w-full flex-col gap-8">
-          <div className="space-y-4" id="authentication">
-            <Heading size="sub">Authentication</Heading>
-            <ChangePasswordForm />
-          </div>
+        <div className="space-y-4" id="authentication">
+          <Heading size="sub">Authentication</Heading>
+          <ChangePasswordForm />
+        </div>
 
-          <div className="space-y-4" id="two-step-verification">
-            <Heading size="subSub">2-Step Verification</Heading>
-            <TwoFactorForm user={user!} />
-          </div>
+        <div className="space-y-4" id="two-step-verification">
+          <Heading size="subSub">2-Step Verification</Heading>
+          <TwoFactorForm user={user!} setupData={totpSetupData} />
+        </div>
 
-          <div className="space-y-4" id="api-keys">
-            <Heading size="sub">API Keys</Heading>
-            <ApiKeyWrapper keys={keyData} />
-          </div>
+        <div className="space-y-4" id="api-keys">
+          <Heading size="sub">API Keys</Heading>
+          <ApiKeyWrapper keys={keyData} user={user!} />
+        </div>
 
-          <div className="space-y-4" id="login-activity">
-            <Heading size="sub">Login Activity</Heading>
-            <DataTable
-              columns={columns}
-              data={loginAttempts}
-              className="w-full"
-            />
-          </div>
+        <div className="space-y-4" id="login-activity">
+          <Heading size="sub">Login Activity</Heading>
+          <DataTable
+            columns={columns}
+            data={loginAttempts}
+            className="w-full"
+          />
         </div>
       </div>
     </div>

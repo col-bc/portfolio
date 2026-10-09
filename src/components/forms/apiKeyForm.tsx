@@ -3,6 +3,7 @@
 import { createApiKey } from '@/lib/api/apiActions.';
 import { APIKey, User } from '@/prisma/generated/client';
 import { AlertFeedback } from '@/types';
+import Link from 'next/link';
 import React from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle } from '../ui/alert';
 import { Button } from '../ui/button';
@@ -48,6 +49,18 @@ function ApiKeyForm({
     apiKey?.enabled || true
   );
 
+  React.useEffect(() => {
+    const handleApiKeyChange = () => {
+      if (apiKey) {
+        setKeyId(apiKey.id);
+        setName(apiKey.name);
+        setKeyHint(apiKey.keyHint);
+        setEnabled(apiKey.enabled);
+      }
+    };
+    if (apiKey) handleApiKeyChange();
+  }, [apiKey]);
+
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setAlert(null);
@@ -89,7 +102,7 @@ function ApiKeyForm({
       <DialogPortal>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-lg font-medium">
               {apiKey ? `Edit API Key: ${apiKey.name}` : 'Create API Key'}
             </DialogTitle>
             <DialogDescription>
@@ -143,10 +156,14 @@ function ApiKeyForm({
 
             {keyId && (
               <Field>
-                <FieldLabel htmlFor="key-value">Key</FieldLabel>
+                <FieldLabel htmlFor="key-value">Key Preview</FieldLabel>
                 <PasswordInput
                   id="key-value"
-                  value={generatedKey ? generatedKey : keyHint}
+                  value={
+                    generatedKey
+                      ? generatedKey
+                      : keyHint + Array.from({ length: 32 }, () => '*').join('')
+                  }
                   readOnly
                   placeholder="Your API key"
                 />
@@ -176,14 +193,38 @@ function ApiKeyForm({
   );
 }
 
-function ApiKeyList({ apiKeys }: { apiKeys: APIKey[] }) {
+function ApiKeyList({ keys, user }: { keys: APIKey[]; user: User }) {
+  const [selectedKey, setSelectedKey] = React.useState<APIKey | null>(null);
   return (
     <ul>
-      {apiKeys.map((apiKey) => (
-        <li key={apiKey.id}>
-          {apiKey.name} -- {apiKey.keyHint}
+      {keys.map((apiKey) => (
+        <li
+          key={apiKey.id}
+          className="flex flex-col gap-2 sm:flex-row sm:items-center"
+        >
+          <Link
+            href="#"
+            className="min-w-24 font-medium hover:text-primary hover:underline"
+            onClick={() => setSelectedKey(apiKey)}
+          >
+            {apiKey.name}
+          </Link>
+          <code className="truncate font-mono text-ellipsis">
+            {apiKey.keyHint + Array.from({ length: 32 }, () => '*').join('')}
+          </code>
+          <span className="text-right text-muted-foreground">
+            {apiKey.enabled ? 'Enabled' : 'Disabled'}
+          </span>
         </li>
       ))}
+      <ApiKeyForm
+        apiKey={selectedKey}
+        user={user}
+        open={!!selectedKey}
+        onOpenChange={(open) => {
+          if (!open) setSelectedKey(null);
+        }}
+      />
     </ul>
   );
 }

@@ -20,7 +20,7 @@ import {
   MessageScrollerProvider,
   MessageScrollerViewport,
 } from '@/components/ui/message-scroller';
-import { timeSinceTimestamp } from '@/lib/util/utils';
+import { timeSinceTimestamp } from '@/lib/util/formats';
 import { Job } from '@/prisma/generated/client';
 import { Message as ChatMessage } from '@/types';
 import { useChat } from '@ai-sdk/react';

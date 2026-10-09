@@ -5,7 +5,6 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { getCurrentUser, verifySession } from '@/lib/auth/session';
 import { login, verifyOtp } from '@/lib/auth/sessionActions';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import Link from 'next/link';
@@ -134,17 +133,6 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
     setStep('password');
     turnstileRef.current?.reset();
   };
-
-  React.useEffect(() => {
-    const handleEffect = async () => {
-      const user = await getCurrentUser();
-      if (user) {
-        await verifySession();
-        router.push('/auth/manage');
-      }
-    };
-    handleEffect();
-  }, [router]);
 
   return (
     <form onSubmit={handleSubmit}>

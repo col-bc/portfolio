@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-import { cn } from '@/lib/util/utils';
+import { cn } from '@/lib/utils';
 
 const headingVariants = cva('font-heading font-bold tracking-tight', {
   variants: {

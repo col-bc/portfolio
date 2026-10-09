@@ -1,3 +1,4 @@
+import CurrentTime from '@/components/currentTime';
 import ContactForm from '@/components/forms/contactForm';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
@@ -51,7 +52,9 @@ export default function ContactPage() {
             <h3 className="font-heading text-xl font-semibold">Location</h3>
             <div className="mt-4 flex items-center text-muted-foreground">
               <TbMapPin className="mr-2 h-5 w-5 text-primary" />
-              Kennesaw, GA (EST)
+              <p>
+                Kennesaw, GA (EST <CurrentTime />)
+              </p>
             </div>
           </div>
 

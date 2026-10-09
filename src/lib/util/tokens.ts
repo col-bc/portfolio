@@ -74,7 +74,7 @@ const verifyJWT = async (token: string): Promise<ActionState<JWTPayload>> => {
     return {
       success: false,
       error: 'JWT secret is not defined',
-      type: 'UNKNOWN',
+      type: 'SERVER_ERROR',
     };
   }
   try {

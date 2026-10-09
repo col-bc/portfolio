@@ -203,7 +203,7 @@ export async function deleteProject(
   }
 }
 
-export async function handleDeleteProjectImage(
+export async function deleteProjectImage(
   projectId: string,
   imageId: string
 ): Promise<ActionState<null>> {

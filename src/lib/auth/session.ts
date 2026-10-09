@@ -1,10 +1,10 @@
-import "server-only";
+import 'server-only';
 
 import { User } from '@/prisma/generated/client';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import { getUser } from '../user/userDAL';
-import { verifyJWT } from '../util/auth.util';
+import { verifyJWT } from '../util/tokens';
 
 /**
  * @interface AuthAttempt

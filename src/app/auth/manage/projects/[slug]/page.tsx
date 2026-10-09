@@ -1,6 +1,6 @@
 import ProjectForm from '@/components/forms/projectForm';
 import { Heading } from '@/components/ui/heading';
-import { handleGetProjectById } from '@/lib/project/projectActions';
+import { getProject } from '@/lib/project/projectDAL';
 import { TbFolderCode } from 'react-icons/tb';
 
 export default async function ProjectsPage({
@@ -9,10 +9,10 @@ export default async function ProjectsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await handleGetProjectById(slug);
+  const project = await getProject(slug);
 
-  if (!project.success) {
-    console.error('Error fetching project:', project);
+  if (!project) {
+    console.error('Error fetching project:', slug);
     return (
       <div className="flex w-full flex-col items-center justify-center gap-4 rounded-lg border border-dashed bg-muted p-8 text-center">
         <TbFolderCode className="h-12 w-12 text-muted-foreground" />
@@ -29,7 +29,7 @@ export default async function ProjectsPage({
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
           <Heading>Manage Projects</Heading>
         </div>
-        <ProjectForm project={project.data} />
+        <ProjectForm project={project} />
       </div>
     );
   }

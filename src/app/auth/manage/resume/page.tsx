@@ -1,7 +1,7 @@
 import ResumeViewer from '@/components/resumeViewer';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
-import { getResume } from '@/lib/resume/resumeActions';
+import { getResume } from '@/lib/resume/resumeDAL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TbUpload } from 'react-icons/tb';

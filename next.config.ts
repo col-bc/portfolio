@@ -1,17 +1,17 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-    config.module.rules.push({
-      test: /\.txt$/i,
-      type: 'asset/source',
-    });
-    return config;
-  },
+  // webpack(config) {
+  //   config.module.rules.push({
+  //     test: /\.svg$/,
+  //     use: ['@svgr/webpack'],
+  //   });
+  //   config.module.rules.push({
+  //     test: /\.txt$/i,
+  //     type: 'asset/source',
+  //   });
+  //   return config;
+  // },
 
   turbopack: {
     rules: {
